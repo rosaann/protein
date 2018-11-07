@@ -59,15 +59,16 @@ class SSD_Z(nn.Module):
                 conf.append(c(x).permute(0, 2, 3, 1).contiguous())
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
 
-        
             if phase == 'eval':
                 output = (
                     self.softmax(conf.view(-1, self.num_per_con)),  # conf preds
+                    
                 )
                 output_list.append(output)
             else:
                 output = (
                     conf.view(conf.size(0), -1, self.num_per_con),
+                    
                 #conf
                 )
                 output_list.append(output)

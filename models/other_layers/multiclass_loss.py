@@ -28,47 +28,37 @@ class MultiClassLoss(nn.Module):
     def forward(self, predictions, targets):
         
         conf_data = predictions
-        num = loc_data.size(0)
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
-        priors = self.priors
-        # priors = priors[:loc_data.size(1), :]
-        num_priors = (priors.size(0))
-       # print('num_priors ', num_priors)
+       
         num_classes = self.num_classes
-      #  print('num_classes ', num_classes)
 
         # match priors (default boxes) and ground truth boxes
-        conf_t = torch.LongTensor(num, num_priors)
-        #print('targets len', len(targets),'-------------------')
-        for idx in range(num):
-            truths = targets[idx][:,:-1].data
-            labels = targets[idx][:,-1].data
-            #print('truths ', truths )
-            #print('labels ', labels)
-            defaults = priors.data
-           # print('defaults shape ',defaults.shape)
-            match(self.threshold,truths,defaults,self.variance,labels,loc_t,conf_t,idx)
-        if self.use_gpu:
-            loc_t = loc_t.cuda()
-            conf_t = conf_t.cuda()
+        labels = np.zeros((num_classes))
+        for target in targets:
+            labels[target] = 1
+        for i in num_classes:
+            conf_t = torch.LongTensor(num, 2)
+            conf_t = labels[i]
+            
+            
+            if self.use_gpu:
+                conf_t = conf_t.cuda()
         # wrap targets
-        loc_t = Variable(loc_t, requires_grad=False)
-        conf_t = Variable(conf_t,requires_grad=False)
+            conf_t = Variable(conf_t,requires_grad=False)
 
-        pos = conf_t > 0
         # num_pos = pos.sum()
       #  print('conf_t size ', conf_t.shape)
         
         # Compute max conf across batch for hard negative mining
-        batch_conf = conf_data.view(-1, self.num_classes)
+            batch_conf = conf_data.view(-1, 2)
        # batch_conf = conf_data.view(-1, num_priors) #zl
-        conf_t_v = conf_t.view(-1,1)
+            conf_t_v = conf_t.view(-1,1)
         #conf_t_v = conf_t.view(-1,num_priors)#zl
         
       #  print('batch_conf size ', batch_conf.shape)
       #  print('conf_t_v size ', conf_t_v.shape)
 
-        loss_c = log_sum_exp(batch_conf) - batch_conf.gather(1, conf_t_v)
+            loss_c = log_sum_exp(batch_conf) - batch_conf.gather(1, conf_t_v)
         #loss_c = log_sum_exp (batch_conf) - batch_conf.gather (0, conf_t.view (-1, 1))#zz 
         
       #  print('loss_c ', loss_c.shape)
