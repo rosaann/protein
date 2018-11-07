@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov  7 14:05:42 2018
+
+@author: zl
+"""
+
+import torch.utils.data as data
+import pandas as pd
+import cv2
+
+
+class ProteinDataSet(data.Dataset):
+    def __init__(self,preproc=None, base_path='../../train/', csv_path='../../train.csv'):
+        self.df = pd.read_csv(csv_path)
+        self.preproc = preproc
+        self.base_path = base_path
+        self.img_name_tails = [ 'red', 'green', 'blue', 'yellow']
+        
+        
+    def __getitem__(self, index):
+        img_id = self.df.get_value(index, 'Id')
+        target = self.df.get_value(index, 'Target')
+        
+        imgs = []
+        for tail in self.img_name_tails:
+            img_path = self.base_path + img_id + '_' + tail + '.png'
+            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+            imgs.append(img)
+        img_merg = cv2.merge(imgs)
+        
+        if self.preproc is not None:
+            img_merg = self.preproc(img_merg)
+       
+        tar_list = []
+        targets = target.split(' ')
+        for tar in targets:
+            tar_list.append(tar)
+        
+        return img_merg, tar_list
+        
+    def __len__(self):
+        return self.df.shape[0]
