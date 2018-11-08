@@ -20,6 +20,7 @@ class SSD_Z(nn.Module):
         self.norm = L2Norm(feature_layer[1][0], 20)
         self.extras = nn.ModuleList(extras)
 
+        self.conflist = []
         for conf in conflist:
             self.conflist.append( nn.ModuleList(conf))
         self.softmax = nn.Softmax(dim=-1)
