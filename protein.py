@@ -21,6 +21,7 @@ import math
 import sys
 from tensorboardX import SummaryWriter
 import numpy as np
+from tools.visualize_utils import *
 
 class Protein(object):
     def __init__(self, ifTrain = True):
@@ -67,8 +68,8 @@ class Protein(object):
         for iteration in iter(range((epoch_size))):
             images, targets = next(batch_iterator)
             targets = np.array(targets)
-          #  if iteration > train_end and iteration < train_end + 10:
-          #      self.visualize_epoch(model, int(iteration) * int(self.cfg.DATASET.TRAIN_BATCH_SIZE), self.priorbox, writer, epoch, use_gpu)
+            if iteration > train_end and iteration < train_end + 10:
+                self.visualize_epoch(images, epoch)
             if iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
@@ -122,7 +123,21 @@ class Protein(object):
                     
                     conf_loss = 0
 
-        train_end = int( epoch_size * 0.9);
+
+    def visualize_epoch(self,images, epoch):
+        model.eval()
+
+        base_out = viz_module_feature_maps(self.writer, self.model.base, images, module_name='base', epoch=epoch)
+        extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
+        # visualize feature map in feature_extractors
+        viz_feature_maps(writer, model(images, 'feature'), module_name='feature_extractors', epoch=epoch)
+
+        model.train()
+        images.requires_grad = True
+        images.volatile=False
+        #base_out = viz_module_grads(writer, model, model.base, images, images, preproc.means, module_name='base', epoch=epoch)
+        base_out = viz_module_grads(self.writer, self.model, self.model.base, images, images, 0.5, module_name='base', epoch=epoch)
+
     def trainable_param(self, trainable_scope):
         for param in self.model.parameters():
             param.requires_grad = False
