@@ -17,7 +17,7 @@ class SSD_Z(nn.Module):
         self.num_classes = num_classes
         self.num_per_con = 2
         # SSD network
-        self.basee = nn.ModuleList(base)
+        self.base = nn.ModuleList(base)
         self.norm = L2Norm(feature_layer[1][0], 20)
         self.extras = nn.ModuleList(extras)
 
@@ -88,9 +88,9 @@ class SSD_Z(nn.Module):
         
     def forward(self, x, phase='eval'):
         sources = list() 
-        for k in range(len(self.basee)):
+        for k in range(len(self.base)):
            # print('k ', k)
-            x = self.basee[k](x)
+            x = self.base[k](x)
             if k in self.feature_layer:
               #  print('source append herer k ', k)
                 if len(sources) == 0:
