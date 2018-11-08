@@ -114,20 +114,21 @@ class SSD_Z(nn.Module):
         # apply multibox head to source layers
         num_img = x.shape[0]
         output_list = torch.Tensor(num_img, self.num_classes, 1)
-        print('x ',x.shape)
+        
         for i in range(num_img):
           # for every image
           for conf_net in self.conflist:
             #check every class
             conf = list()
             for (x, c) in zip(sources, conf_net):
+                print('x ',x.shape)
                 conf.append(c(x).permute(0, 2, 3, 1).contiguous())
 
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
 
            # if phase == 'eval':
             output = self.softmax(conf.view(-1, self.num_per_con))  # conf preds
-            print('output ', output.shape)
+            #print('output ', output.shape)
           output_list.append(output)
           #  else:
           #      output = conf.view(conf.size(0), -1, self.num_per_con),
