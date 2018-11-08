@@ -115,16 +115,16 @@ class SSD_Z(nn.Module):
         num_img = x.shape[0]
         output_list = torch.Tensor(num_img, self.num_classes, 1)
         
-        print('source ', sources.shape)
-        for i, x in enumerate(sources):
+        print('source ',len( sources))
+        for i in range(num_img):
           # for every image
           for conf_net in self.conflist:
             #check every class
             conf = list()
-            for c in  conf_net:
+            for x, c in zip(sources, conf_net):
                 if i == 0:
                    print('x ',x.shape)
-                conf.append(c(x).permute(2, 3, 1).contiguous())
+                conf.append(c(x[i]).permute(2, 3, 1).contiguous())
 
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
             if i == 0:
