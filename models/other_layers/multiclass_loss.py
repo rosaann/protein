@@ -49,7 +49,8 @@ class MultiClassLoss(nn.Module):
             batch_conf = conf_data.view(-1, 1)
             conf_t_v = conf_t.view(-1,1)
 
-
+        print('batch_conf ',batch_conf.shape)
+        print('conf_t_v', conf_t_v.shape)
         loss_c = F.cross_entropy(batch_conf, conf_t_v, size_average=False)
 
         return loss_c
