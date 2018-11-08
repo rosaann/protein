@@ -152,7 +152,9 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
     conf_layers_list = []
     for i in range(num_classes):
         conf_layers_list.append([])
+    
     for layer, depth, box in zip(feature_layer[0], feature_layer[1], mbox):
+        
         if layer == 'S':
             extra_layers += [
                     nn.Conv2d(in_channels, int(depth/2), kernel_size=1),
@@ -168,10 +170,10 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
         
         for conf_layers in conf_layers_list:
             conf_layers += [nn.Conv2d(in_channels, box * num_per_con, kernel_size=3, padding=1) ]
-    
+            
     
     for conf_layers in conf_layers_list:
-        conf_layers += [nn.LogSigmoid() ]
+        conf_layers += [F.sigmoid()]
     return base, extra_layers, conf_layers_list
 
 def build_ssd(base, feature_layer, mbox, num_classes):
