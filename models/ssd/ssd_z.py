@@ -110,4 +110,4 @@ def build_ssd(base, feature_layer, mbox, num_classes):
     See: https://arxiv.org/pdf/1512.02325.pdf for more details.
     """
     base_, extras_, conflist = add_extras(base(), feature_layer, mbox, num_classes)
-    return SSD(base_, extras_, conflist, feature_layer, num_classes)
+    return SSD_Z(base_, extras_, conflist, feature_layer, num_classes)
