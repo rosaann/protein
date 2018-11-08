@@ -131,7 +131,8 @@ class SSD_Z(nn.Module):
          #   if i == 0:
          #       print('conf ', conf.shape)
            # if phase == 'eval':
-            output = conf_net[-2](conf)
+            output = conf_net[-3](conf)
+            output = conf_net[-2](output)
             output = conf_net[-1](output)
           #  output = self.softmax(conf.view(-1, self.num_per_con))  # conf preds
          #   if i == 0:
@@ -176,6 +177,8 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
     
     for conf_layers in conf_layers_list:
         conf_layers += [nn.Linear(15480, 2)]
+     #   conf_layers += [nn.ReLU(inplace=True)]
+        conf_layers += [ nn.BatchNorm2d]
         conf_layers += [nn.LogSigmoid()]
     return base, extra_layers, conf_layers_list
 
