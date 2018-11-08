@@ -41,7 +41,7 @@ class Protein(object):
             if torch.cuda.device_count() > 1:
                  self.model = torch.nn.DataParallel(self.model).module
                  
-                 
+        print('Model architectures:\n{}\n'.format(self.model))         
         trainable_param = self.trainable_param('base,extras,norm,loc,conf')
        # print('trainable_param ', trainable_param)
         self.optimizer = self.configure_optimizer(trainable_param)
