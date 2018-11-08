@@ -57,8 +57,8 @@ class Protein(object):
             self.train_per_epoch(epoch)
     
     def train_per_epoch(self, epoch):
-        epoch_size = int( len(self.train_loader) / self.config.v('batch_size'))
-        batch_iterator = iter(self.train_loader)
+        epoch_size = int( len(self.train_loader) )
+   #     batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.8);
         print('epoch_size ', epoch_size, " train_end ", train_end)
         conf_loss = 0
@@ -66,8 +66,8 @@ class Protein(object):
         
         conf_loss_v = 0
         
-        for iteration in iter(range((epoch_size))):
-            images, targets = next(batch_iterator)
+        for iteration , t_data in enumerate(self.train_loader):
+            images, targets = t_data
             targets = np.array(targets)
             if iteration > train_end and iteration < train_end + 10:
                 if self.use_gpu:
