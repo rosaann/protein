@@ -86,7 +86,7 @@ class SSD_Z(nn.Module):
         
         
     def forward(self, x, phase='eval'):
-        sources,  conf = [list() for _ in range(2)]
+        sources = list() 
         for k in range(len(self.basee)):
            # print('k ', k)
             x = self.basee[k](x)
@@ -112,12 +112,13 @@ class SSD_Z(nn.Module):
 
         # apply multibox head to source layers
         output_list = []
-        for conf in self.conflist:
-            for (x, c) in zip(sources, conf):
-             #   conf.append(c(x).permute(0, 2, 3, 1).contiguous())
-                 print('x ',x.shape)
-                 print('c ', c)
-                 conf.append(c(x))
+        for conf_net in self.conflist:
+            conf = list()
+            for (x, c) in zip(sources, conf_net):
+                conf.append(c(x).permute(0, 2, 3, 1).contiguous())
+          #       print('x ',x.shape)
+          #       print('c ', c)
+            #     conf.append(c(x))
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
 
             if phase == 'eval':
@@ -134,7 +135,7 @@ class SSD_Z(nn.Module):
                 )
                 output_list.append(output)
             #print('out put shape', loc.shape)
-            return output_list
+        return output_list
     
     
 def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
