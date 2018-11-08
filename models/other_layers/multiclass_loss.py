@@ -9,7 +9,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-from lib.utils.box_utils import match, log_sum_exp
 import numpy as np
 from config import Config
 
