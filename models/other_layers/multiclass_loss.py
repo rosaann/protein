@@ -36,7 +36,7 @@ class MultiClassLoss(nn.Module):
             labels = np.zeros((self.num_classes, 2))
             for target in img_targets:
               #  print('tar ', target)
-                labels[int(target)][0] = 1
+                labels[int(target)][0] = 1.0
             conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
             
             
