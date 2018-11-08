@@ -60,6 +60,7 @@ class Protein(object):
         epoch_size = int( len(self.train_loader) / self.config.v('batch_size'))
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.8);
+        print('epoch_size ', epoch_size, " train_end ", train_end)
         conf_loss = 0
         _t = Timer()
         
@@ -69,6 +70,8 @@ class Protein(object):
             images, targets = next(batch_iterator)
             targets = np.array(targets)
             if iteration > train_end and iteration < train_end + 10:
+                if self.use_gpu:
+                    images = Variable(images.cuda())
                 self.visualize_epoch(images, epoch)
             if iteration <= train_end:
                 if self.use_gpu:
