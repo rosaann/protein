@@ -30,7 +30,7 @@ class SSD_Z(nn.Module):
         
     def forward(self, x, phase='eval'):
         sources,  conf = [list() for _ in range(2)]
-        for k in range(len(self.base)):
+        for k in range(len(self.basee)):
            # print('k ', k)
             x = self.basee[k](x)
             if k in self.feature_layer:
