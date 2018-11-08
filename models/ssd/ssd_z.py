@@ -10,6 +10,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 from models.other_layers.l2norm import L2Norm
+import numpy as np
 class SSD_Z(nn.Module):
     def __init__(self, base, extras, conflist, feature_layer, num_classes):
         super(SSD_Z, self).__init__()
@@ -135,7 +136,7 @@ class SSD_Z(nn.Module):
                 )
                 output_list.append(output)
             #print('out put shape', loc.shape)
-        return output_list
+        return np.array( output_list)
     
     
 def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
