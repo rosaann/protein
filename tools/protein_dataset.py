@@ -9,7 +9,7 @@ Created on Wed Nov  7 14:05:42 2018
 import torch.utils.data as data
 import pandas as pd
 import cv2
-import numpy as np
+
 
 class ProteinDataSet(data.Dataset):
     def __init__(self,preproc=None, base_path='../train/', csv_path='../train.csv'):
@@ -38,7 +38,7 @@ class ProteinDataSet(data.Dataset):
         for tar in targets:
             tar_list.append(tar)
         
-        return img_merg, np.array( tar_list)
+        return img_merg, tar_list
         
     def __len__(self):
         return self.df.shape[0]

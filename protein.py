@@ -20,6 +20,7 @@ from tools.timer import Timer
 import math
 import sys
 from tensorboardX import SummaryWriter
+import numpy as np
 
 class Protein(object):
     def __init__(self, ifTrain = True):
@@ -65,6 +66,7 @@ class Protein(object):
         
         for iteration in iter(range((epoch_size))):
             images, targets = next(batch_iterator)
+            targets = np.array(targets)
           #  if iteration > train_end and iteration < train_end + 10:
           #      self.visualize_epoch(model, int(iteration) * int(self.cfg.DATASET.TRAIN_BATCH_SIZE), self.priorbox, writer, epoch, use_gpu)
             if iteration <= train_end:
