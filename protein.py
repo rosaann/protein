@@ -72,7 +72,7 @@ class Protein(object):
             if iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
-                    targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
+                  #  targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
                 else:
                     images = Variable(images)
                     targets = [Variable(anno, volatile=True) for anno in targets]
