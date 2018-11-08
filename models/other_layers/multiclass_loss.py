@@ -14,7 +14,7 @@ import numpy as np
 from config import Config
 
 class MultiClassLoss(nn.Module):
-    def __init__(self, cfg, priors, use_gpu=True):
+    def __init__(self, use_gpu=True):
         super(MultiClassLoss, self).__init__()
         self.use_gpu = use_gpu
         self.config = Config()
@@ -42,7 +42,6 @@ class MultiClassLoss(nn.Module):
             
             if self.use_gpu:
                 conf_t = conf_t.cuda()
-        # wrap targets
 
         
         # Compute max conf across batch for hard negative mining

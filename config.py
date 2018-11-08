@@ -20,6 +20,7 @@ class Config(object):
        self.data['lr_gamma'] = 0.98
        self.data['lr_steps'] = [1]
        self.data['epoches'] = 70
+       self.data['out_dir'] = 'outs/'
        
     def v(self, key):
         return self.data[key]
