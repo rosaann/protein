@@ -69,6 +69,7 @@ class Protein(object):
         for iteration , t_data in enumerate(self.train_loader):
             images, targets = t_data
             targets = np.array(targets)
+            print('iteration ', iteration)
             if iteration > train_end and iteration < train_end + 10:
                 if self.use_gpu:
                     images = Variable(images.cuda())
@@ -93,7 +94,7 @@ class Protein(object):
                     continue
                 if math.isnan(loss_c.data[0]):
                     continue
-                if loss_c.data[0] > 100:
+                if loss_c.data[0] > 1000000:
                     continue
 
                 loss_c.backward()
