@@ -16,8 +16,8 @@ class ProteinDataSet(data.Dataset):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
         self.base_path = base_path
-       # self.img_name_tails = [ 'red', 'green', 'blue', 'yellow']
-        self.img_name_tails = [ 'red', 'green', 'blue']
+        self.img_name_tails = [ 'red', 'green', 'blue', 'yellow']
+    #    self.img_name_tails = [ 'red', 'green', 'blue']
         
     def __getitem__(self, index):
         img_id = self.df.get_value(index, 'Id')
