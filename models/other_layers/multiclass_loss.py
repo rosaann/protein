@@ -42,6 +42,7 @@ class MultiClassLoss(nn.Module):
             
             if self.use_gpu:
                 conf_t = conf_t.cuda()
+                conf_data = conf_data.cuda()
 
         
         # Compute max conf across batch for hard negative mining
