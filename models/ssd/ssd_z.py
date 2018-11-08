@@ -113,7 +113,7 @@ class SSD_Z(nn.Module):
 
         # apply multibox head to source layers
         num_img = x.shape[0]
-        output_list = torch.Tensor(num_img, self.num_classes, 1)
+        output_list = torch.Tensor(num_img, self.num_classes, 2)
         
         print('source ',len( sources))
         for i in range(num_img):
