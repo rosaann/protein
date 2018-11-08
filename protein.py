@@ -51,7 +51,7 @@ class Protein(object):
         self.writer = SummaryWriter(self.config.v('out_dir'))
         
     def train_model(self):
-        for epoch in self.max_epochs:
+        for epoch in range( self.max_epochs):
             self.train_per_epoch(epoch)
     
     def train_per_epoch(self, epoch):
