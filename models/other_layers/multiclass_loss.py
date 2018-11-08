@@ -35,8 +35,8 @@ class MultiClassLoss(nn.Module):
         for i, img_targets in enumerate( targets):
             labels = np.zeros(self.num_classes)
             for target in img_targets:
-                print('tar ', target)
-                labels[target] = 1
+              #  print('tar ', target)
+                labels[int(target)] = 1
             conf_t[i] = labels
             
             
