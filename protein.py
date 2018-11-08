@@ -48,7 +48,7 @@ class Protein(object):
         self.max_epochs = self.config.v('epoches')
         
         self.criterion = MultiClassLoss( self.use_gpu)
-        self.writer = SummaryWriter(self.config.v('outs'))
+        self.writer = SummaryWriter(self.config.v('out_dir'))
         
     def train_model(self):
         for epoch in self.max_epochs:
