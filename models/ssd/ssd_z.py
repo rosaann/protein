@@ -123,17 +123,11 @@ class SSD_Z(nn.Module):
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
 
             if phase == 'eval':
-                output = (
-                    self.softmax(conf.view(-1, self.num_per_con)),  # conf preds
-                    
-                )
+                output = self.softmax(conf.view(-1, self.num_per_con)),  # conf preds
                 output_list.append(output)
             else:
-                output = (
-                    conf.view(conf.size(0), -1, self.num_per_con),
-                    
-                #conf
-                )
+                output = conf.view(conf.size(0), -1, self.num_per_con),
+                
                 output_list.append(output)
             #print('out put shape', loc.shape)
         return torch.from_numpy( np.array( output_list))
