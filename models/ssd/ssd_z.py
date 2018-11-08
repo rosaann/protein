@@ -21,8 +21,9 @@ class SSD_Z(nn.Module):
         self.extras = nn.ModuleList(extras)
 
         self.conflist = []
-        for conf in conflist:
-            self.conflist.append( nn.ModuleList(conf))
+        self.conflist = nn.ModuleList(conflist)
+     #   for conf in conflist:
+     #       self.conflist.append( nn.ModuleList(conf))
         self.softmax = nn.Softmax(dim=-1)
 
         self.feature_layer = feature_layer[0]
