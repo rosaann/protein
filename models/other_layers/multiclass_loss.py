@@ -33,9 +33,9 @@ class MultiClassLoss(nn.Module):
 
         # match priors (default boxes) and ground truth boxes
         for i, img_targets in enumerate( targets):
-            labels = np.zeros((self.num_classes))
+            labels = np.zeros((1, self.num_classes))
             for target in img_targets:
-                labels[target] = 1
+                labels[:, target] = 1
             conf_t[i] = labels
             
             
