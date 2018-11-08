@@ -124,7 +124,7 @@ class SSD_Z(nn.Module):
             for x, c in zip(sources, conf_net):
                 if i == 0:
                    print('x ',x.shape)
-                conf.append(c(x[i]).permute(2, 3, 1).contiguous())
+                conf.append(c(x[i]).permute(0, 2, 3, 1).contiguous())
 
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
             if i == 0:
