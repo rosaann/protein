@@ -176,10 +176,10 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
             
     
     for conf_layers in conf_layers_list:
-        conf_layers += [ nn.BatchNorm2d(15480)]
         conf_layers += [nn.Linear(15480, 2)]
      #   conf_layers += [nn.ReLU(inplace=True)]
-        
+        conf_layers += [ nn.BatchNorm2d(2)]
+
         conf_layers += [nn.LogSigmoid()]
     return base, extra_layers, conf_layers_list
 
