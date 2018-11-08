@@ -66,5 +66,5 @@ def vgg(cfg, i, batch_norm=False):
     return layers
 
 def vgg16():
-    return vgg(base['vgg16'], 4)
+    return vgg(base['vgg16'], 3)
 vgg16.name='vgg16'
