@@ -137,7 +137,7 @@ class SSD_Z(nn.Module):
             if i == 0:
               print('output ', output.shape)
             #print('output ', output.shape)
-          output_list[i]= output
+          output_list[i]= output.type(torch.cuda.FloatTensor)
           #  else:
           #      output = conf.view(conf.size(0), -1, self.num_per_con),
                 
