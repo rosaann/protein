@@ -136,7 +136,7 @@ class SSD_Z(nn.Module):
                 )
                 output_list.append(output)
             #print('out put shape', loc.shape)
-        return np.array( output_list)
+        return torch.from_numpy( np.array( output_list))
     
     
 def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
