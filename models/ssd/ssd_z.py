@@ -16,13 +16,13 @@ class SSD_Z(nn.Module):
         self.num_classes = num_classes
         self.num_per_con = 2
         # SSD network
-        self.base = nn.ModuleList(base)
+        self.basee = nn.ModuleList(base)
         self.norm = L2Norm(feature_layer[1][0], 20)
         self.extras = nn.ModuleList(extras)
 
         self.conflist = []
         for conf in conflist:
-            self.conflist.append( nn.ModuleList(conf).cuda())
+            self.conflist.append( nn.ModuleList(conf))
         self.softmax = nn.Softmax(dim=-1)
 
         self.feature_layer = feature_layer[0]
@@ -32,7 +32,7 @@ class SSD_Z(nn.Module):
         sources,  conf = [list() for _ in range(2)]
         for k in range(len(self.base)):
            # print('k ', k)
-            x = self.base[k](x)
+            x = self.basee[k](x)
             if k in self.feature_layer:
               #  print('source append herer k ', k)
                 if len(sources) == 0:
