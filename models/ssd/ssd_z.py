@@ -115,27 +115,27 @@ class SSD_Z(nn.Module):
         num_img = x.shape[0]
         output_list = torch.Tensor(num_img, self.num_classes, 2)
         
-        print('source ',len( sources))
+    #    print('source ',len( sources))
         for i in range(num_img):
           # for every image
           for conf_net in self.conflist:
             #check every class
             conf = list()
             for x, c in zip(sources, conf_net):
-                if i == 0:
-                   print('x ',x.shape)
+             #   if i == 0:
+             #      print('x ',x.shape)
                 conf.append(c(x[i].unsqueeze(0)).permute(0, 2, 3, 1).contiguous())
               #  conf.append(c(x[i].unsqueeze(0)))
 
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
-            if i == 0:
-                print('conf ', conf.shape)
+         #   if i == 0:
+         #       print('conf ', conf.shape)
            # if phase == 'eval':
             output = conf_net[-2](conf)
             output = conf_net[-1](output)
           #  output = self.softmax(conf.view(-1, self.num_per_con))  # conf preds
-            if i == 0:
-              print('output ', output.shape)
+         #   if i == 0:
+        #      print('output ', output.shape)
             #print('output ', output.shape)
           output_list[i]= output.type(torch.cuda.FloatTensor)
           #  else:
