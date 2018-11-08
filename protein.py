@@ -89,6 +89,8 @@ class Protein(object):
                     continue
                 if math.isnan(loss_c.data[0]):
                     continue
+                if loss_c.data[0] > 100:
+                    continue
 
                 loss_c.backward()
                 self.optimizer.step()
