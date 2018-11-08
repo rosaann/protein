@@ -112,29 +112,29 @@ class SSD_Z(nn.Module):
             return sources
 
         # apply multibox head to source layers
-        output_list = []
-        output_list = torch.Tensor(20, self.num_classes, 1)
+        num_img = x.shape[0]
+        output_list = torch.Tensor(num_img, self.num_classes, 1)
         print('x ',x.shape)
-        print('source ', sources.shape)
-        for conf_net in self.conflist:
+        for i in range(num_img):
+          # for every image
+          for conf_net in self.conflist:
+            #check every class
             conf = list()
             for (x, c) in zip(sources, conf_net):
                 conf.append(c(x).permute(0, 2, 3, 1).contiguous())
-          #       print('x ',x.shape)
-          #       print('c ', c)
-            #     conf.append(c(x))
+
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
 
            # if phase == 'eval':
             output = self.softmax(conf.view(-1, self.num_per_con))  # conf preds
             print('output ', output.shape)
-            output_list.append(output)
+          output_list.append(output)
           #  else:
           #      output = conf.view(conf.size(0), -1, self.num_per_con),
                 
          #       output_list.append(output)
             #print('out put shape', loc.shape)
-        return torch.from_numpy( np.array( output_list))
+        return output_list
     
     
 def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
