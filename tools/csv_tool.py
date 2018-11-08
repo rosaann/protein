@@ -47,4 +47,4 @@ def test_merge_img():
     img_merg = cv2.merge(imgs)
     cv2.imwrite(os.path.join('./','3.jpg'), img_merg)
 #findAlltype()
-test_merge_img()
+test()
