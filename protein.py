@@ -125,7 +125,7 @@ class Protein(object):
 
 
     def visualize_epoch(self,images, epoch):
-        model.eval()
+        self.model.eval()
 
         base_out = viz_module_feature_maps(self.writer, self.model.base, images, module_name='base', epoch=epoch)
         extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
