@@ -37,7 +37,7 @@ class MultiClassLoss(nn.Module):
             for target in img_targets:
               #  print('tar ', target)
                 labels[int(target)] = 1
-            conf_t[i] = labels
+            conf_t[i] = torch.from_numpy( labels)
             
             
             if self.use_gpu:
