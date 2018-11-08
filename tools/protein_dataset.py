@@ -12,7 +12,7 @@ import cv2
 
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self,preproc=None, base_path='../../train/', csv_path='../../train.csv'):
+    def __init__(self,preproc=None, base_path='../train/', csv_path='../train.csv'):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
         self.base_path = base_path
