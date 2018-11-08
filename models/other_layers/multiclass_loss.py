@@ -29,11 +29,11 @@ class MultiClassLoss(nn.Module):
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
-        conf_t = torch.Tensor(num_img, self.num_classes, 2)
+        conf_t = torch.Tensor(num_img, self.num_classes, 1)
 
         # match priors (default boxes) and ground truth boxes
         for i, img_targets in enumerate( targets):
-            labels = np.zeros(self.num_classes)
+            labels = np.zeros(self.num_classes, 1)
             for target in img_targets:
               #  print('tar ', target)
                 labels[int(target)] = 1
