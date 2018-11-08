@@ -125,7 +125,10 @@ class SSD_Z(nn.Module):
                 if i == 0:
                    print('x ',x.shape)
                 #conf.append(c(x[i].unsqueeze(0)).permute(0, 2, 3, 1).contiguous())
-                conf.append(c(x[i].unsqueeze(0)))
+                this_x = c(x[i].unsqueeze(0))
+                this_x = conf_net[-2](this_x)
+                this_x = conf_net[-1](this_x)
+                conf.append(this_x)
 
             conf = torch.cat([o.view(o.size(0), -1) for o in conf], 1)
             if i == 0:
@@ -135,7 +138,7 @@ class SSD_Z(nn.Module):
             if i == 0:
               print('output ', output.shape)
             #print('output ', output.shape)
-            output_list[i]= output
+          output_list[i]= output
           #  else:
           #      output = conf.view(conf.size(0), -1, self.num_per_con),
                 
