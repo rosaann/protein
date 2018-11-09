@@ -201,9 +201,9 @@ class Protein(object):
         if not os.path.exists(self.config.v('out_dir')):
             os.makedirs(self.config.v('out_dir'))
         if iters:
-            filename = self.checkpoint_prefix + '_epoch_{:d}_iter_{:d}'.format(epochs, iters) + '.pth'
+            filename = '_epoch_{:d}_iter_{:d}'.format(epochs, iters) + '.pth'
         else:
-            filename = self.checkpoint_prefix + '_epoch_{:d}'.format(epochs) + '.pth'
+            filename = '_epoch_{:d}'.format(epochs) + '.pth'
         filename = os.path.join(self.config.v('out_dir'), filename)
         torch.save(self.model.state_dict(), filename)
         with open(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt'), 'a') as f:
