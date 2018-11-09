@@ -133,7 +133,7 @@ class Protein(object):
         self.model.eval()
      #   for i, image in enumerate(images_list):
         image = Variable( images[0].unsqueeze(0), volatile=True)
-        if use_gpu:
+        if self.use_gpu:
             image = image.cuda()
         print('image shpe', image.shape)
         base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
