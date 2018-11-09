@@ -22,6 +22,7 @@ import sys
 from tensorboardX import SummaryWriter
 import numpy as np
 from tools.visualize_utils import *
+import os
 
 class Protein(object):
     def __init__(self, ifTrain = True):
@@ -55,6 +56,8 @@ class Protein(object):
     def train_model(self):
         for epoch in range( self.max_epochs):
             self.train_per_epoch(epoch)
+            if epoch % int( self.config.v('save_per')) == 0:
+                self.save_checkpoints(epoch)
     
     def train_per_epoch(self, epoch):
         epoch_size = int( len(self.train_loader) )
@@ -128,6 +131,56 @@ class Protein(object):
                     
                     conf_loss = 0
 
+            if iteration > train_end:
+             #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
+                #eval:
+                if self.use_gpu:
+                    images = Variable(images.cuda())
+                    targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
+                else:
+                    images = Variable(images)
+                    targets = [Variable(anno, volatile=True) for anno in targets]
+                self.model.eval()
+                out = self.model(images, phase='train')
+
+                # loss
+                loss_c = self.criterion(out, targets)
+                
+                if loss_c.data[0] == float("Inf"):
+                    continue
+                if math.isnan(loss_c.data[0]):
+                    continue
+                if loss_c.data[0] > 100000000:
+                    continue
+
+                time = _t.toc()
+
+                conf_loss_v += loss_c.data[0]
+
+                # log per iter
+                log = '\r==>Eval: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
+                    prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
+                    time=time,  cls_loss=loss_c.data[0])
+                #print(log)
+                sys.stdout.write(log)
+                sys.stdout.flush()
+                self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+                if train_end == (epoch_size - 1):
+                    # eval mAP
+             #       prec, rec, ap = cal_pr(label, score, npos)
+
+                    # log per epoch
+                    sys.stdout.write('\r')
+                    sys.stdout.flush()
+                    log = '\r==>Eval: || Total_time: {time:.3f}s ||  conf_loss: {conf_loss:.4f} || mAP: {mAP:.6f}\n'.format(mAP=ap,
+                      time=_t.total_time,  conf_loss=conf_loss/epoch_size)
+                    sys.stdout.write(log)
+                    sys.stdout.flush()
+                    # log for tensorboard
+                    self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+                  #  writer.add_scalar('Eval/mAP', ap, epoch)
+                 #   viz_pr_curve(writer, prec, rec, epoch)
+                 #   viz_archor_strategy(writer, size, gt_label, epoch)
 
     def visualize_epoch(self,images, epoch):
         self.model.eval()
@@ -145,8 +198,21 @@ class Protein(object):
         images[0].requires_grad = True
         images[0].volatile=False
         #base_out = viz_module_grads(writer, model, model.base, images, images, preproc.means, module_name='base', epoch=epoch)
-        base_out = viz_module_grads(self.writer, self.model, self.model.base, image, image, 0.5, module_name='base', epoch=epoch)
+     #   base_out = viz_module_grads(self.writer, self.model, self.model.base, image, image, 0.5, module_name='base', epoch=epoch)
 
+    def save_checkpoints(self, epochs, iters=None):
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+        if iters:
+            filename = self.checkpoint_prefix + '_epoch_{:d}_iter_{:d}'.format(epochs, iters) + '.pth'
+        else:
+            filename = self.checkpoint_prefix + '_epoch_{:d}'.format(epochs) + '.pth'
+        filename = os.path.join(self.output_dir, filename)
+        torch.save(self.model.state_dict(), filename)
+        with open(os.path.join(self.output_dir, 'checkpoint_list.txt'), 'a') as f:
+            f.write('epoch {epoch:d}: {filename}\n'.format(epoch=epochs, filename=filename))
+        print('Wrote snapshot to: {:s}'.format(filename))
+        
     def trainable_param(self, trainable_scope):
         for param in self.model.parameters():
             param.requires_grad = False
