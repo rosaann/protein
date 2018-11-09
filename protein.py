@@ -23,13 +23,17 @@ from tensorboardX import SummaryWriter
 import numpy as np
 from tools.visualize_utils import *
 import os
+import pandas as pd
+import cv2
+import visdom
 
 class Protein(object):
     def __init__(self, ifTrain = True):
         self.config = Config()
         self.ifTrain = ifTrain
+        self.preproc = Data_Preproc()
         if self.ifTrain:
-            dataset = ProteinDataSet(Data_Preproc())
+            dataset = ProteinDataSet(self.preproc)
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
             
@@ -58,7 +62,125 @@ class Protein(object):
             self.train_per_epoch(epoch)
             if epoch % int( self.config.v('save_per')) == 0:
                 self.save_checkpoints(epoch)
-    
+    def test_model(self):
+        previous = self.find_previous()
+        if previous:
+            for epoch, resume_checkpoint in zip(previous[0], previous[1]):
+                sys.stdout.write('\rEpoch {epoch:d}/{max_epochs:d}:\n'.format(epoch=epoch, max_epochs=self.cfg.TEST.TEST_SCOPE[1]))
+                self.resume_checkpoint(resume_checkpoint)
+                   
+                self.test_epoch(self.model, self.detector, self.output_dir , self.use_gpu)
+           #     self.visualize_epoch(self.model, self.visualize_loader, self.priorbox, self.writer, epoch,  self.use_gpu)
+           
+    def get_testimg_merge_list(self,test_image_dir):
+        file_list = []
+        for root, dirs, files in os.walk(test_image_dir):
+             for file in files:
+                if os.path.splitext(file)[1] == '.png':
+                    name_part = file.split('_')[0]
+                    if_enrolled = False
+                    for name_enrolled in file_list:
+                        if name_enrolled.find('name_part') >= 0:
+                            if_enrolled = True
+                            break
+                    if if_enrolled == False:
+                        file_list.append(name_part)
+        
+        return file_list 
+
+    def get_merge_image(self, pre_dir):
+        img_name_tails = [ 'red', 'green', 'blue', 'yellow']
+        imgs = []
+        for tail in img_name_tails:
+            img_path = pre_dir+ '_' + tail + '.png'
+            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+            imgs.append(img)
+        img_merg = cv2.merge(imgs)
+        
+        if self.preproc is not None:
+            img_merg = self.preproc(img_merg)           
+    def test_epoch(self, model, detector, output_dir, use_gpu):
+        
+        model.eval()
+        test_image_dir = os.path.join('../', 'test/')
+
+        vis = visdom.Visdom(server="http://localhost", port=8888)
+        check_i = 0;
+        _t = Timer()
+        df = pd.DataFrame(columns = ["Id", "Predicted"])
+        self.idx_df = 0
+        test_image_merge_list = self.get_testimg_merge_list(test_image_dir)
+        for img_name in  test_image_merge_list:
+            
+            img = self.get_merge_image(test_image_dir + img_name)
+            img = Variable( img.unsqueeze(0), volatile=True)
+            if use_gpu:
+                images = img.cuda()
+
+            _t.tic()
+            if check_i == 3:
+                vis.images(images[0], win=2, opts={'title': 'Reals'})
+                self.visTest(model, images[0].unsqueeze(0), self.priorbox, self.writer, 1, use_gpu)
+                    
+            out = model(images, phase='eval')
+            print('out ', out)   
+                    
+                  
+            check_i += 1  
+        df.to_csv('pred.csv', index=None)
+        df.head(10)    
+        print('Evaluating detections')
+        
+        
+    def find_previous(self):
+        if not os.path.exists(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt')):
+            return False
+        with open(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt'), 'r') as f:
+            lineList = f.readlines()
+        epoches, resume_checkpoints = [list() for _ in range(2)]
+        for line in lineList:
+            epoch = int(line[line.find('epoch ') + len('epoch '): line.find(':')])
+            checkpoint = line[line.find(':') + 2:-1]
+            epoches.append(epoch)
+            resume_checkpoints.append(checkpoint)
+        return epoches, resume_checkpoints            
+    def resume_checkpoint(self, resume_checkpoint):
+        if resume_checkpoint == '' or not os.path.isfile(resume_checkpoint):
+            print(("=> no checkpoint found at '{}'".format(resume_checkpoint)))
+            return False
+        print(("=> loading checkpoint '{:s}'".format(resume_checkpoint)))
+        checkpoint = torch.load(resume_checkpoint)
+
+        if 'module.' in list(checkpoint.items())[0][0]:
+            pretrained_dict = {'.'.join(k.split('.')[1:]): v for k, v in list(checkpoint.items())}
+            checkpoint = pretrained_dict
+
+        resume_scope = ''
+        # extract the weights based on the resume scope
+        if resume_scope != '':
+            pretrained_dict = {}
+            for k, v in list(checkpoint.items()):
+                for resume_key in resume_scope.split(','):
+                    if resume_key in k:
+                        pretrained_dict[k] = v
+                        break
+            checkpoint = pretrained_dict
+
+        pretrained_dict = {k: v for k, v in checkpoint.items() if k in self.model.state_dict()}
+        # print("=> Resume weigths:")
+        # print([k for k, v in list(pretrained_dict.items())])
+
+        checkpoint = self.model.state_dict()
+
+        unresume_dict = set(checkpoint)-set(pretrained_dict)
+        if len(unresume_dict) != 0:
+            print("=> UNResume weigths:")
+            print(unresume_dict)
+
+        checkpoint.update(pretrained_dict)
+
+        return self.model.load_state_dict(checkpoint)
+
     def train_per_epoch(self, epoch):
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
