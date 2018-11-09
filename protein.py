@@ -139,7 +139,7 @@ class Protein(object):
         # visualize feature map in feature_extractors
         viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
 
-        model.train()
+        self.model.train()
         images[0].requires_grad = True
         images[0].volatile=False
         #base_out = viz_module_grads(writer, model, model.base, images, images, preproc.means, module_name='base', epoch=epoch)
