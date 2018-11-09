@@ -131,19 +131,14 @@ class SSD_Z(nn.Module):
          #   if i == 0:
          #       print('conf ', conf.shape)
            # if phase == 'eval':
-            output = conf_net[-3](conf)
-            output = conf_net[-2](output)
+            output = conf_net[-2](conf)
             output = conf_net[-1](output)
-          #  output = self.softmax(conf.view(-1, self.num_per_con))  # conf preds
-         #   if i == 0:
-        #      print('output ', output.shape)
-            #print('output ', output.shape)
+        #    output = conf_net[-2](output)
+        #    if phase=='eval':
+        #        output = conf_net[-1](output)
+
           output_list[i]= output.type(torch.cuda.FloatTensor)
-          #  else:
-          #      output = conf.view(conf.size(0), -1, self.num_per_con),
-                
-         #       output_list.append(output)
-            #print('out put shape', loc.shape)
+
         return output_list
     
     
@@ -176,11 +171,10 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
             
     
     for conf_layers in conf_layers_list:
-        conf_layers += [nn.Linear(15480, 2)]
-        conf_layers += [nn.ReLU(inplace=True)]
-     #   conf_layers += [ nn.BatchNorm2d(2)]
-
+        conf_layers += [nn.Linear(15480, 1)]
+      #  conf_layers += [nn.ReLU(inplace=True)]
         conf_layers += [nn.LogSigmoid()]
+      #  conf_layers += [nn.Softmax(dim=-1)]
     return base, extra_layers, conf_layers_list
 
 def build_ssd(base, feature_layer, mbox, num_classes):
