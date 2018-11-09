@@ -80,7 +80,7 @@ class Protein(object):
                     name_part = file.split('_')[0]
                     if_enrolled = False
                     for name_enrolled in file_list:
-                        if name_enrolled.find('name_part') >= 0:
+                        if name_enrolled.find(name_part) >= 0:
                             if_enrolled = True
                             break
                     if if_enrolled == False:
