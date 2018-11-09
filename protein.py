@@ -85,7 +85,7 @@ class Protein(object):
                             break
                     if if_enrolled == False:
                         file_list.append(name_part)
-                        return file_list
+                        
         
         return file_list 
 
