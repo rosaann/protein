@@ -130,17 +130,17 @@ class Protein(object):
 
     def visualize_epoch(self,images, epoch):
         self.model.eval()
-
-        base_out = viz_module_feature_maps(self.writer, self.model.base, images, module_name='base', epoch=epoch)
+     #   for i, image in enumerate(images_list):
+        base_out = viz_module_feature_maps(self.writer, self.model.base, images[0], module_name='base', epoch=epoch)
         extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
-        viz_feature_maps(writer, model(images, 'feature'), module_name='feature_extractors', epoch=epoch)
+        viz_feature_maps(writer, model(images[0], 'feature'), module_name='feature_extractors', epoch=epoch)
 
         model.train()
-        images.requires_grad = True
-        images.volatile=False
+        images[0].requires_grad = True
+        images[0].volatile=False
         #base_out = viz_module_grads(writer, model, model.base, images, images, preproc.means, module_name='base', epoch=epoch)
-        base_out = viz_module_grads(self.writer, self.model, self.model.base, images, images, 0.5, module_name='base', epoch=epoch)
+        base_out = viz_module_grads(self.writer, self.model, self.model.base, images[0], images[0], 0.5, module_name='base', epoch=epoch)
 
     def trainable_param(self, trainable_scope):
         for param in self.model.parameters():
