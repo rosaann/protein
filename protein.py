@@ -62,7 +62,7 @@ class Protein(object):
     def train_per_epoch(self, epoch):
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
-        train_end = int( epoch_size * 0.01);
+        train_end = int( epoch_size * 0.8);
         print('epoch_size ', epoch_size, " train_end ", train_end)
         conf_loss = 0
         _t = Timer()
@@ -185,7 +185,7 @@ class Protein(object):
         image = Variable( images[0].unsqueeze(0), volatile=True)
         if self.use_gpu:
             image = image.cuda()
-        print('image shpe', image.shape)
+    #    print('image shpe', image.shape)
         base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
         extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
