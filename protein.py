@@ -59,7 +59,7 @@ class Protein(object):
     def train_per_epoch(self, epoch):
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
-        train_end = int( epoch_size * 0.8);
+        train_end = int( epoch_size * 0.1);
         print('epoch_size ', epoch_size, " train_end ", train_end)
         conf_loss = 0
         _t = Timer()
