@@ -24,5 +24,5 @@ class Data_Preproc(object):
         interp_method = interp_methods[random.randrange(5)]
         image = cv2.resize(image, (self.resize[0], self.resize[1]),interpolation=interp_method)
         image = image.astype(np.float32)
-        image -= (103.94, 116.78, 123.68)
+        image -= (103.94, 116.78, 123.68, 100.5)
         return image.transpose(2, 0, 1)
