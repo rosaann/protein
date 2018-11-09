@@ -132,7 +132,9 @@ class Protein(object):
     def visualize_epoch(self,images, epoch):
         self.model.eval()
      #   for i, image in enumerate(images_list):
-        image = images[0].unsqueeze(0)
+        image = Variable( images[0].unsqueeze(0), volatile=True)
+        if use_gpu:
+            image = image.cuda()
         print('image shpe', image.shape)
         base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
         extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
