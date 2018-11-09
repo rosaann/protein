@@ -198,15 +198,15 @@ class Protein(object):
      #   base_out = viz_module_grads(self.writer, self.model, self.model.base, image, image, 0.5, module_name='base', epoch=epoch)
 
     def save_checkpoints(self, epochs, iters=None):
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        if not os.path.exists(self.config.v('out_dir')):
+            os.makedirs(self.config.v('out_dir'))
         if iters:
             filename = self.checkpoint_prefix + '_epoch_{:d}_iter_{:d}'.format(epochs, iters) + '.pth'
         else:
             filename = self.checkpoint_prefix + '_epoch_{:d}'.format(epochs) + '.pth'
-        filename = os.path.join(self.output_dir, filename)
+        filename = os.path.join(self.config.v('out_dir'), filename)
         torch.save(self.model.state_dict(), filename)
-        with open(os.path.join(self.output_dir, 'checkpoint_list.txt'), 'a') as f:
+        with open(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt'), 'a') as f:
             f.write('epoch {epoch:d}: {filename}\n'.format(epoch=epochs, filename=filename))
         print('Wrote snapshot to: {:s}'.format(filename))
         
