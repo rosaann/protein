@@ -84,7 +84,6 @@ class Protein(object):
                   #  targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
                 else:
                     images = Variable(images)
-                    targets = [Variable(anno, volatile=True) for anno in targets]
                 self.model.train()
                 #train:
                 _t.tic()
@@ -136,10 +135,8 @@ class Protein(object):
                 #eval:
                 if self.use_gpu:
                     images = Variable(images.cuda())
-                    targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
                 else:
                     images = Variable(images)
-                    targets = [Variable(anno, volatile=True) for anno in targets]
                 self.model.eval()
                 out = self.model(images, phase='train')
 
