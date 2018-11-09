@@ -85,6 +85,7 @@ class Protein(object):
                             break
                     if if_enrolled == False:
                         file_list.append(name_part)
+                        return file_list
         
         return file_list 
 
@@ -113,7 +114,8 @@ class Protein(object):
         for img_name in  test_image_merge_list:
             
             img = self.get_merge_image(test_image_dir + img_name)
-            images = Variable( img.unsqueeze(0), volatile=True)
+            images = Variable( img, volatile=True)
+            images = images.unsqueeze(0)
             if self.use_gpu:
                 images = images.cuda()
 
