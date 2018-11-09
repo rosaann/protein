@@ -99,7 +99,8 @@ class Protein(object):
         img_merg = cv2.merge(imgs)
         
         if self.preproc is not None:
-            img_merg = self.preproc(img_merg)           
+            img_merg = self.preproc(img_merg) 
+        return img_merg
     def test_epoch(self):
         
         self.model.eval()
