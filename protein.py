@@ -68,6 +68,7 @@ class Protein(object):
         
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
+            print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
            # print('iteration ', iteration)
             if iteration > train_end and iteration < train_end + 10:
@@ -131,7 +132,7 @@ class Protein(object):
     def visualize_epoch(self,images, epoch):
         self.model.eval()
      #   for i, image in enumerate(images_list):
-        image = images[0]
+        image = images[0].unsqueeze(0)
         print('image shpe', image.shape)
         base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
         extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
