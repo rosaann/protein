@@ -66,10 +66,10 @@ class Protein(object):
         previous = self.find_previous()
         if previous:
             for epoch, resume_checkpoint in zip(previous[0], previous[1]):
-                sys.stdout.write('\rEpoch {epoch:d}/{max_epochs:d}:\n'.format(epoch=epoch, max_epochs=self.cfg.TEST.TEST_SCOPE[1]))
+                sys.stdout.write('\rEpoch {epoch:d}/{max_epochs:d}:\n'.format(epoch=epoch, max_epochs=self.config.v('epoches')))
                 self.resume_checkpoint(resume_checkpoint)
                    
-                self.test_epoch(self.model, self.detector, self.output_dir , self.use_gpu)
+                self.test_epoch()
            #     self.visualize_epoch(self.model, self.visualize_loader, self.priorbox, self.writer, epoch,  self.use_gpu)
            
     def get_testimg_merge_list(self,test_image_dir):
@@ -99,7 +99,7 @@ class Protein(object):
         
         if self.preproc is not None:
             img_merg = self.preproc(img_merg)           
-    def test_epoch(self, model, detector, output_dir, use_gpu):
+    def test_epoch(self):
         
         model.eval()
         test_image_dir = os.path.join('../', 'test/')
@@ -113,20 +113,20 @@ class Protein(object):
         for img_name in  test_image_merge_list:
             
             img = self.get_merge_image(test_image_dir + img_name)
-            img = Variable( img.unsqueeze(0), volatile=True)
-            if use_gpu:
-                images = img.cuda()
+            images = Variable( img.unsqueeze(0), volatile=True)
+            if self.use_gpu:
+                images = images.cuda()
 
             _t.tic()
             if check_i == 3:
                 vis.images(images[0], win=2, opts={'title': 'Reals'})
-                self.visTest(model, images[0].unsqueeze(0), self.priorbox, self.writer, 1, use_gpu)
+                self.visTest(self.model, images, self.priorbox, self.writer, 1, self.use_gpu)
                     
-            out = model(images, phase='eval')
+            out = self.model(images, phase='eval')
             print('out ', out)   
                     
                   
-            check_i += 1  
+         #   check_i += 1  
         df.to_csv('pred.csv', index=None)
         df.head(10)    
         print('Evaluating detections')
