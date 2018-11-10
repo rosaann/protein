@@ -21,7 +21,7 @@ class Config(object):
        self.data['lr_steps'] = [1]
        self.data['epoches'] = 70
        self.data['out_dir'] = 'outs/'
-       self.data['save_per'] = 2
+       self.data['save_per'] = 3
        
     def v(self, key):
         return self.data[key]
