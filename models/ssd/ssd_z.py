@@ -138,7 +138,7 @@ class SSD_Z(nn.Module):
         #        output = conf_net[-1](output)
 
           output_list[i]= output.type(torch.cuda.FloatTensor)
-          print('out ' ,output_list)
+       #   print('out ' ,output_list)
         return output_list
     
     
