@@ -122,11 +122,11 @@ class Protein(object):
          #   if self.use_gpu:
          #       img = img.cuda()
             if i %  banch_num > 0:
-                img_list.append(img)
+                np.append(img_list , img)
                 continue
             if i % banch_num == 0:
                 if i == 0:
-                    img_list.append(img)
+                    np.append(img_list , img)
                     continue
      #       images = images.unsqueeze(0)
             
