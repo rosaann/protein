@@ -115,7 +115,7 @@ class Protein(object):
         test_image_merge_list = self.get_testimg_merge_list(test_image_dir)
         
         banch_num = int(self.config.v('batch_size'))
-        img_list = np.array()
+        img_list = np.array(banch_num)
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_merge_image(test_image_dir + img_name)
          #   img = Variable( img, volatile=True)
@@ -141,7 +141,7 @@ class Protein(object):
                     
             out = self.model(img_list, phase='eval')
             print('out ', out)   
-            img_list = list()        
+            img_list =  np.array(banch_num)       
             img_list.append(img)      
          #   check_i += 1  
         df.to_csv('pred.csv', index=None)
