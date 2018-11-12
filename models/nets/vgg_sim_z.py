@@ -114,7 +114,7 @@ class VGG_SIM_Z(nn.Module):
             x = self.base[k](x)
         x = x.view(1, -1)
        
-        self.line = nn.Linear(len(x) , 28).cuda()
+        self.line = nn.Linear(len(x[0]) , 28).cuda()
         x = self.line(x)
         x = self.sigmoid(x)
         return x
