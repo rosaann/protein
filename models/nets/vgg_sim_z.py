@@ -98,8 +98,8 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
     #    layers += [nn.AdaptiveAvgPool2d(1)]
-        out_layers = []
-        out_layers += [nn.Linear(3696640 , 28)]
+    #    out_layers = []
+    #    out_layers += [nn.Linear(3696640 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
       #  out_layers += [nn.LogSigmoid()]
         self.sigmoid = nn.LogSigmoid()
@@ -116,5 +116,7 @@ class VGG_SIM_Z(nn.Module):
        
         self.line = nn.Linear(len(x[0]) , 28).cuda()
         x = self.line(x)
+        print('x ', x)
         x = self.sigmoid(x)
+        print('si ', x)
         return x
