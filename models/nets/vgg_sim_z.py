@@ -89,16 +89,16 @@ class VGG_SIM_Z(nn.Module):
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 512
         
-        conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 512
+    #    conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
+    #    if batch_norm:
+    #        layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
+   #     else:
+   #         layers += [conv2d, nn.ReLU(inplace=True)]
+   #     in_channels = 512
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         
-        layers += [nn.Linear(194560 * 19, 28)]
+        layers += [nn.Linear(194560 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
         layers += [nn.LogSigmoid()]
         
