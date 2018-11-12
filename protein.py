@@ -313,9 +313,9 @@ class Protein(object):
             image = image.cuda()
     #    print('image shpe', image.shape)
         base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
-        extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
+    #    extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
-        viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
+   #     viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
 
         self.model.train()
         images[0].requires_grad = True
