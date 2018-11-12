@@ -186,7 +186,7 @@ class Protein(object):
         return self.model.load_state_dict(checkpoint)
 
     def train_per_epoch(self, epoch):
-        epoch_size = int( len(self.train_loader) /100)
+        epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.01);
         print('epoch_size ', epoch_size, " train_end ", train_end)
