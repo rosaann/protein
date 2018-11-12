@@ -132,7 +132,8 @@ class Protein(object):
             
 
             _t.tic()
-            img_list = torch.FloatTensor(img_list)
+            img_list = np.array(img_list)
+            img_list = torch.from_numpy(img_list)
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
