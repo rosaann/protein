@@ -96,7 +96,8 @@ class VGG_SIM_Z(nn.Module):
    #         layers += [conv2d, nn.ReLU(inplace=True)]
    #     in_channels = 512
         
-        layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
+     #   layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
+        layers += [nn.AdaptiveAvgPool2d(1)]
         
         layers += [nn.Linear(194560 , 9)]
       #  conf_layers += [nn.ReLU(inplace=True)]
