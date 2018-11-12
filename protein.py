@@ -138,11 +138,11 @@ class Protein(object):
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
-                    
+            print('imglist ', img_list.shape)        
             out = self.model(img_list, phase='eval')
             print('out ', out)   
-            img_list =  np.array(banch_num)       
-            img_list.append(img)      
+            img_list = []     
+            img_list.append(img.unsqueeze(0))
          #   check_i += 1  
         df.to_csv('pred.csv', index=None)
         df.head(10)    
