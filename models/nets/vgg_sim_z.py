@@ -102,7 +102,7 @@ class VGG_SIM_Z(nn.Module):
     #    out_layers += [nn.Linear(3696640 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
       #  out_layers += [nn.LogSigmoid()]
-      #  self.sigmoid = torch.sigmoid()
+        self.sigmoid = nn.Sigmoid()
         self.base = nn.ModuleList(layers)
        # self.out_layers = nn.ModuleList(out_layers)
         
@@ -117,6 +117,6 @@ class VGG_SIM_Z(nn.Module):
         self.line = nn.Linear(len(x[0]) , 28).cuda()
         x = self.line(x)
       #  print('x ', x)
-        x = torch.sigmoid(x).cuda()
+        x = self.sigmoid.sigmoid(x)
       #  print('si ', x)
         return x
