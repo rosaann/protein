@@ -102,7 +102,7 @@ class VGG_SIM_Z(nn.Module):
     #    out_layers += [nn.Linear(3696640 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
       #  out_layers += [nn.LogSigmoid()]
-        self.sigmoid = torch.sigmoid()
+        self.sigmoid = torch.sigmoid(28)
         self.base = nn.ModuleList(layers)
        # self.out_layers = nn.ModuleList(out_layers)
         
