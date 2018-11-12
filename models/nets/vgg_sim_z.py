@@ -116,7 +116,7 @@ class VGG_SIM_Z(nn.Module):
        
         self.line = nn.Linear(len(x[0]) , 28).cuda()
         x = self.line(x)
-        print('x ', x)
+      #  print('x ', x)
         x = torch.sigmoid(x).cuda()
-        print('si ', x)
+      #  print('si ', x)
         return x
