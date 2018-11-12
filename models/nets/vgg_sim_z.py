@@ -108,7 +108,7 @@ class VGG_SIM_Z(nn.Module):
        # self.out_layers = nn.ModuleList(out_layers)
         
     def forward(self, imgs, phase='eval'):
-        num_img = len(imgs)
+    #    num_img = len(imgs)
         x = imgs
         for k in range(len(self.base)):
            # print('k ', k)
