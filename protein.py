@@ -229,6 +229,8 @@ class Protein(object):
                 out = self.model(images, phase='train')
 
                 self.optimizer.zero_grad()
+                print('out ', out.shape)
+                print('targets ', targets.shape)
                 loss_c = self.criterion(out, targets)
 
                 # some bugs in coco train2017. maybe the annonation bug.
