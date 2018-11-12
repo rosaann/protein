@@ -12,24 +12,23 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from models.other_layers.l2norm import L2Norm
 import numpy as np
-class VGG_SIM_Z(nn.Module, batch_norm=True):
-    def __init__(self, base, extras, conflist, feature_layer, num_classes):
+class VGG_SIM_Z(nn.Module):
+    def __init__(self, batch_norm=True):
         layers = []
         in_channels = 4
     #    [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'C', 512, 512, 512, 'M',
-            512, 512, 512]
-        
+    #        512, 512, 512]
         
         conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 64
             
         conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 64
@@ -38,14 +37,14 @@ class VGG_SIM_Z(nn.Module, batch_norm=True):
         
         conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 128
             
         conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(128), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 128
@@ -54,21 +53,21 @@ class VGG_SIM_Z(nn.Module, batch_norm=True):
         
         conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 256
             
         conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 256
             
         conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 256
@@ -77,21 +76,21 @@ class VGG_SIM_Z(nn.Module, batch_norm=True):
         
         conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 512
         
         conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 512
         
         conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 512
