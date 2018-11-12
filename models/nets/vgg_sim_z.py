@@ -117,5 +117,5 @@ class VGG_SIM_Z(nn.Module):
         for k in range(len(self.out_layers)):
            # print('k ', k)
             x = self.out_layers[k](x)
-        print('x ', x)
+       # print('x ', x)
         return x
