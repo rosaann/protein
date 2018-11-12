@@ -106,7 +106,7 @@ class VGG_SIM_Z(nn.Module):
         
     def forward(self, imgs, phase='eval'):
         num_img = len(imgs)
-        x = torch.Tensor(num_img, 28, 1)
+        x = imgs
         for k in range(len(self.base)):
            # print('k ', k)
             x = self.base[k](x)
