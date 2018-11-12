@@ -115,25 +115,25 @@ class Protein(object):
         test_image_merge_list = self.get_testimg_merge_list(test_image_dir)
         
         banch_num = int(self.config.v('batch_size'))
-        img_list = np.array(banch_num)
+        img_list = []
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_merge_image(test_image_dir + img_name)
-         #   img = Variable( img, volatile=True)
-         #   if self.use_gpu:
-         #       img = img.cuda()
+            img = Variable( img, volatile=True)
+            if self.use_gpu:
+                img = img.cuda()
             if i %  banch_num > 0:
-                np.append(img_list , img)
+                img_list.append(img)
                 continue
             if i % banch_num == 0:
                 if i == 0:
-                    np.append(img_list , img)
+                    img_list.append(img.unsqueeze(0))
                     continue
      #       images = images.unsqueeze(0)
             
 
             _t.tic()
-            img_list = torch.from_numpy(img_list)
-            img_list = Variable( img_list, volatile=True).cuda()
+            img_list = torch.cat(img_list, 0)
+            
             #
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
