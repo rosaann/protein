@@ -107,7 +107,7 @@ class Protein(object):
         self.model.train()
         test_image_dir = os.path.join('../', 'test/')
 
-        vis = visdom.Visdom(server="http://localhost", port=8888)
+       # vis = visdom.Visdom(server="http://localhost", port=8888)
         check_i = 0;
         _t = Timer()
         df = pd.DataFrame(columns = ["Id", "Predicted"])
@@ -115,7 +115,7 @@ class Protein(object):
         test_image_merge_list = self.get_testimg_merge_list(test_image_dir)
         
         banch_num = int(self.config.v('batch_size'))
-        img_list = []
+        img_list = np.array()
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_merge_image(test_image_dir + img_name)
          #   img = Variable( img, volatile=True)
@@ -132,8 +132,9 @@ class Protein(object):
             
 
             _t.tic()
+            img_list = torch.from_numpy(img_list)
             img_list = Variable( img_list, volatile=True).cuda()
-            #img_list = torch.from_numpy(img_list)
+            #
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
