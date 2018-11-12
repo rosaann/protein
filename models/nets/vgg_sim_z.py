@@ -102,7 +102,7 @@ class VGG_SIM_Z(nn.Module):
     #    out_layers += [nn.Linear(3696640 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
       #  out_layers += [nn.LogSigmoid()]
-        self.line = nn.Linear(10240 , 28)
+        self.line = nn.Linear(2957312 , 28)
         self.sigmoid = nn.Sigmoid()
         self.base = nn.ModuleList(layers)
        # self.out_layers = nn.ModuleList(out_layers)
