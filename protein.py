@@ -9,7 +9,7 @@ from tools.protein_dataset import ProteinDataSet
 from tools.data_preproc import Data_Preproc
 import torch.utils.data as data
 from config import Config
-from tools.model_gen import create_model_on_vgg
+from tools.model_gen import create_model_on_vgg, create_model_vgg_sim_z
 import torch.backends.cudnn as cudnn
 import torch
 from torch.autograd import Variable
@@ -38,6 +38,7 @@ class Protein(object):
                                   shuffle=False, pin_memory=True)
             
         self.model = create_model_on_vgg()
+        self.model = create_model_vgg_sim_z()
         
         self.use_gpu = torch.cuda.is_available()
         #self.use_gpu = False

@@ -8,6 +8,7 @@ Created on Wed Nov  7 15:48:16 2018
 from models.nets import vgg
 from models.ssd.ssd_z import build_ssd
 import torch
+from models.nets.vgg_sim_z import VGG_SIM_Z
 from config import Config
 
 def _forward_features_size(model, img_size):
@@ -32,4 +33,8 @@ def create_model_on_vgg():
  #   print(feature_maps)
 
 
+    return model
+
+def create_model_vgg_sim_z():
+    model = VGG_SIM_Z()
     return model
