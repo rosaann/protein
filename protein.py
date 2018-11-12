@@ -263,7 +263,7 @@ class Protein(object):
                     images = Variable(images.cuda())
                 else:
                     images = Variable(images)
-                self.model.eval()
+            #    self.model.eval()
                 out = self.model(images, phase='train')
 
                 # loss
