@@ -125,7 +125,7 @@ class Protein(object):
                 img_list.append(img)
                 continue
             if i % banch_num == 0:
-                if len(img_list) == 0:
+                if i == 0:
                     img_list.append(img)
                     continue
      #       images = images.unsqueeze(0)
