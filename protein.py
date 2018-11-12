@@ -104,7 +104,7 @@ class Protein(object):
         return img_merg
     def test_epoch(self):
         
-        self.model.eval()
+        self.model.train()
         test_image_dir = os.path.join('../', 'test/')
 
         vis = visdom.Visdom(server="http://localhost", port=8888)
