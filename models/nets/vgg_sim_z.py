@@ -101,8 +101,8 @@ class VGG_SIM_Z(nn.Module):
         out_layers = []
         out_layers += [nn.Linear(3696640 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
-        out_layers += [nn.LogSigmoid()]
-        
+      #  out_layers += [nn.LogSigmoid()]
+        self.sigmoid = nn.LogSigmoid()
         self.base = nn.ModuleList(layers)
         self.out_layers = nn.ModuleList(out_layers)
         
@@ -114,8 +114,7 @@ class VGG_SIM_Z(nn.Module):
             x = self.base[k](x)
         x = x.view(1, -1)
        
-        for k in range(len(self.out_layers)):
-           # print('k ', k)
-            x = self.out_layers[k](x)
-       # print('x ', x)
+        self.line = nn.Linear(len(x) , 28)
+        x = self.line(x)
+        x = self.sigmoid(x)
         return x
