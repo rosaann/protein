@@ -104,7 +104,7 @@ class VGG_SIM_Z(nn.Module):
       #  out_layers += [nn.LogSigmoid()]
         self.sigmoid = nn.LogSigmoid()
         self.base = nn.ModuleList(layers)
-        self.out_layers = nn.ModuleList(out_layers)
+       # self.out_layers = nn.ModuleList(out_layers)
         
     def forward(self, imgs, phase='eval'):
         num_img = len(imgs)
@@ -114,7 +114,7 @@ class VGG_SIM_Z(nn.Module):
             x = self.base[k](x)
         x = x.view(1, -1)
        
-        self.line = nn.Linear(len(x) , 28)
+        self.line = nn.Linear(len(x) , 28).cuda()
         x = self.line(x)
         x = self.sigmoid(x)
         return x
