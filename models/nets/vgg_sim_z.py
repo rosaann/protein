@@ -114,8 +114,8 @@ class VGG_SIM_Z(nn.Module):
            # print('k ', k)
             x = self.base[k](x)
         x = x.view(1, -1)
-        if phase == 'eval':
-           self.line = nn.Linear(len(x[0]) , 28).cuda()
+     #   if phase == 'eval':
+     #      self.line = nn.Linear(len(x[0]) , 28).cuda()
         x = self.line(x)
       #  print('x ', x)
         x = self.sigmoid(x)

@@ -113,23 +113,33 @@ class Protein(object):
         df = pd.DataFrame(columns = ["Id", "Predicted"])
         self.idx_df = 0
         test_image_merge_list = self.get_testimg_merge_list(test_image_dir)
-        for img_name in  test_image_merge_list:
-            
+        
+        banch_num = int(self.config.v('batch_size'))
+        img_list = list()
+        for i, img_name in enumerate( test_image_merge_list):
             img = self.get_merge_image(test_image_dir + img_name)
-            images = Variable( img, volatile=True)
-            images = images.unsqueeze(0)
+            img = Variable( img, volatile=True)
             if self.use_gpu:
-                images = images.cuda()
+                img = img.cuda()
+            if i %  banch_num > 0:
+                img_list.append(img)
+                continue
+            if i % banch_num == 0:
+                if len(img_list) == 0:
+                    img_list.append(img)
+                    continue
+     #       images = images.unsqueeze(0)
+            
 
             _t.tic()
             if check_i == 3:
-                vis.images(images[0], win=2, opts={'title': 'Reals'})
-                self.visTest(self.model, images, self.priorbox, self.writer, 1, self.use_gpu)
+                vis.images(img_list[0], win=2, opts={'title': 'Reals'})
+                self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
                     
-            out = self.model(images, phase='eval')
+            out = self.model(img_list, phase='eval')
             print('out ', out)   
-                    
-                  
+            img_list = list()        
+            img_list.append(img)      
          #   check_i += 1  
         df.to_csv('pred.csv', index=None)
         df.head(10)    
