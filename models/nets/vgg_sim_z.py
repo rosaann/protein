@@ -89,21 +89,22 @@ class VGG_SIM_Z(nn.Module):
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 512
         
-    #    conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
-    #    if batch_norm:
-    #        layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
-   #     else:
-   #         layers += [conv2d, nn.ReLU(inplace=True)]
-   #     in_channels = 512
+        conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
+        if batch_norm:
+            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
+        else:
+            layers += [conv2d, nn.ReLU(inplace=True)]
+        in_channels = 512
         
      #   layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         layers += [nn.AdaptiveAvgPool2d(1)]
-        
-        layers += [nn.Linear(10240 , 28)]
+        out_layers = []
+        out_layers += [nn.Linear(10240 , 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
-        layers += [nn.LogSigmoid()]
+        out_layers += [nn.LogSigmoid()]
         
         self.base = nn.ModuleList(layers)
+        self.out_layers = nn.ModuleList(out_layers)
         
     def forward(self, imgs, phase='eval'):
         num_img = len(imgs)
@@ -111,5 +112,10 @@ class VGG_SIM_Z(nn.Module):
         for k in range(len(self.base)):
            # print('k ', k)
             x = self.base[k](x)
-            
+        x = x.view(1, -1)
+       
+        for k in range(len(self.out_layers)):
+           # print('k ', k)
+            x = self.out_layers[k](x)
+        print('x ', x)
         return x
