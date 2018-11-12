@@ -98,7 +98,7 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         
-        layers += [nn.Linear(-1, 28)]
+        layers += [nn.Linear(105151, 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
         layers += [nn.LogSigmoid()]
         
