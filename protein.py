@@ -50,10 +50,11 @@ class Protein(object):
        #          self.model = torch.nn.DataParallel(self.model).module
                  
       #  print('Model architectures:\n{}\n'.format(self.model))         
-        trainable_param = self.trainable_param('base,extras,norm,loc,conf')
+      #  trainable_param = self.trainable_param('base,extras,norm,loc,conf')
        # print('trainable_param ', trainable_param)
         self.optimizer_list = []
         for i in range(28):
+            trainable_param = self.trainable_param(self.model_list[i],'base,extras,norm,loc,conf')
             self.optimizer_list.append(self.configure_optimizer(trainable_param))
       #  self.optimizer = self.configure_optimizer(trainable_param)
         self.exp_lr_scheduler = self.configure_lr_scheduler(self.optimizer)
@@ -378,17 +379,17 @@ class Protein(object):
             f.write('epoch {epoch:d}: {filename}\n'.format(epoch=epochs, filename=filename))
         print('Wrote snapshot to: {:s}'.format(filename))
         
-    def trainable_param(self, trainable_scope):
-        for param in self.model.parameters():
+    def trainable_param(self,model, trainable_scope):
+        for param in model.parameters():
             param.requires_grad = False
 
         trainable_param = []
         for module in trainable_scope.split(','):
-            if hasattr(self.model, module):
+            if hasattr(model, module):
                 # print(getattr(self.model, module))
-                for param in getattr(self.model, module).parameters():
+                for param in getattr(model, module).parameters():
                     param.requires_grad = True
-                trainable_param.extend(getattr(self.model, module).parameters())
+                trainable_param.extend(getattr(model, module).parameters())
 
         return trainable_param
         
