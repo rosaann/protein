@@ -131,9 +131,9 @@ class SSD_Z(nn.Module):
          #   if i == 0:
          #       print('conf ', conf.shape)
            # if phase == 'eval':
-            print('conf ', conf) 
-            output = conf_net[-2](conf)
-            
+           # print('conf ', conf) 
+            output = conf_net[-3](conf)
+            output = conf_net[-2](output)
             output = conf_net[-1](output)
         #    output = conf_net[-2](output)
         #    if phase=='eval':
@@ -173,6 +173,7 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
             
     
     for conf_layers in conf_layers_list:
+        conf_layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         conf_layers += [nn.Linear(15480, 1)]
       #  conf_layers += [nn.ReLU(inplace=True)]
         conf_layers += [nn.Sigmoid()]
