@@ -31,9 +31,9 @@ class ProteinDataSet(data.Dataset):
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
             imgs.append(img)
         img_merg = cv2.merge(imgs)
-        if target.find( str(self.idx)) >= 0:
-            cv2.imwrite(os.path.join('./','{}_.png'.format(self.idx)), img_merg)
-            self.idx += 1
+    #    if target.find( str(self.idx)) >= 0:
+    #        cv2.imwrite(os.path.join('./','{}_.png'.format(self.idx)), img_merg)
+    #        self.idx += 1
         
         if self.preproc is not None:
             img_merg = self.preproc(img_merg)
