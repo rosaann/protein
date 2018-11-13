@@ -37,8 +37,8 @@ class Protein(object):
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
             
-     #   self.model = create_model_mul_line()
-        self.model = create_model_vgg_sim_z()
+        self.model = create_model_mul_line()
+      #  self.model = create_model_vgg_sim_z()
         
         self.use_gpu = torch.cuda.is_available()
         #self.use_gpu = False
