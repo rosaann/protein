@@ -38,7 +38,7 @@ class Protein(object):
                                   shuffle=False, pin_memory=True)
             
         self.model = create_model_on_vgg()
-        self.model = create_model_vgg_sim_z()
+     #   self.model = create_model_vgg_sim_z()
         
         self.use_gpu = torch.cuda.is_available()
         #self.use_gpu = False
