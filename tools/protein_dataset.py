@@ -42,7 +42,7 @@ class ProteinDataSet(data.Dataset):
       #      tar_list.append(tar)
         
     #    print('tar_list in getitem ', tar_list)
-        if target.find(self.idx+'') >= 0:
+        if target.find( str(self.idx)) >= 0:
             cv2.imwrite(os.path.join('./data/','{}_.png'.format(self.idx)), img_merg)
             self.idx += 1
         return img_merg, target
