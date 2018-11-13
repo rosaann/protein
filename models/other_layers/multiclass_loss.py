@@ -25,7 +25,7 @@ class MultiClassLoss(nn.Module):
         self.variance = [0.1, 0.2]
 
     def forward(self, predictions, targets):
-        
+        print('predictions ',predictions)
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
@@ -57,8 +57,8 @@ class MultiClassLoss(nn.Module):
             batch_conf = conf_data.view(-1, 1)
             conf_t_v = conf_t.view(-1,1)
 
-        print('batch_conf ',batch_conf)
-        print('conf_t_v', conf_t_v)
+     #   print('batch_conf ',batch_conf)
+     #   print('conf_t_v', conf_t_v)
         loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
      #   print('loss_c ', loss_c)
         return loss_c
