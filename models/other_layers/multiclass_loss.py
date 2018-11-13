@@ -25,7 +25,7 @@ class MultiClassLoss(nn.Module):
         self.variance = [0.1, 0.2]
 
     def forward(self, predictions, targets):
-        print('predictions ',predictions)
+      #  print('predictions ',predictions)
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
