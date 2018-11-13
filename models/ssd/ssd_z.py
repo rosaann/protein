@@ -132,7 +132,8 @@ class SSD_Z(nn.Module):
          #       print('conf ', conf.shape)
            # if phase == 'eval':
            # print('conf ', conf) 
-            output = conf_net[-3](conf)
+            output = conf_net[-4](conf)
+            output = conf_net[-3](output)
             output = conf_net[-2](output)
             output = conf_net[-1](output)
         #    output = conf_net[-2](output)
@@ -173,6 +174,7 @@ def add_extras(base, feature_layer, mbox, num_classes, num_per_con=2):
             
     
     for conf_layers in conf_layers_list:
+        conf_layers += [nn.ReLU(inplace=True)]
         conf_layers += [nn.Linear(15480, 28)]
       #  conf_layers += [nn.ReLU(inplace=True)]
         conf_layers += [nn.Linear(28, 1)]
