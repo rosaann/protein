@@ -288,8 +288,8 @@ class Protein(object):
                     continue
                 if math.isnan(loss_c.data[0]):
                     continue
-                if loss_c.data[0] > 100000000:
-                    continue
+              #  if loss_c.data[0] > 100000000:
+              #      continue
 
                 time = _t.toc()
 
