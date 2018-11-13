@@ -37,5 +37,9 @@ def create_model_on_vgg():
     return model
 
 def create_model_vgg_sim_z():
+    model = VGG_SIM_Z()
+    return model
+
+def create_model_mul_line():
     model = VGG_MUL_LINE()
     return model
