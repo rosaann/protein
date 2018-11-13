@@ -195,6 +195,6 @@ class VGG_MUL_LINE(nn.Module):
                     out = out.view(out.size(0), -1)
             print('out ', out)
             output_list[k] = out
-        output_list = torch.t(output_list)
+        output_list = output_list.permute(1, 0, 2)
         print('output_list ', output_list)
         return output_list
