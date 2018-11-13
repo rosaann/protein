@@ -34,12 +34,12 @@ class ProteinDataSet(data.Dataset):
             img_merg = self.preproc(img_merg)
        
         tar_list = []
-        print('targets in getitem ', target)
+     #   print('targets in getitem ', target)
         targets = target.split(' ')
         for tar in targets:
             tar_list.append(tar)
         
-        print('tar_list in getitem ', tar_list)
+    #    print('tar_list in getitem ', tar_list)
         return img_merg, tar_list
         
     def __len__(self):
