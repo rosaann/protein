@@ -36,40 +36,33 @@ class Protein(object):
             dataset = ProteinDataSet(self.preproc)
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
-        self.model_list = []
-        for i in range(28):
-            self.model_list.append(create_model_vgg_sim_z().cuda())
-        
+            
+        self.model = create_model_mul_line()
       #  self.model = create_model_vgg_sim_z()
         
         self.use_gpu = torch.cuda.is_available()
-       # if self.use_gpu:
-       #     self.model.cuda()
-       #     cudnn.benchmark = True
-       #     if torch.cuda.device_count() > 1:
-       #          self.model = torch.nn.DataParallel(self.model).module
+        #self.use_gpu = False
+        if self.use_gpu:
+            self.model.cuda()
+            cudnn.benchmark = True
+            if torch.cuda.device_count() > 1:
+                 self.model = torch.nn.DataParallel(self.model).module
                  
         print('Model architectures:\n{}\n'.format(self.model))         
         trainable_param = self.trainable_param('base,extras,norm,loc,conf')
        # print('trainable_param ', trainable_param)
-        self.optimizer_list = []
-        for i in range(28):
-            self.optimizer_list.append(self.configure_optimizer(trainable_param))
-      #  self.optimizer = self.configure_optimizer(trainable_param)
+        self.optimizer = self.configure_optimizer(trainable_param)
         self.exp_lr_scheduler = self.configure_lr_scheduler(self.optimizer)
         self.max_epochs = self.config.v('epoches')
         
-        self.criterion_list = []
-        for i in range(28):
-            self.criterion_list.append(MultiClassLoss( self.use_gpu))
-       # self.criterion = MultiClassLoss( self.use_gpu)
+        self.criterion = MultiClassLoss( self.use_gpu)
         self.writer = SummaryWriter(self.config.v('out_dir'))
         
     def train_model(self):
         for epoch in range( self.max_epochs):
             self.train_per_epoch(epoch)
-         #   if epoch % int( self.config.v('save_per')) == 0:
-         #       self.save_checkpoints(epoch)
+            if epoch % int( self.config.v('save_per')) == 0:
+                self.save_checkpoints(epoch)
     def test_model(self):
         previous = self.find_previous()
         if previous:
@@ -214,75 +207,55 @@ class Protein(object):
         _t = Timer()
         
         conf_loss_v = 0
-        neg_class_idx = 0
+        
         for iteration  in range(epoch_size):
-            images_src, targets = next(batch_iterator)
+            images, targets = next(batch_iterator)
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
-            for i, img_targets in enumerate( targets):
-                tar_list = []
-                targets = img_targets.split(' ')
-                data_list = []
-                for tar in targets:
-                    tar_list.append(int(tar))
-                    data_list.append((tar, 1))
            # print('iteration ', iteration)
-                neg_class_list=[]
-                for i in len(tar_list):
-                  while neg_class_idx in tar_list:
-                    neg_class_idx += 1
-                    if neg_class_idx >27:
-                        neg_class_idx = 0
-                  neg_class_list.append(neg_class_idx)
-                  data_list.append((neg_class_idx, 0))
-
-                  neg_class_idx += 1
-                  if neg_class_idx >27:
-                        neg_class_idx = 0
             if iteration > train_end and iteration < train_end + 10:
                 if self.use_gpu:
-                    images = Variable(images_src.cuda())
+                    images = Variable(images.cuda())
                 self.visualize_epoch(images, epoch)
             if iteration <= train_end:
-                for tar, tar_tf in data_list:
-                  if self.use_gpu:
-                    images = Variable(images_src.cuda())
+                if self.use_gpu:
+                    images = Variable(images.cuda())
                   #  targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
-                  else:
+                else:
                     images = Variable(images)
-                  self.model_list[tar].train()
+                self.model.train()
                 #train:
-                  _t.tic()
-                  out = self.model_list[tar](images, phase='train')
+                _t.tic()
+                out = self.model(images, phase='train')
 
-                  self.optimizer_list[tar].zero_grad()
+                self.optimizer.zero_grad()
              #   print('out ', out)
              #   print('targets ', targets.shape)
-                  loss_c = self.criterion_list[tar](out, tar_tf)
+                loss_c = self.criterion(out, targets)
 
                 # some bugs in coco train2017. maybe the annonation bug.
-                  if loss_c.data[0] == float("Inf"):
+                if loss_c.data[0] == float("Inf"):
                     continue
-                  if math.isnan(loss_c.data[0]):
+                if math.isnan(loss_c.data[0]):
                     continue
              #   if loss_c.data[0] > 100000000:
              #       continue
 
-                  loss_c.backward()
-                  self.optimizer_list[tar].step()
+                loss_c.backward()
+                self.optimizer.step()
 
-                  time = _t.toc()
-                  conf_loss += loss_c.data[0]
+                time = _t.toc()
+                conf_loss += loss_c.data[0]
 
                 # log per iter
-                  log = '\r==>Train: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
+                log = '\r==>Train: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
                     prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
                     time=time, cls_loss=loss_c.data[0])
 
-                  sys.stdout.write(log)
-                  sys.stdout.flush()
+                sys.stdout.write(log)
+                sys.stdout.flush()
                 
-                  if iteration == train_end:
+                if iteration == train_end:
                     # log per epoch
                     sys.stdout.write('\r')
                     sys.stdout.flush()
