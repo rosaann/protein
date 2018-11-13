@@ -29,6 +29,7 @@ class MultiClassLoss(nn.Module):
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
+        print('num_img ', num_img)
         conf_t = torch.Tensor(num_img, self.num_classes, 1)
 
         # match priors (default boxes) and ground truth boxes
