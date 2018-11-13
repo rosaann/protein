@@ -57,7 +57,7 @@ class Protein(object):
             trainable_param = self.trainable_param(self.model_list[i],'base,extras,norm,loc,conf')
             self.optimizer_list.append(self.configure_optimizer(trainable_param))
       #  self.optimizer = self.configure_optimizer(trainable_param)
-        self.exp_lr_scheduler = self.configure_lr_scheduler(self.optimizer)
+      #  self.exp_lr_scheduler = self.configure_lr_scheduler(self.optimizer)
         self.max_epochs = self.config.v('epoches')
         
         self.criterion_list = []
