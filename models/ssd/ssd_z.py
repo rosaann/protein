@@ -131,8 +131,9 @@ class SSD_Z(nn.Module):
          #   if i == 0:
          #       print('conf ', conf.shape)
            # if phase == 'eval':
-            output = conf_net[-2](conf)
-            print('output ', output)
+           print('conf ', conf) 
+           output = conf_net[-2](conf)
+            
             output = conf_net[-1](output)
         #    output = conf_net[-2](output)
         #    if phase=='eval':
