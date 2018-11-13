@@ -34,6 +34,7 @@ class ProteinDataSet(data.Dataset):
             img_merg = self.preproc(img_merg)
        
         tar_list = []
+        print('targets ', target)
         targets = target.split(' ')
         for tar in targets:
             tar_list.append(tar)
