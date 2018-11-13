@@ -22,14 +22,14 @@ class VGG_SIM_Z(nn.Module):
         
         conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(64)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 64
             
         conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(64)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 64
@@ -38,14 +38,14 @@ class VGG_SIM_Z(nn.Module):
         
         conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(128), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(128)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 128
             
         conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(128), nn.ReLU(inplace=True)]
+            layers += [conv2d, nn.BatchNorm2d(128)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 128
