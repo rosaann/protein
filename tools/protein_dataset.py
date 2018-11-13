@@ -33,14 +33,14 @@ class ProteinDataSet(data.Dataset):
         if self.preproc is not None:
             img_merg = self.preproc(img_merg)
        
-        tar_list = []
+     #   tar_list = []
      #   print('targets in getitem ', target)
-        targets = target.split(' ')
-        for tar in targets:
-            tar_list.append(tar)
+      #  targets = target.split(' ')
+      #  for tar in targets:
+      #      tar_list.append(tar)
         
     #    print('tar_list in getitem ', tar_list)
-        return img_merg, tar_list
+        return img_merg, target
         
     def __len__(self):
         return self.df.shape[0]
