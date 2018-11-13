@@ -193,8 +193,8 @@ class VGG_MUL_LINE(nn.Module):
                 out = class_leaf_layers[h](out)
                 if h == (len(class_leaf_layers) - 3):
                     out = out.view(out.size(0), -1)
-            print('out ', out)
+          #  print('out ', out)
             output_list[k] = out
         output_list = output_list.permute(1, 0, 2)
-        print('output_list ', output_list)
+     #   print('output_list ', output_list)
         return output_list
