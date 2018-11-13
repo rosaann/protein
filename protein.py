@@ -229,10 +229,10 @@ class Protein(object):
                     data_list.append((tar, 1))
            # print('iteration ', iteration)
                 neg_class_list=[]
-                for i in len(tar_list):
+                for i in range(len(tar_list)):
                   while neg_class_idx in tar_list:
                     neg_class_idx += 1
-                    if neg_class_idx >27:
+                    if neg_class_idx > 27:
                         neg_class_idx = 0
                   neg_class_list.append(neg_class_idx)
                   data_list.append((neg_class_idx, 0))
