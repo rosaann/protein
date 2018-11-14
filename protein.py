@@ -303,7 +303,7 @@ class Protein(object):
                 #print(log)
                 sys.stdout.write(log)
                 sys.stdout.flush()
-                self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+             #   self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
                 if train_end == (epoch_size - 1):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
@@ -345,7 +345,7 @@ class Protein(object):
         if iters:
             filename = '_epoch_{:d}_iter_{:d}'.format(epochs, iters) + '.pth'
         else:
-            filename = 'class_{:d}_epoch_{:d}'.format(self.train_class,epochs) + '.pth'
+            filename = 'epoch_{:d}'.format(epochs) + '.pth'
         filename = os.path.join(self.config.v('out_dir'), filename)
         torch.save(self.model.state_dict(), filename)
         with open(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt'), 'a') as f:

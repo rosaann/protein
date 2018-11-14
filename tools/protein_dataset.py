@@ -21,8 +21,8 @@ class ProteinDataSet(data.Dataset):
         self.img_name_tails = [ 'red', 'green', 'blue', 'yellow']
     #    self.img_name_tails = [ 'red', 'green', 'blue']
         self.idx = 0
-        self.genImgIdListForEveryClass()
-        self.genTrainImgList()
+    #    self.genImgIdListForEveryClass()
+    #    self.genTrainImgList()
         
     def genTrainImgList(self):
         self.train_imgid_list = []
@@ -54,7 +54,7 @@ class ProteinDataSet(data.Dataset):
             self.class_img_id_list.append(img_id_list)   
             
             
-    def __getitem__(self, index):
+    def __getitem__ddddd(self, index):
         img_id, target = self.train_imgid_list[index]
         
         imgs = []
@@ -69,7 +69,7 @@ class ProteinDataSet(data.Dataset):
             img_merg = self.preproc(img_merg)
         return img_merg, target
         
-    def __getitem__mul(self, index):
+    def __getitem__(self, index):
         img_id = self.df.get_value(index, 'Id')
         target = self.df.get_value(index, 'Target')
         
