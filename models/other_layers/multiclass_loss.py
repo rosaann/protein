@@ -29,9 +29,10 @@ class MultiClassLoss(nn.Module):
         num_img = len(conf_data)
         conf_t = torch.Tensor(num_img, 1, 1)
         for i, tar in enumerate( targets):
+            labels = np.ones((1, 1))
             if tar == 0:
-            labels = np.zeros((1, 1))
-        conf_t[0] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
+                labels = np.zeros((1, 1))
+            conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
         if self.use_gpu:
                 conf_t = conf_t.cuda()
                 conf_data = conf_data.cuda()
