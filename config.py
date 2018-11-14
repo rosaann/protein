@@ -12,7 +12,7 @@ class Config(object):
        self.data['batch_size'] = 16
        self.data['num_classes'] = 28
        self.data['image_size'] = [300, 300]
-       self.data['learn_rate'] = 0.3
+       self.data['learn_rate'] = 0.03
        self.data['momentum'] = 0.9
        self.data['momentum_2'] = 0.99
        self.data['weight_decay'] = 0.0001
