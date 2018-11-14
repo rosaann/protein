@@ -19,7 +19,7 @@ class Config(object):
        self.data['eps'] = 1e-8
        self.data['lr_gamma'] = 0.98
        self.data['lr_steps'] = [1]
-       self.data['epoches'] = 70
+       self.data['epoches'] = 270
        self.data['out_dir'] = 'outs/'
        self.data['save_per'] = 3
        
