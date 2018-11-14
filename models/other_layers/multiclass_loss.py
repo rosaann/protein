@@ -23,12 +23,13 @@ class MultiClassLoss(nn.Module):
         self.threshold = 0.5
         self.unmatched_threshold = 0.5
         self.variance = [0.1, 0.2]
+    
     def forward(self, predictions, targets):
         conf_data = predictions
         num_img = len(conf_data)
         conf_t = torch.Tensor(num_img, 1, 1)
-        labels = np.ones((1, 1))
-        if targets == 0:
+        for i, tar in enumerate( targets):
+            if tar == 0:
             labels = np.zeros((1, 1))
         conf_t[0] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
         if self.use_gpu:
