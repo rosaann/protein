@@ -81,8 +81,8 @@ class MultiClassLoss(nn.Module):
             batch_conf = conf_data.view(-1, 1)
             conf_t_v = conf_t.view(-1,1)
 
-        print('batch_conf ',batch_conf.shape)
-        print('conf_t_v', conf_t_v.shape)
+        print('batch_conf ',batch_conf)
+        print('conf_t_v', conf_t_v)
         loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
      #   print('loss_c ', loss_c)
         return loss_c
