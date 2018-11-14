@@ -29,7 +29,7 @@ class ProteinDataSet(data.Dataset):
         por_list = self.class_img_id_list[self.train_class]
         for img_id in por_list:
            self.train_imgid_list.append((img_id, 1)) 
-           
+        print('por len ', len(self.train_imgid_list))   
         por_len = len(por_list)
         neg_len_per_class = int(por_len / 27)
         for i , class_img_id_list in enumerate(self.class_img_id_list ):
@@ -39,7 +39,8 @@ class ProteinDataSet(data.Dataset):
                    self.train_imgid_list.append((img_id, 0)) 
                    
         random.shuffle(self.train_imgid_list)
-        
+        print('train len ', len(self.train_imgid_list))   
+
     def genImgIdListForEveryClass(self):
         class_ids = [str(i) for i in range(28)]
         self.class_img_id_list = []
