@@ -303,7 +303,7 @@ class Protein(object):
                 #print(log)
                 sys.stdout.write(log)
                 sys.stdout.flush()
-             #   self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+                self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
                 if train_end == (epoch_size - 1):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
