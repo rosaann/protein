@@ -126,10 +126,11 @@ class Protein(object):
             
             if self.use_gpu:
                 img = img.cuda()
-            if i %  banch_num > 0 and i != (len(test_image_merge_list) - 1):
+            if i %  banch_num > 0 and i <= (len(test_image_merge_list) - 1):
                 img_list.append(img.unsqueeze(0))
                 name_list.append(img_name)
-                continue
+                if i < (len(test_image_merge_list) - 1):
+                   continue
             if i % banch_num == 0:
                 if i == 0:
                     img_list.append(img.unsqueeze(0))
