@@ -157,10 +157,11 @@ class Protein(object):
             lineList = f.readlines()
         epoches, resume_checkpoints = [list() for _ in range(2)]
         for line in lineList:
-            epoch = int(line[line.find('epoch ') + len('epoch '): line.find(':')])
-            checkpoint = line[line.find(':') + 2:-1]
-            epoches.append(epoch)
-            resume_checkpoints.append(checkpoint)
+          #  epoch = int(line[line.find('epoch ') + len('epoch '): line.find(':')])
+          epoch = 69
+          checkpoint = line[line.find(':') + 2:-1]
+          epoches.append(epoch)
+          resume_checkpoints.append(checkpoint)
         return epoches, resume_checkpoints            
     def resume_checkpoint(self, resume_checkpoint):
         if resume_checkpoint == '' or not os.path.isfile(resume_checkpoint):
@@ -303,8 +304,8 @@ class Protein(object):
                 #print(log)
                 sys.stdout.write(log)
                 sys.stdout.flush()
-                self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                if train_end == (epoch_size - 1):
+           #     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+                if iteration == (epoch_size - 1):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
 
@@ -317,7 +318,7 @@ class Protein(object):
                     sys.stdout.flush()
                     # log for tensorboard
                     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                  #  writer.add_scalar('Eval/mAP', ap, epoch)
+                    writer.add_scalar('Eval/mAP', ap, epoch)
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)
 
