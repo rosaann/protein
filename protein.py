@@ -158,7 +158,7 @@ class Protein(object):
                          result += str(e)
                          result += ' '
                  if len(result) == 0:
-                     result = str( data.index(max(data)))
+                     result = str( data.argmax(0))
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
             img_list = []     
