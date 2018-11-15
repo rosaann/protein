@@ -117,17 +117,22 @@ class Protein(object):
         
         banch_num = int(self.config.v('batch_size'))
         img_list = []
+        name_list = []
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_merge_image(test_image_dir + img_name)
             img = Variable( img, volatile=True)
+            
             if self.use_gpu:
                 img = img.cuda()
             if i %  banch_num > 0:
                 img_list.append(img.unsqueeze(0))
+                name_list.append(img_name)
                 continue
             if i % banch_num == 0:
                 if i == 0:
                     img_list.append(img.unsqueeze(0))
+                    name_list.append(img_name)
+
                     continue
      #       images = images.unsqueeze(0)
             
@@ -141,9 +146,21 @@ class Protein(object):
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
           #  print('imglist ', img_list.shape)        
             out = self.model(img_list, phase='eval')
-            print('out ', out)   
+         #   print('out ', out) 
+            for i_im, imname in enumerate(name_list):
+                 df.set_value(self.idx_df,'Id', imname )
+                 data = out[i_im]
+                 result = ''
+                 for e, e_data in enumerate(data):
+                     if e_data > 0.5:
+                         result += str(e)
+                         result += ' '
+                 df.set_value(self.idx_df, 'Predicted', result)
+                 self.idx_df += 1;
             img_list = []     
             img_list.append(img.unsqueeze(0))
+            name_list.append(img_name)
+
          #   check_i += 1  
         df.to_csv('pred.csv', index=None)
         df.head(10)    
