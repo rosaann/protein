@@ -159,6 +159,7 @@ class Protein(object):
                  self.idx_df += 1;
             img_list = []     
             img_list.append(img.unsqueeze(0))
+            name_list = []
             name_list.append(img_name)
 
          #   check_i += 1  
