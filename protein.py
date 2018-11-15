@@ -74,7 +74,7 @@ class Protein(object):
                 self.test_epoch()
            #     self.visualize_epoch(self.model, self.visualize_loader, self.priorbox, self.writer, epoch,  self.use_gpu)
            
-    def get_testimg_merge_list(self,test_image_dir):
+    def get_testimg_merge_list_old(self,test_image_dir):
         file_list = []
         for root, dirs, files in os.walk(test_image_dir):
              for file in files:
@@ -90,7 +90,13 @@ class Protein(object):
                         
         
         return file_list 
-
+    def get_testimg_merge_list(self,test_image_dir):
+        file_list = []
+        df=pd.read_csv('../sample_submission.csv')
+        for i, row in df.iterrows():
+            file_list.append(row['Predicted'])
+            
+        return file_list
     def get_merge_image(self, pre_dir):
         img_name_tails = [ 'red', 'green', 'blue', 'yellow']
         imgs = []
