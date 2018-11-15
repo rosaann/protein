@@ -118,6 +118,8 @@ class Protein(object):
         banch_num = int(self.config.v('batch_size'))
         img_list = []
         name_list = []
+        print('len ', len(test_image_merge_list))
+        
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_merge_image(test_image_dir + img_name)
             img = Variable( img, volatile=True)
