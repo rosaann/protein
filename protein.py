@@ -94,7 +94,7 @@ class Protein(object):
         file_list = []
         df=pd.read_csv('../sample_submission.csv')
         for i, row in df.iterrows():
-            file_list.append(row['Predicted'])
+            file_list.append(row['Id'])
             
         return file_list
     def get_merge_image(self, pre_dir):
