@@ -344,13 +344,14 @@ class Protein(object):
                     # log per epoch
                     sys.stdout.write('\r')
                     sys.stdout.flush()
-                    log = '\r==>Eval: || Total_time: {time:.3f}s ||  conf_loss: {conf_loss:.4f} || mAP: {mAP:.6f}\n'.format(mAP=ap,
-                      time=_t.total_time,  conf_loss=conf_loss/epoch_size)
+                    log = '\r==>Eval: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
+                    prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
+                    time=time,  cls_loss=loss_c.data[0])
                     sys.stdout.write(log)
                     sys.stdout.flush()
                     # log for tensorboard
                     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                    writer.add_scalar('Eval/mAP', ap, epoch)
+                  #  writer.add_scalar('Eval/mAP', ap, epoch)
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)
 
