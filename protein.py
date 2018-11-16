@@ -400,7 +400,7 @@ class Protein(object):
         return [self.model.parameters]
         
     def configure_optimizer(self, trainable_param):
-        optimizer = optim.SGD(trainable_param, lr= self.config.v('learn_rate'),
+        optimizer = optim.SGD(self.model.parameters(), lr= self.config.v('learn_rate'),
                         momentum=self.config.v('momentum'), weight_decay= self.config.v('weight_decay'))
      #   optimizer = optim.RMSprop(trainable_param, lr=self.config.v('learn_rate'),
      #                   momentum=self.config.v('momentum'), alpha=self.config.v('momentum_2'), eps=cfg.EPS, weight_decay=self.config.v('weight_decay'))
