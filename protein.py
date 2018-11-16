@@ -397,7 +397,7 @@ class Protein(object):
                     param.requires_grad = True
                 trainable_param.extend(getattr(self.model, module).parameters())
 
-        return self.model.parameters
+        return [self.model.parameters]
         
     def configure_optimizer(self, trainable_param):
         optimizer = optim.SGD(trainable_param, lr= self.config.v('learn_rate'),
