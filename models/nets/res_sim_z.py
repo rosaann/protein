@@ -26,7 +26,9 @@ class Res_SIM_Z(nn.Module):
     #    num_img = len(imgs)
         x = imgs
 
-        x = self.base(x)
+        for k in range(len(self.base)):
+           # print('k ', k)
+            x = self.base[k](x)
         x = x.view(x.size(0), -1)
         x = self.line(x)
       #  print('x ', x)
