@@ -9,7 +9,7 @@ from tools.protein_dataset import ProteinDataSet
 from tools.data_preproc import Data_Preproc
 import torch.utils.data as data
 from config import Config
-from tools.model_gen import create_model_on_vgg, create_model_vgg_sim_z, create_model_mul_line
+from tools.model_gen import create_model_on_vgg, create_model_vgg_sim_z, create_model_mul_line, create_model_resnet_18
 import torch.backends.cudnn as cudnn
 import torch
 from torch.autograd import Variable
@@ -39,7 +39,7 @@ class Protein(object):
                                   shuffle=False, pin_memory=True)
             
       #  self.model = create_model_mul_line()
-        self.model = create_model_vgg_sim_z()
+        self.model = create_model_resnet_18()
         
         self.use_gpu = torch.cuda.is_available()
         #self.use_gpu = False
@@ -163,11 +163,11 @@ class Protein(object):
                  cla = data.argmax(0).item()
                  result = str( cla)
                  
-              #   data[cla] = 0
-              #   cla = data.argmax(0).item()
-              #   if data[cla] > 0.5:
-              #       result += ' '
-              #       result += str(cla)
+                 data[cla] = 0
+                 cla = data.argmax(0).item()
+                 if data[cla] > 0.5:
+                     result += ' '
+                     result += str(cla)
                  
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
@@ -397,7 +397,7 @@ class Protein(object):
                     param.requires_grad = True
                 trainable_param.extend(getattr(self.model, module).parameters())
 
-        return trainable_param
+        return self.model.parameters()
         
     def configure_optimizer(self, trainable_param):
         optimizer = optim.SGD(trainable_param, lr= self.config.v('learn_rate'),

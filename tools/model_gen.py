@@ -9,6 +9,7 @@ from models.nets import vgg
 from models.ssd.ssd_z import build_ssd
 import torch
 from models.nets.vgg_sim_z import VGG_SIM_Z
+from models.nets.resnet import resnet_18
 from models.nets.vgg_mul_line import VGG_MUL_LINE
 from config import Config
 
@@ -42,4 +43,8 @@ def create_model_vgg_sim_z():
 
 def create_model_mul_line():
     model = VGG_MUL_LINE()
+    return model
+
+def create_model_resnet_18():
+    model = resnet_18()
     return model

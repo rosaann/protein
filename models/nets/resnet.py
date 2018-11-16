@@ -47,6 +47,9 @@ class _basicblock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes * expansion)
         self.downsample = downsample
         self.stride = stride
+        
+        self.line = nn.Linear(184832 , 28)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         residual = x
@@ -101,13 +104,17 @@ class _bottleneck(nn.Module):
         out += residual
         out = self.relu(out)
 
-        return out
+        x = x.view(out.size(0), -1)
+        x = self.line(x)
+      #  print('x ', x)
+        x = self.sigmoid(x)
+        return x
 
 
 def resnet(conv_defs, depth_multiplier=1.0, min_depth=8):
     depth = lambda d: max(int(d * depth_multiplier), min_depth)
     layers = [
-            nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False),
+            nn.Conv2d(4, 64, kernel_size=7, stride=2, padding=3, bias=False),
             nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
@@ -137,8 +144,10 @@ def wrapped_partial(func, *args, **kwargs):
     functools.update_wrapper(partial_func, func)
     return partial_func
 
-resnet_18 = wrapped_partial(resnet, conv_defs=V18_CONV_DEFS, depth_multiplier=1.0)
-resnet_34 = wrapped_partial(resnet, conv_defs=V34_CONV_DEFS, depth_multiplier=1.0)
+def resnet_18():
+    return wrapped_partial(resnet, conv_defs=V18_CONV_DEFS, depth_multiplier=1.0)
+#resnet_18 = wrapped_partial(resnet, conv_defs=V18_CONV_DEFS, depth_multiplier=1.0)
+#resnet_34 = wrapped_partial(resnet, conv_defs=V34_CONV_DEFS, depth_multiplier=1.0)
 
-resnet_50 = wrapped_partial(resnet, conv_defs=V50_CONV_DEFS, depth_multiplier=1.0)
-resnet_101 = wrapped_partial(resnet, conv_defs=V101_CONV_DEFS, depth_multiplier=1.0)
+#resnet_50 = wrapped_partial(resnet, conv_defs=V50_CONV_DEFS, depth_multiplier=1.0)
+#resnet_101 = wrapped_partial(resnet, conv_defs=V101_CONV_DEFS, depth_multiplier=1.0)
