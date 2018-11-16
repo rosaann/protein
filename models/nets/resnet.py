@@ -104,11 +104,8 @@ class _bottleneck(nn.Module):
         out += residual
         out = self.relu(out)
 
-        x = x.view(out.size(0), -1)
-        x = self.line(x)
-      #  print('x ', x)
-        x = self.sigmoid(x)
-        return x
+
+        return out
 
 
 def resnet(conv_defs, depth_multiplier=1.0, min_depth=8):
@@ -145,7 +142,8 @@ def wrapped_partial(func, *args, **kwargs):
     return partial_func
 
 def resnet_18():
-    return wrapped_partial(resnet, conv_defs=V18_CONV_DEFS, depth_multiplier=1.0)
+
+    return resnet(conv_defs=V18_CONV_DEFS, depth_multiplier=1.0)
 #resnet_18 = wrapped_partial(resnet, conv_defs=V18_CONV_DEFS, depth_multiplier=1.0)
 #resnet_34 = wrapped_partial(resnet, conv_defs=V34_CONV_DEFS, depth_multiplier=1.0)
 

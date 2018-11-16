@@ -387,7 +387,7 @@ class Protein(object):
         
     def trainable_param(self, trainable_scope):
         for param in self.model.parameters():
-            param.requires_grad = False
+            param.requires_grad = True
 
         trainable_param = []
         for module in trainable_scope.split(','):
