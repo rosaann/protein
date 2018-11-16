@@ -17,7 +17,7 @@ from models.nets.resnet import resnet_18
 class Res_SIM_Z(nn.Module):
     def __init__(self, batch_norm=True):
         super(Res_SIM_Z, self).__init__()
-        self.line = nn.Linear(184832 , 28)
+        self.line = nn.Linear(92416 , 28)
         self.sigmoid = nn.Sigmoid()
         layers = resnet_18()
         self.base = nn.ModuleList(layers)
