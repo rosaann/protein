@@ -118,8 +118,8 @@ def resnet(conv_defs, depth_multiplier=1.0, min_depth=8):
         ]
     in_channels = 64
     for conv_def in conv_defs:
-        if conv_def.stride != 1 or in_channels != depth(conv_def.depth * conv_def.t):
-            _downsample = nn.Sequential(
+       # if conv_def.stride != 1 or in_channels != depth(conv_def.depth * conv_def.t):
+        _downsample = nn.Sequential(
                 nn.Conv2d(in_channels, depth(conv_def.depth * conv_def.t),
                           kernel_size=1, stride=conv_def.stride, bias=False),
                 nn.BatchNorm2d(depth(conv_def.depth * conv_def.t)),
