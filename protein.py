@@ -163,11 +163,11 @@ class Protein(object):
                  cla = data.argmax(0).item()
                  result = str( cla)
                  
-                 data[cla] = 0
-                 cla = data.argmax(0).item()
-                 if data[cla] > 0.5:
-                     result += ' '
-                     result += str(cla)
+              #   data[cla] = 0
+              #   cla = data.argmax(0).item()
+              #   if data[cla] > 0.5:
+              #       result += ' '
+              #       result += str(cla)
                  
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
