@@ -160,12 +160,15 @@ class Protein(object):
                  df.set_value(self.idx_df,'Id', imname )
                  data = out[i_im]
                  result = ''
-                 for e, e_data in enumerate(data):
-                     if e_data > 0.5:
-                         result += str(e)
-                         result += ' '
-                 if len(result) == 0:
-                     result = str( data.argmax(0).item())
+                 cla = data.argmax(0).item()
+                 result = str( cla)
+                 
+                 data[cla] = 0
+                 cla = data.argmax(0).item()
+                 if data[cla] > 0.5:
+                     result += ' '
+                     result += str(cla)
+                 
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
             img_list = []     
