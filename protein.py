@@ -72,6 +72,7 @@ class Protein(object):
                 self.resume_checkpoint(resume_checkpoint)
                    
                 self.test_epoch()
+                break
            #     self.visualize_epoch(self.model, self.visualize_loader, self.priorbox, self.writer, epoch,  self.use_gpu)
            
     def get_testimg_merge_list_old(self,test_image_dir):
