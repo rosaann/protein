@@ -9,7 +9,7 @@ Created on Wed Nov  7 15:37:23 2018
 class Config(object):
     def __init__(self):
        self.data = {}
-       self.data['batch_size'] = 16
+       self.data['batch_size'] = 20
        self.data['num_classes'] = 28
        self.data['image_size'] = [300, 300]
        self.data['learn_rate'] = 0.003
