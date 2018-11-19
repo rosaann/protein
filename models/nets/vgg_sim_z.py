@@ -42,59 +42,60 @@ class VGG_SIM_Z(nn.Module):
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
         in_channels = 64
+          
+        
+   #     conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
+   #     if batch_norm:
+   #         layers += [conv2d, nn.BatchNorm2d(128)]
+   #     else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+  #      in_channels = 128
             
-        conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(128)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 128
+  #      layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
+        
+  #      conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
+   #     if batch_norm:
+  #          layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
+  #      else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+  #      in_channels = 256
             
-        layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
-        
-        conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 256
+  #      conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
+  #      if batch_norm:
+  #          layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
+  #      else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+  #      in_channels = 256
             
-        conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 256
-            
-        conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 256
+  #      conv2d = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
+  #      if batch_norm:
+  #          layers += [conv2d, nn.BatchNorm2d(256), nn.ReLU(inplace=True)]
+  #      else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+  #      in_channels = 256
         
-        layers += [nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)]
+  #      layers += [nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)]
         
-        conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 512
+  #      conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
+  #      if batch_norm:
+  #          layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
+  #      else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+  #      in_channels = 512
         
-        conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 512
+  #      conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
+  #      if batch_norm:
+  #          layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
+  #      else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+ #       in_channels = 512
         
-        conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
-        else:
-            layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 512
+  #      conv2d = nn.Conv2d(in_channels, 512, kernel_size=3, padding=1)
+  #      if batch_norm:
+  #          layers += [conv2d, nn.BatchNorm2d(512), nn.ReLU(inplace=True)]
+  #      else:
+  #          layers += [conv2d, nn.ReLU(inplace=True)]
+ #       in_channels = 512
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
 

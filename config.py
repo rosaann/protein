@@ -11,7 +11,7 @@ class Config(object):
        self.data = {}
        self.data['batch_size'] = 16
        self.data['num_classes'] = 28
-       self.data['image_size'] = [512, 512]
+       self.data['image_size'] = [300, 300]
        self.data['learn_rate'] = 0.003
        self.data['momentum'] = 0.9
        self.data['momentum_2'] = 0.99
