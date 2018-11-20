@@ -262,7 +262,7 @@ class Protein(object):
                 self.model.train()
                 #train:
                 _t.tic()
-                out = self.model(images, phase='train')
+                out = self.model(images, phase='train', targets)
 
                 self.optimizer.zero_grad()
              #   print('out ', out)

@@ -12,6 +12,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from models.other_layers.l2norm import L2Norm
 import numpy as np
+import random
 class VGG_MUL_LINE(nn.Module):
     def __init__(self, batch_norm=True):
         super(VGG_MUL_LINE, self).__init__()
@@ -199,7 +200,7 @@ class VGG_MUL_LINE(nn.Module):
      #   print('output_list ', output_list)
         return output_list
     
-    def forward(self, imgs, phase='eval', targets):
+    def forward(self, imgs, phase='eval', targets=None):
         num_img = len(imgs)
         x = imgs
         for k in range(len(self.base)):
