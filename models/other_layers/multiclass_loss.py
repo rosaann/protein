@@ -24,7 +24,7 @@ class MultiClassLoss(nn.Module):
         self.unmatched_threshold = 0.5
         self.variance = [0.1, 0.2]
     
-    def forward(self, predictions, targets):
+    def forward_ddd(self, predictions, targets):
         conf_data = predictions
         num_img = len(conf_data)
         conf_t = torch.Tensor(num_img, 1, 1)
@@ -48,8 +48,8 @@ class MultiClassLoss(nn.Module):
      #   print('loss_c ', loss_c)
         return loss_c
         
-    def forward_old(self, predictions, targets):
-      #  print('predictions ',predictions)
+    def forward(self, predictions, targets):
+        print('predictions ',predictions)
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
