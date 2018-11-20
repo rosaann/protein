@@ -222,7 +222,7 @@ class VGG_MUL_LINE(nn.Module):
             return output_list
         else:
             output_list = torch.Tensor(num_img,28, 1) 
-            print('targets ',len(targets))
+            print('targets ',targets)
             print('num img ', num_img)
             for img_i in range(num_img):
               print('img_i ', img_i)
@@ -231,6 +231,7 @@ class VGG_MUL_LINE(nn.Module):
               targets = img_targets.split(' ')
               for tar in targets:
                   tar_list.append(int(tar))
+              
               neg_list = []
               for neg in range(28):
                   if neg not in tar_list:
