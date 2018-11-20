@@ -315,7 +315,7 @@ class Protein(object):
                 else:
                     images = Variable(images)
             #    self.model.eval()
-                out = self.model(images, phase='train')
+                out = self.model(images, phase='eval')
 
                 # loss
                 loss_c = self.criterion(out, targets)
