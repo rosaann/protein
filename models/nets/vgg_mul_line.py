@@ -178,7 +178,7 @@ class VGG_MUL_LINE(nn.Module):
         
         return layers
     
-    def forward(self, imgs, phase='eval'):
+    def forward_no_neg(self, imgs, phase='eval'):
         num_img = len(imgs)
         x = imgs
         for k in range(len(self.base)):
@@ -198,3 +198,57 @@ class VGG_MUL_LINE(nn.Module):
         output_list = output_list.permute(1, 0, 2)
      #   print('output_list ', output_list)
         return output_list
+    
+    def forward(self, imgs, phase='eval', targets):
+        num_img = len(imgs)
+        x = imgs
+        for k in range(len(self.base)):
+           # print('k ', k)
+            x = self.base[k](x)
+        if phase == 'eval':
+            output_list = torch.Tensor(28, num_img, 1)  
+            for k in range(len(self.leafLayers)):
+                out = x
+                class_leaf_layers = self.leafLayers[k]
+                for h in range(len(class_leaf_layers)):
+                    out = class_leaf_layers[h](out)
+                    if h == (len(class_leaf_layers) - 3):
+                        out = out.view(out.size(0), -1)
+          #  print('out ', out)
+                output_list[k] = out
+            output_list = output_list.permute(1, 0, 2)
+     #   print('output_list ', output_list)
+            return output_list
+        else:
+            output_list = torch.Tensor(num_img,28, 1) 
+            for img_i in range(num_img):
+              img_targets = targets[img_i]
+              tar_list = []
+              targets = img_targets.split(' ')
+              for tar in targets:
+                  tar_list.append(int(tar))
+              neg_list = []
+              for neg in range(28):
+                  if neg not in tar_list:
+                      neg_list.append(neg)
+                      
+              neg_list = random.sample(neg_list, 2)
+              
+              for k in range(len(self.leafLayers)):
+                out = x[img_i].unsqueeze(0)
+                class_leaf_layers = self.leafLayers[k]
+                if k in tar_list or k in neg_list:
+                    class_leaf_layers.train()
+                else:
+                    class_leaf_layers.eval()
+                for h in range(len(class_leaf_layers)):
+                    out = class_leaf_layers[h](out)
+                    if h == (len(class_leaf_layers) - 3):
+                        out = out.view(out.size(0), -1)
+          #  print('out ', out)
+              output_list[img_i] = out
+        
+        
+        
+        
+        
