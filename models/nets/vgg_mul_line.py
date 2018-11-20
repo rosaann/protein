@@ -177,7 +177,7 @@ class VGG_MUL_LINE(nn.Module):
         layers += [nn.Sigmoid()]
         
         return layers
-        
+    
     def forward(self, imgs, phase='eval'):
         num_img = len(imgs)
         x = imgs
