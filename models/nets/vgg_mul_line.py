@@ -225,6 +225,7 @@ class VGG_MUL_LINE(nn.Module):
             print('targets ',len(targets))
             print('num img ', num_img)
             for img_i in range(num_img):
+              print('img_i ', img_i)
               img_targets = targets[img_i]
               tar_list = []
               targets = img_targets.split(' ')
