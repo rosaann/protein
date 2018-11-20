@@ -224,9 +224,9 @@ class VGG_MUL_LINE(nn.Module):
             output_list = torch.Tensor(num_img,28, 1) 
             print('targets ',targets)
             print('num img ', num_img)
-            for img_i in range(num_img):
+            for img_i, img_targets in enumerate(targets):
               print('img_i ', img_i)
-              img_targets = targets[img_i]
+             # img_targets = targets[img_i]
               tar_list = []
               targets = img_targets.split(' ')
               for tar in targets:
