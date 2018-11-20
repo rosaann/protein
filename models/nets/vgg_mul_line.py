@@ -165,15 +165,15 @@ class VGG_MUL_LINE(nn.Module):
             
     def addLeaf(self, in_channels, batch_norm = True):
         layers  = []
-        conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
+    #    conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
+    #    if batch_norm:
+    #        layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
         
-        conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
-        if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
+    #    conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
+    #    if batch_norm:
+    #        layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
-        layers += [nn.Linear(341056 , 1)]
+        layers += [nn.Linear(360000 , 1)]
         layers += [nn.Sigmoid()]
         
         return layers
