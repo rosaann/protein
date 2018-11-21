@@ -153,7 +153,7 @@ class VGG_SIM_Z_D7(nn.Module):
                 #  print('x ', x)
                 x = model.sigmoid(x)
              #   print('si ', x.shape)
-                x.permute(1, 0)
+                x.permute(1, 0).unsqueeze(0)
                 for di, dx in enumerate( x):
                     output_list[i_m * 4 + di]=x
             output_list.permute(1, 0, 2)
