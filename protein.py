@@ -324,7 +324,7 @@ class Protein(object):
                 out = self.model(images, phase='eval')
 
                 # loss
-                loss_c = self.criterion(out, targets)
+                loss_c = self.criterion(out, targets, -1)
                 
                 if loss_c.data[0] == float("Inf"):
                     continue
