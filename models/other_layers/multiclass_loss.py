@@ -88,6 +88,8 @@ class MultiClassLoss(nn.Module):
         return loss_c
     
     def forward(self, predictions, targets,group_idx):
+        if group_idx == -1:
+            return self.forward_df(predictions, targets)
       #  print('predictions ',predictions)
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
