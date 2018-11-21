@@ -272,7 +272,7 @@ class Protein(object):
                 self.optimizer.zero_grad()
              #   print('out ', out)
              #   print('targets ', targets.shape)
-                loss_c = self.criterion(out, targets)
+                loss_c = self.criterion(out, targets,gd)
 
                 # some bugs in coco train2017. maybe the annonation bug.
                 if loss_c.data[0] == float("Inf"):
