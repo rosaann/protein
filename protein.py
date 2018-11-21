@@ -34,9 +34,15 @@ class Protein(object):
         self.preproc = Data_Preproc()
         self.train_class = 0
         if self.ifTrain:
-            self.dataset = ProteinDataSet(self.preproc,train_class = self.train_class)
-            self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
+            self.dataset_list = []
+            self.train_loader_list = []
+            for gd in range(7):
+                dataset = ProteinDataSet(self.preproc,train_class = self.train_class)
+                dataset.setTrain_group_idx(gd)
+
+                train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
+                self.train_loader_list.append(train_loader)
             
       #  self.model = create_model_vgg_sim_z()
       #  self.model = create_model_resnet_18()
@@ -240,9 +246,10 @@ class Protein(object):
       _t = Timer()       
       conf_loss_v = 0
       for gd in range(7):
-        self.dataset.setTrain_group_idx(gd)
-        self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
-                                  shuffle=False, pin_memory=True)
+      #  self.dataset.setTrain_group_idx(gd)
+      #  self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
+      #                            shuffle=False, pin_memory=True)
+        self.train_loader = self.train_loader_list[gd]
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.1);
@@ -314,9 +321,11 @@ class Protein(object):
         
       for gd in range(7):
           
-        self.dataset.setTrain_group_idx(gd)
-        self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
-                                  shuffle=False, pin_memory=True)
+    #    self.dataset.setTrain_group_idx(gd)
+    #    self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
+    #                              shuffle=False, pin_memory=True)
+        self.train_loader = self.train_loader_list[gd]
+    
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.1);
