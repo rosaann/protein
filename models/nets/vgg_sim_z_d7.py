@@ -122,9 +122,21 @@ class VGG_SIM_Z_D7(nn.Module):
         super(VGG_SIM_Z_D7, self).__init__()
         self.model_num = 7
         self.model_list = []
-        for i in range(self.model_num):
-            model = VGG_SIM_Z()
-            self.model_list.append(model)
+     #   for i in range(self.model_num):
+        self.model_1 = VGG_SIM_Z()
+        self.model_list.append(self.model_1)
+        self.model_2 = VGG_SIM_Z()
+        self.model_list.append(self.model_2)
+        self.model_3 = VGG_SIM_Z()
+        self.model_list.append(self.model_3)
+        self.model_4 = VGG_SIM_Z()
+        self.model_list.append(self.model_4)
+        self.model_5 = VGG_SIM_Z()
+        self.model_list.append(self.model_5)
+        self.model_6 = VGG_SIM_Z()
+        self.model_list.append(self.model_6)
+        self.model_7 = VGG_SIM_Z()
+        self.model_list.append(self.model_7)
 
     def forward(self, imgs, phase='eval', model_idx = 0):
         num_img = len(imgs)
