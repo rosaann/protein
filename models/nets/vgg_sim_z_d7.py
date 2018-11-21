@@ -152,8 +152,8 @@ class VGG_SIM_Z_D7(nn.Module):
                 x = model.line(x)
                 #  print('x ', x)
                 x = model.sigmoid(x)
-                print('si ', x.shape)
-                x.permute(1, 0, 2)
+             #   print('si ', x.shape)
+                x.permute(1, 0)
                 for dx in x:
                     output_list.append(x)
             output_list.permute(1, 0, 2)
