@@ -30,7 +30,7 @@ class ProteinDataSet(data.Dataset):
     def genDGroup(self):
         self.group_list = []
         class_ids = [str(i) for i in range(28)]
-        for g_d in range(28 / self.group_class_num):
+        for g_d in range(int(28 / self.group_class_num)):
             id_to_check = class_ids[g_d * self.group_class_num : g_d * self.group_class_num + self.group_class_num]
             group = []
             for img_id in range(self.df.shape[0]):
