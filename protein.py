@@ -237,8 +237,7 @@ class Protein(object):
 
     def train_per_epoch(self, epoch):
       conf_loss = 0
-      _t = Timer()
-        
+      _t = Timer()       
       conf_loss_v = 0
       for gd in range(7):
         self.dataset.setTrain_group_idx(gd)
@@ -312,7 +311,19 @@ class Protein(object):
                     self.writer.add_scalar('Train/lr', lr, epoch)
                     
                     conf_loss = 0
-
+        
+      for gd in range(7):
+          
+        self.dataset.setTrain_group_idx(gd)
+        self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
+                                  shuffle=False, pin_memory=True)
+        epoch_size = int( len(self.train_loader) )
+        batch_iterator = iter(self.train_loader)
+        train_end = int( epoch_size * 0.1);
+        for iteration  in range(epoch_size):
+            images, targets = next(batch_iterator)
+         #   print('imgs from data_load shape ', images.shape)
+            targets = np.array(targets)
             if iteration > train_end:
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
