@@ -236,6 +236,10 @@ class Protein(object):
         return self.model.load_state_dict(checkpoint)
 
     def train_per_epoch(self, epoch):
+      conf_loss = 0
+      _t = Timer()
+        
+      conf_loss_v = 0
       for gd in range(7):
         self.dataset.setTrain_group_idx(gd)
         self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
@@ -244,10 +248,7 @@ class Protein(object):
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.8);
         print('epoch_size ', epoch_size, " train_end ", train_end)
-        conf_loss = 0
-        _t = Timer()
         
-        conf_loss_v = 0
         
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
@@ -257,7 +258,7 @@ class Protein(object):
             if iteration > train_end and iteration < train_end + 10:
                 if self.use_gpu:
                     images = Variable(images.cuda())
-             #   self.visualize_epoch(images, epoch)
+                self.visualize_epoch(images, epoch, gd)
             if iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
@@ -362,21 +363,21 @@ class Protein(object):
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)
 
-    def visualize_epoch(self,images, epoch):
+    def visualize_epoch(self,images, epoch,group_idx):
         self.model.eval()
      #   for i, image in enumerate(images_list):
         image = Variable( images[0].unsqueeze(0), volatile=True)
         if self.use_gpu:
             image = image.cuda()
     #    print('image shpe', image.shape)
-        base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
+        base_out = viz_module_feature_maps(self.writer, self.model.model_list[group_idx].base, image, module_name='base', epoch=epoch)
     #    extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
    #     viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
 
-        self.model.train()
-        images[0].requires_grad = True
-        images[0].volatile=False
+       # self.model.train()
+       # images[0].requires_grad = True
+       # images[0].volatile=False
         #base_out = viz_module_grads(writer, model, model.base, images, images, preproc.means, module_name='base', epoch=epoch)
      #   base_out = viz_module_grads(self.writer, self.model, self.model.base, image, image, 0.5, module_name='base', epoch=epoch)
 
