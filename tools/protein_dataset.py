@@ -40,7 +40,7 @@ class ProteinDataSet(data.Dataset):
                     if target.find(class_id):
                         ifFind = True
                 if ifFind:
-                    group.append(self.df.get_value(img_id, 'Id'))
+                    group.append(self.df.get_value(img_id, 'Id'), target)
             self.group_list.append(group)
     def setTrain_group_idx(self, group_idx):
         self.current_train_group_idx = group_idx
