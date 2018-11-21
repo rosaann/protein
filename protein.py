@@ -34,8 +34,8 @@ class Protein(object):
         self.preproc = Data_Preproc()
         self.train_class = 0
         if self.ifTrain:
-            dataset = ProteinDataSet(self.preproc,train_class = self.train_class)
-            self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
+            self.dataset = ProteinDataSet(self.preproc,train_class = self.train_class)
+            self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
             
       #  self.model = create_model_vgg_sim_z()
@@ -237,7 +237,9 @@ class Protein(object):
 
     def train_per_epoch(self, epoch):
       for gd in range(7):
-        self.train_loader.setTrain_group_idx(gd)
+        self.dataset.setTrain_group_idx(gd)
+        self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
+                                  shuffle=False, pin_memory=True)
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.8);
