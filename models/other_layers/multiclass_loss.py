@@ -48,7 +48,7 @@ class MultiClassLoss(nn.Module):
      #   print('loss_c ', loss_c)
         return loss_c
         
-    def forward(self, predictions, targets):
+    def forward_df(self, predictions, targets):
       #  print('predictions ',predictions)
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
@@ -69,6 +69,47 @@ class MultiClassLoss(nn.Module):
             for target in tar_list:
               #  print('tar ', target)
                 labels[int(target)][0] = 1.0
+            conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
+            
+            
+            if self.use_gpu:
+                conf_t = conf_t.cuda()
+                conf_data = conf_data.cuda()
+
+        
+        # Compute max conf across batch for hard negative mining
+            batch_conf = conf_data.view(-1, 1)
+            conf_t_v = conf_t.view(-1,1)
+
+    #    print('batch_conf ',batch_conf)
+    #    print('conf_t_v', conf_t_v)
+        loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
+     #   print('loss_c ', loss_c)
+        return loss_c
+    
+    def forward(self, predictions, targets,group_idx):
+      #  print('predictions ',predictions)
+        conf_data = predictions
+       # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
+        num_img = len(conf_data)
+     #   print('num_img ', num_img)
+        class_num = 28 / 7
+        conf_t = torch.Tensor(num_img, class_num, 1)
+        
+        # match priors (default boxes) and ground truth boxes
+     #   print('tttt ', targets)
+        
+        for i, img_targets in enumerate( targets):
+            tar_list = []
+            targets = img_targets.split(' ')
+            for tar in targets:
+                tar_list.append(int(tar))
+            labels = np.zeros((class_num, 1))
+        #    print('img_targets ', tar_list)
+            for target in tar_list:
+              #  print('tar ', target)
+                if target >= group_idx * class_num and target < (group_idx * class_num + class_num):                   
+                    labels[int(target % class_num)][0] = 1.0
             conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
             
             
