@@ -141,7 +141,7 @@ class VGG_SIM_Z_D7(nn.Module):
     def forward(self, imgs, phase='eval', model_idx = 0):
         num_img = len(imgs)
         if phase == 'eval':
-            output_list = torch.Tensor(28,num_img, 1)
+            output_list = torch.Tensor(28,num_img)
             for i_m in range(self.model_num):
                 model = self.model_list[i_m]
                 x = imgs
@@ -151,14 +151,14 @@ class VGG_SIM_Z_D7(nn.Module):
                 x = x.view(x.size(0), -1)
                 x = model.line(x)
                 #  print('x ', x)
-                x = model.sigmoid(x).unsqueeze(0)
-                x = x.permute(1, 0,2)
+                x = model.sigmoid(x)#.unsqueeze(0)
+                x = x.permute(1, 0)
                 print('xi ', x.shape)
 
                 for di, dx in enumerate( x):
                     print('di ', dx.shape)
                     output_list[i_m * 4 + di]=dx
-            output_list.permute(1, 0, 2)
+            output_list = output_list.permute(1, 0)
             return output_list
     
         if phase == 'train':
