@@ -149,9 +149,9 @@ class VGG_SIM_Z_D7(nn.Module):
                     # print('k ', k)
                     x = model.base[k](x)
                 x = x.view(x.size(0), -1)
-                x = self.line(x)
+                x = model.line(x)
                 #  print('x ', x)
-                x = self.sigmoid(x)
+                x = model.sigmoid(x)
                 #  print('si ', x)
                 x.permute(1, 0, 2)
                 for dx in x:
