@@ -9,7 +9,7 @@ from tools.protein_dataset import ProteinDataSet
 from tools.data_preproc import Data_Preproc
 import torch.utils.data as data
 from config import Config
-from tools.model_gen import create_model_on_vgg, create_model_vgg_sim_z,create_model_vgg_sim_z_d7, create_model_mul_line, create_model_resnet_18
+from tools.model_gen import create_model_on_vgg, create_model_vgg_sim_z, create_model_mul_line, create_model_resnet_18
 import torch.backends.cudnn as cudnn
 import torch
 from torch.autograd import Variable
@@ -40,8 +40,7 @@ class Protein(object):
             
       #  self.model = create_model_vgg_sim_z()
       #  self.model = create_model_resnet_18()
-      #  self.model = create_model_mul_line()
-        self.model = create_model_vgg_sim_z_d7()
+        self.model = create_model_mul_line()
         
         self.use_gpu = torch.cuda.is_available()
         #self.use_gpu = False
@@ -236,8 +235,6 @@ class Protein(object):
         return self.model.load_state_dict(checkpoint)
 
     def train_per_epoch(self, epoch):
-      for gd in range(7):
-        self.train_loader.setTrain_group_idx(gd)
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.8);
@@ -265,7 +262,7 @@ class Protein(object):
                 self.model.train()
                 #train:
                 _t.tic()
-                out = self.model(images, phase='train', model_idx = gd)
+                out = self.model(images, phase='train', targets = targets)
 
                 self.optimizer.zero_grad()
              #   print('out ', out)

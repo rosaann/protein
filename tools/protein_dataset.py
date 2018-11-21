@@ -13,7 +13,7 @@ import os
 import random 
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv'):
+    def __init__(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
         self.base_path = base_path
@@ -21,8 +21,29 @@ class ProteinDataSet(data.Dataset):
         self.img_name_tails = [ 'red', 'green', 'blue', 'yellow']
     #    self.img_name_tails = [ 'red', 'green', 'blue']
         self.idx = 0
+        self.group_class_num = group_class_num
+        self.current_train_group_idx = 0
     #    self.genImgIdListForEveryClass()
     #    self.genTrainImgList()
+    
+        self.genDGroup()
+    def genDGroup(self):
+        self.group_list = []
+        class_ids = [str(i) for i in range(28)]
+        for g_d in range(28 / self.group_class_num):
+            id_to_check = class_ids[g_d * self.group_class_num : g_d * self.group_class_num + self.group_class_num]
+            group = []
+            for img_id in range(self.df.shape[0]):
+                target = self.df.get_value(img_id, 'Target')
+                ifFind = False
+                for class_id in id_to_check:
+                    if target.find(class_id):
+                        ifFind = True
+                if ifFind:
+                    group.append(self.df.get_value(img_id, 'Id'))
+            self.group_list.append(group)
+    def setTrain_group_idx(self, group_idx):
+        self.current_train_group_idx = group_idx
         
     def genTrainImgList(self):
         self.train_imgid_list = []
@@ -54,8 +75,8 @@ class ProteinDataSet(data.Dataset):
             self.class_img_id_list.append(img_id_list)   
             
             
-    def __getitem__ddddd(self, index):
-        img_id, target = self.train_imgid_list[index]
+    def __getitem__(self, index):
+        img_id, target = self.group_list[self.current_train_group_idx][index]
         
         imgs = []
         
@@ -69,7 +90,7 @@ class ProteinDataSet(data.Dataset):
             img_merg = self.preproc(img_merg)
         return img_merg, target
         
-    def __getitem__(self, index):
+    def __getitem__old(self, index):
         img_id = self.df.get_value(index, 'Id')
         target = self.df.get_value(index, 'Target')
         
@@ -98,4 +119,5 @@ class ProteinDataSet(data.Dataset):
         return img_merg, target
         
     def __len__(self):
-        return self.df.shape[0]
+        return len(self.group_list[self.current_train_group_idx])
+      #  return self.df.shape[0]
