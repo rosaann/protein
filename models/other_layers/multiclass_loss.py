@@ -93,7 +93,7 @@ class MultiClassLoss(nn.Module):
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
      #   print('num_img ', num_img)
-        class_num = 28 / 7
+        class_num = int(28 / 7)
         conf_t = torch.Tensor(num_img, class_num, 1)
         
         # match priors (default boxes) and ground truth boxes
