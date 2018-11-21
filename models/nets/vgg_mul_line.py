@@ -174,7 +174,7 @@ class VGG_MUL_LINE(nn.Module):
     #    if batch_norm:
     #        layers += [conv2d, nn.BatchNorm2d(64), nn.ReLU(inplace=True)]
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
-        layers += [nn.Linear(360000 , 1)]
+        layers += [nn.Linear(165888 , 1)]
         layers += [nn.Sigmoid()]
         
         return layers
