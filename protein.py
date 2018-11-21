@@ -257,7 +257,7 @@ class Protein(object):
             if iteration > train_end and iteration < train_end + 10:
                 if self.use_gpu:
                     images = Variable(images.cuda())
-                self.visualize_epoch(images, epoch)
+             #   self.visualize_epoch(images, epoch)
             if iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
