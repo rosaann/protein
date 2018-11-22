@@ -35,11 +35,11 @@ class ProteinDataSet(data.Dataset):
         for g_d in range(int(28 / self.group_class_num)):
             id_to_check = class_ids[g_d * self.group_class_num : g_d * self.group_class_num + self.group_class_num]
             group = []
-            eva_rate = 0.1
+            eva_rate = 0.8
             data_idx_list = range(self.df.shape[0])[:int(self.df.shape[0] * eva_rate)]
             if self.phase == 'eval':
                 data_idx_list = range(self.df.shape[0])[int(self.df.shape[0] * eva_rate) :]
-            print('id_to_check ', id_to_check)
+         #   print('id_to_check ', id_to_check)
             for img_id in data_idx_list:
                 target = self.df.get_value(img_id, 'Target')
                 ifFind = False
@@ -48,9 +48,9 @@ class ProteinDataSet(data.Dataset):
                         ifFind = True
                 if ifFind == True:
                     group.append((self.df.get_value(img_id, 'Id'), target))
-                    print('find ', target)
-                else:
-                    print('not find ',target)
+                 #   print('find ', target)
+                #else:
+                  #  print('not find ',target)
             print('group ',g_d, ' len ', len(group))
             self.group_list.append(group)
     def setTrain_group_idx(self, group_idx):
