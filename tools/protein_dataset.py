@@ -36,9 +36,9 @@ class ProteinDataSet(data.Dataset):
             id_to_check = class_ids[g_d * self.group_class_num : g_d * self.group_class_num + self.group_class_num]
             group = []
             eva_rate = 0.1
-            data_idx_list = range(self.df.shape[0])[:len(self.df.shape[0]) * eva_rate]
+            data_idx_list = range(self.df.shape[0])[:int(self.df.shape[0] * eva_rate)]
             if self.phase == 'eval':
-                data_idx_list = range(self.df.shape[0])[len(self.df.shape[0]) * eva_rate :]
+                data_idx_list = range(self.df.shape[0])[int(self.df.shape[0] * eva_rate) :]
             for img_id in data_idx_list:
                 target = self.df.get_value(img_id, 'Target')
                 ifFind = False
