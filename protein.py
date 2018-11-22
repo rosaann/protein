@@ -251,8 +251,10 @@ class Protein(object):
       #                            shuffle=False, pin_memory=True)
         self.train_loader = self.train_loader_list[gd]
         epoch_size = int( len(self.train_loader) )
-        batch_iterator = iter(self.train_loader)
+        
         train_end = int( epoch_size * 0.1);
+        self.train_loader = self.train_loader[:train_end]
+        batch_iterator = iter(self.train_loader)
         print('epoch_size ', epoch_size, " train_end ", train_end)
         
         
@@ -261,7 +263,7 @@ class Protein(object):
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
            # print('iteration ', iteration)
-            if iteration > train_end and iteration < train_end + 10:
+            if iteration == (train_end - 1):
                 if self.use_gpu:
                     images = Variable(images.cuda())
                 self.visualize_epoch(images, epoch, gd)
@@ -329,11 +331,13 @@ class Protein(object):
         epoch_size = int( len(self.train_loader) )
         batch_iterator = iter(self.train_loader)
         train_end = int( epoch_size * 0.1);
+        self.train_loader = self.train_loader[train_end:]
+        batch_iterator = iter(self.train_loader)
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
-            if iteration > train_end:
+            if 1: #iteration > train_end:
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
                 if self.use_gpu:
