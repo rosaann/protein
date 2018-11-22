@@ -44,9 +44,9 @@ class ProteinDataSet(data.Dataset):
                 target = self.df.get_value(img_id, 'Target')
                 ifFind = False
                 for class_id in id_to_check:
-                    if target.find(str(class_id)):
+                    if target.find(str(class_id)) >= 0:
                         ifFind = True
-                if ifFind:
+                if ifFind == True:
                     group.append((self.df.get_value(img_id, 'Id'), target))
                     print('find ', target)
                 else:
