@@ -49,7 +49,7 @@ class Protein(object):
                 dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='eval')
                 dataset.setTrain_group_idx(gd)
 
-                eval_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 4,
+                eval_loader = data.DataLoader(dataset, self.config.v('batch_size_eval'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
                 self.eval_loader_list.append(eval_loader)
             
