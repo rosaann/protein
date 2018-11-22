@@ -13,7 +13,7 @@ import os
 import random 
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4):
+    def __init__(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
         self.base_path = base_path
@@ -23,6 +23,8 @@ class ProteinDataSet(data.Dataset):
         self.idx = 0
         self.group_class_num = group_class_num
         self.current_train_group_idx = 0
+        self.phase = phase
+        
     #    self.genImgIdListForEveryClass()
     #    self.genTrainImgList()
     
@@ -33,7 +35,11 @@ class ProteinDataSet(data.Dataset):
         for g_d in range(int(28 / self.group_class_num)):
             id_to_check = class_ids[g_d * self.group_class_num : g_d * self.group_class_num + self.group_class_num]
             group = []
-            for img_id in range(self.df.shape[0]):
+            eva_rate = 0.1
+            data_idx_list = range(self.df.shape[0])[:len(self.df.shape[0]) * eva_rate]
+            if self.phase == 'eval':
+                data_idx_list = range(self.df.shape[0])[len(self.df.shape[0]) * eva_rate :]
+            for img_id in data_idx_list:
                 target = self.df.get_value(img_id, 'Target')
                 ifFind = False
                 for class_id in id_to_check:
@@ -52,7 +58,7 @@ class ProteinDataSet(data.Dataset):
            self.train_imgid_list.append((img_id, 1)) 
         print('por len ', len(self.train_imgid_list))   
         por_len = len(por_list)
-        neg_len_per_class = int(por_len / 27)
+        neg_len_per_class = int(por_len / 28)
         for i , class_img_id_list in enumerate(self.class_img_id_list ):
             if i != self.train_class:
                neg_imgs_id_list = random.sample(class_img_id_list, neg_len_per_class) 

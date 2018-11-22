@@ -37,12 +37,21 @@ class Protein(object):
             self.dataset_list = []
             self.train_loader_list = []
             for gd in range(7):
-                dataset = ProteinDataSet(self.preproc,train_class = self.train_class)
+                dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='train')
                 dataset.setTrain_group_idx(gd)
 
                 train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                   shuffle=False, pin_memory=True)
                 self.train_loader_list.append(train_loader)
+                
+            self.eval_loader_list = []
+            for gd in range(7):
+                dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='eval')
+                dataset.setTrain_group_idx(gd)
+
+                eval_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 4,
+                                  shuffle=False, pin_memory=True)
+                self.eval_loader_list.append(eval_loader)
             
       #  self.model = create_model_vgg_sim_z()
       #  self.model = create_model_resnet_18()
@@ -253,7 +262,6 @@ class Protein(object):
         epoch_size = int( len(self.train_loader) )
         
         train_end = int( epoch_size * 0.1);
-        self.train_loader = self.train_loader[:train_end]
         batch_iterator = iter(self.train_loader)
         print('epoch_size ', epoch_size, " train_end ", train_end)
         
@@ -267,7 +275,7 @@ class Protein(object):
                 if self.use_gpu:
                     images = Variable(images.cuda())
                 self.visualize_epoch(images, epoch, gd)
-            if iteration <= train_end:
+            if 1:#iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
                   #  targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
@@ -305,7 +313,7 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
                 
-                if iteration == train_end:
+                if iteration == (epoch_size-1):
                     # log per epoch
                     sys.stdout.write('\r')
                     sys.stdout.flush()
@@ -326,13 +334,11 @@ class Protein(object):
     #    self.dataset.setTrain_group_idx(gd)
     #    self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
     #                              shuffle=False, pin_memory=True)
-        self.train_loader = self.train_loader_list[gd]
+        self.eval_loader = self.eval_loader_list[gd]
     
-        epoch_size = int( len(self.train_loader) )
-        batch_iterator = iter(self.train_loader)
-        train_end = int( epoch_size * 0.1);
-        self.train_loader = self.train_loader[train_end:]
-        batch_iterator = iter(self.train_loader)
+        epoch_size = int( len(self.eval_loader) )
+        batch_iterator = iter(self.eval_loader)
+    #    train_end = int( epoch_size * 0.1);
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
          #   print('imgs from data_load shape ', images.shape)
