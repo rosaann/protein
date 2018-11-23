@@ -31,13 +31,14 @@ def takeSecond(elem):
     return elem[1]
 def findAlltypeNum():
     df = pd.read_csv('../../train.csv')
-    allTargets = [str(i) for i in range(28)]
+    allTargets = [i for i in range(28)]
     out = []
     for tar in allTargets:
         count = 0
         for i, row in df.iterrows():
-            targets = row['Target']
-            if targets.find(tar) >= 0:
+            targets = row['Target'].split(' ')
+            targets = [int (tthis) for tthis in targets]
+            if tar in targets:
                 count += 1
         print('type ', tar, ' count ', count)
         out.append((tar, count))
