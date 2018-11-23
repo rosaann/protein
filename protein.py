@@ -79,8 +79,8 @@ class Protein(object):
     def train_model(self):
         for epoch in range( self.max_epochs):
             self.train_per_epoch(epoch)
-            if epoch % int( self.config.v('save_per')) == 0:
-                self.save_checkpoints(epoch)
+          #  if epoch % int( self.config.v('save_per')) == 0:
+            self.save_checkpoints(epoch)
     def test_model(self):
         previous = self.find_previous()
         if previous:
