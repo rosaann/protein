@@ -115,7 +115,7 @@ class MultiClassLoss(nn.Module):
             labels = np.zeros((class_num, 1))
         #    print('img_targets ', tar_list)
             for target in tar_list:
-              #  print('tar ', target)
+                print('tar ', target)
                 if target in tr_tar_list:
                     for ti, t_tar in enumerate( tr_tar_list):
                         if target == t_tar:
