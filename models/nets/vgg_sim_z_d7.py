@@ -169,9 +169,10 @@ class VGG_SIM_Z_D7(nn.Module):
             for k in range(len(model.base)):
              #   print('k ', model.base[k])
                 x = model.base[k](x)
-            x = x.view(x.size(0), -1)
+            
             x = model.line(x)
             x = torch.unsqueeze(x, 2)
+            x = x.view(x.size(0), -1)
             print('xd ', x)
             x = model.sigmoid(x)
             print('x ', x.cpu().data.numpy())
