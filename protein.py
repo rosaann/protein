@@ -172,7 +172,7 @@ class Protein(object):
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
           #  print('imglist ', img_list.shape)        
-            out = self.model(img_list, phase='eval')
+            out = self.model(img_list, phase='train', model_idx = 6)
          #   print('out ', out) 
             for i_im, imname in enumerate(name_list):
                  df.set_value(self.idx_df,'Id', imname )
@@ -185,7 +185,7 @@ class Protein(object):
                  cla = data.argmax(0).item()
                  if data[cla] > 0.5:
                      result += ' '
-                     result += str(cla)
+                     result += str(self.config.v('group_id_list')[6][ cla])
                  
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
