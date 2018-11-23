@@ -163,7 +163,7 @@ class VGG_SIM_Z_D7(nn.Module):
             return output_list
     
         if phase == 'train':
-            torch.set_printoptions(precision=10)
+            np.set_printoptions(precision=10)
             model = self.model_list[model_idx]
             x = imgs
             for k in range(len(model.base)):
