@@ -106,7 +106,7 @@ class MultiClassLoss(nn.Module):
         # match priors (default boxes) and ground truth boxes
      #   print('tttt ', targets)
      
-        tr_tar_list = self.config.v('group_id_list')
+        tr_tar_list = self.config.v('group_id_list')[group_idx]
         for i, img_targets in enumerate( targets):
             tar_list = []
             targets = img_targets.split(' ')
