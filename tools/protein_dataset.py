@@ -11,6 +11,7 @@ import pandas as pd
 import cv2
 import os
 import random 
+from config import Config
 
 class ProteinDataSet(data.Dataset):
     def __init__(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
@@ -24,7 +25,7 @@ class ProteinDataSet(data.Dataset):
         self.group_class_num = group_class_num
         self.current_train_group_idx = 0
         self.phase = phase
-        
+        self.config = Config()
     #    self.genImgIdListForEveryClass()
     #    self.genTrainImgList()
     
@@ -32,8 +33,9 @@ class ProteinDataSet(data.Dataset):
     def genDGroup(self):
         self.group_list = []
         class_ids = [str(i) for i in range(28)]
-        for g_d in range(int(28 / self.group_class_num)):
-            id_to_check = class_ids[g_d * self.group_class_num : g_d * self.group_class_num + self.group_class_num]
+        tar_all_list = self.config.v('group_id_list')
+        for g_d in range(len(tar_all_list)):
+            id_to_check = tar_all_list[g_d]
             group = []
             eva_rate = 0.8
             data_idx_list = range(self.df.shape[0])[:int(self.df.shape[0] * eva_rate)]

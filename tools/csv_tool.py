@@ -27,6 +27,22 @@ def findAlltype():
                 
     print('arr ', allTargets)
     print('sor ', sorted( allTargets))
+def takeSecond(elem):
+    return elem[1]
+def findAlltypeNum():
+    df = pd.read_csv('../../train.csv')
+    allTargets = [str(i) for i in range(28)]
+    out = []
+    for tar in allTargets:
+        count = 0
+        for i, row in df.iterrows():
+            targets = row['Target']
+            if targets.find(tar) >= 0:
+                count += 1
+        print('type ', tar, ' count ', count)
+        out.append((tar, count))
+    out.sort(key=takeSecond)
+    print(out)
 def test():
      df = pd.read_csv('../../train.csv')
      print('d ', df.get_value(1, 'Id'))
@@ -48,3 +64,4 @@ def test_merge_img():
     cv2.imwrite(os.path.join('./','3.jpg'), img_merg)
 #findAlltype()
 #test()
+findAlltypeNum()
