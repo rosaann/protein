@@ -60,7 +60,7 @@ class MultiClassLoss(nn.Module):
         # match priors (default boxes) and ground truth boxes
      #   print('tttt ', targets)
         tr_tar_list = _flatten(self.config.v('group_id_list')) 
-        print('tr_t ', tr_tar_list)
+      #  print('tr_t ', tr_tar_list)
         for i, img_targets in enumerate( targets):
             tar_list = []
             targets = img_targets.split(' ')
@@ -72,7 +72,7 @@ class MultiClassLoss(nn.Module):
               #  print('tar ', target)
                 tr_tar_idx = tr_tar_list.index(target)
                 labels[tr_tar_idx][0] = 1.0
-                print('value ', target, ' index ', tr_tar_idx)
+      #          print('value ', target, ' index ', tr_tar_idx)
              #   labels[int(target)][0] = 1.0
             conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
             
