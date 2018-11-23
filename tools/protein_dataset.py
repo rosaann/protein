@@ -101,6 +101,7 @@ class ProteinDataSet(data.Dataset):
         
         if self.preproc is not None:
             img_merg = self.preproc(img_merg)
+        print('gd ', self.current_train_group_idx, ' tar ', target)
         return img_merg, target
         
     def __getitem__old(self, index):
