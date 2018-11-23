@@ -171,7 +171,7 @@ class VGG_SIM_Z_D7(nn.Module):
                 x = model.base[k](x)
             x = x.view(x.size(0), -1)
             x = model.line(x)
-            #  print('x ', x)
+            print('xd ', x)
             x = model.sigmoid(x)
             print('x ', x.cpu().data.numpy())
             return x
