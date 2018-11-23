@@ -118,6 +118,7 @@ class MultiClassLoss(nn.Module):
                 print('tar ', target)
                 if target in tr_tar_list:
                     for ti, t_tar in enumerate( tr_tar_list):
+                        print('ti ', ti, ' t_tar ', t_tar, ' t to check : ', target)
                         if target == t_tar:
                             labels[ti][0] = 1.0
             print('label ', labels)
