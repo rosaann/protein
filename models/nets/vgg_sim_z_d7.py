@@ -165,7 +165,7 @@ class VGG_SIM_Z_D7(nn.Module):
             model = self.model_list[model_idx]
             x = imgs
             for k in range(len(model.base)):
-                print('k ', model.base[k])
+             #   print('k ', model.base[k])
                 x = model.base[k](x)
             x = x.view(x.size(0), -1)
             x = model.line(x)

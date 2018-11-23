@@ -173,10 +173,11 @@ class Protein(object):
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
           #  print('imglist ', img_list.shape)        
             out = self.model(img_list, phase='train', model_idx = 6)
-            print('out ', out) 
+         #   print('out ', out) 
             for i_im, imname in enumerate(name_list):
                  df.set_value(self.idx_df,'Id', imname )
                  data = out[i_im]
+                 print('da ', data)
                  result = ''
                  cla = data.argmax(0).item()
                  result = str( cla)
