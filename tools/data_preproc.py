@@ -17,7 +17,8 @@ class Data_Preproc(object):
         
     def __call__(self, image):
         image = self.preproc(image)
-        return torch.from_numpy(image)
+        return image
+       # return torch.from_numpy(image)
         
     def preproc(self, image):
         #print('insize ', insize)
