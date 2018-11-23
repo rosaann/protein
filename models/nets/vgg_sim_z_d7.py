@@ -171,7 +171,7 @@ class VGG_SIM_Z_D7(nn.Module):
             x = model.line(x)
             #  print('x ', x)
             x = model.sigmoid(x)
-            print('x ', x)
+            print('x{0:.4f} '.format(x))
             return x
             
             

@@ -177,7 +177,7 @@ class Protein(object):
             for i_im, imname in enumerate(name_list):
                  df.set_value(self.idx_df,'Id', imname )
                  data = out[i_im]
-                 print('da ', data.float())
+             #    print('da ', data.float())
                  result = ''
                  cla = data.argmax(0).item()
                  result = str( cla)
