@@ -254,7 +254,7 @@ class Protein(object):
       conf_loss = 0
       _t = Timer()       
       conf_loss_v = 0
-      for gd in range(7):
+      for gd in [6]:
       #  self.dataset.setTrain_group_idx(gd)
       #  self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
       #                            shuffle=False, pin_memory=True)
@@ -329,7 +329,7 @@ class Protein(object):
                     
                     conf_loss = 0
         
-      for gd in range(7):
+      for gd in [6]:
           
     #    self.dataset.setTrain_group_idx(gd)
     #    self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
