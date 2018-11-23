@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 import numpy as np
 from config import Config
-from compiler.ast import flatten
+from tkinter import _flatten
 
 class MultiClassLoss(nn.Module):
     def __init__(self, use_gpu=True):
@@ -59,7 +59,7 @@ class MultiClassLoss(nn.Module):
         
         # match priors (default boxes) and ground truth boxes
      #   print('tttt ', targets)
-        tr_tar_list = flatten(self.config.v('group_id_list')) 
+        tr_tar_list = _flatten(self.config.v('group_id_list')) 
         print('tr_t ', tr_tar_list)
         for i, img_targets in enumerate( targets):
             tar_list = []
