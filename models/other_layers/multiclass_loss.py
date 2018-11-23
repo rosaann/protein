@@ -120,20 +120,21 @@ class MultiClassLoss(nn.Module):
                     for ti, t_tar in enumerate( tr_tar_list):
                         if target == t_tar:
                             labels[ti][0] = 1.0
+            print('label ', labels)
             conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
             
             
-            if self.use_gpu:
-                conf_t = conf_t.cuda()
-                conf_data = conf_data.cuda()
+        if self.use_gpu:
+            conf_t = conf_t.cuda()
+            conf_data = conf_data.cuda()
 
         
         # Compute max conf across batch for hard negative mining
             
-            batch_conf = conf_data.view(-1, 1)
-            conf_t_v = conf_t.view(-1,1)
-            print('batch_conf ',batch_conf)
-            print('conf_t_v', conf_t_v)
+        batch_conf = conf_data.view(-1, 1)
+        conf_t_v = conf_t.view(-1,1)
+        print('batch_conf ',batch_conf)
+        print('conf_t_v', conf_t_v)
             
         loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
      #   print('loss_c ', loss_c)
