@@ -173,7 +173,7 @@ class VGG_SIM_Z_D7(nn.Module):
             x = model.line(x)
             #  print('x ', x)
             x = model.sigmoid(x)
-            print('x ', x.cpu())
+            print('x ', x.data.numpy())
             return x
             
             
