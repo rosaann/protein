@@ -166,6 +166,7 @@ class VGG_SIM_Z_D7(nn.Module):
             np.set_printoptions(precision=10)
             model = self.model_list[model_idx]
             x = imgs
+            print('img ', x)
             for k in range(len(model.base)):
              #   print('k ', model.base[k])
                 x = model.base[k](x)
