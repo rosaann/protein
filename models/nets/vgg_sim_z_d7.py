@@ -15,7 +15,7 @@ import numpy as np
 class VGG_SIM_Z(nn.Module):
     def __init__(self, batch_norm=True):
         super(VGG_SIM_Z, self).__init__()
-        torch.set_printoptions(precision=10)
+        
         layers = []
         in_channels = 4
     #    [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'C', 512, 512, 512, 'M',
@@ -163,6 +163,7 @@ class VGG_SIM_Z_D7(nn.Module):
             return output_list
     
         if phase == 'train':
+            torch.set_printoptions(precision=10)
             model = self.model_list[model_idx]
             x = imgs
             for k in range(len(model.base)):
