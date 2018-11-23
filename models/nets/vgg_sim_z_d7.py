@@ -166,16 +166,16 @@ class VGG_SIM_Z_D7(nn.Module):
             np.set_printoptions(precision=10)
             model = self.model_list[model_idx]
             x = imgs
-            print('img ', x)
+         #   print('img ', x)
             for k in range(len(model.base)):
              #   print('k ', model.base[k])
                 x = model.base[k](x)
             x = x.view(x.size(0), -1)
             x = model.line(x)
             x = torch.unsqueeze(x, 2)
-            print('xd ', x)
+         #   print('xd ', x)
             x = model.sigmoid(x)
-            print('x ', x.cpu().data.numpy())
+         #   print('x ', x.cpu().data.numpy())
             return x
             
             
