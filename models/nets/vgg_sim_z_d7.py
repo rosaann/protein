@@ -15,6 +15,7 @@ import numpy as np
 class VGG_SIM_Z(nn.Module):
     def __init__(self, batch_norm=True):
         super(VGG_SIM_Z, self).__init__()
+        torch.set_printoptions(precision=10)
         layers = []
         in_channels = 4
     #    [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'C', 512, 512, 512, 'M',
@@ -171,7 +172,7 @@ class VGG_SIM_Z_D7(nn.Module):
             x = model.line(x)
             #  print('x ', x)
             x = model.sigmoid(x)
-            print('x{0:.4f} '.format(x.float()))
+            print('x ', x)
             return x
             
             
