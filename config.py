@@ -9,11 +9,11 @@ Created on Wed Nov  7 15:37:23 2018
 class Config(object):
     def __init__(self):
        self.data = {}
-       self.data['batch_size'] = 5
+       self.data['batch_size'] = 32
        self.data['batch_size_eval'] = 4
        self.data['num_classes'] = 28
        self.data['image_size'] = [300, 300]
-       self.data['learn_rate'] = 0.03
+       self.data['learn_rate'] = 0.1
        self.data['momentum'] = 0.9
        self.data['momentum_2'] = 0.99
        self.data['weight_decay'] = 0.0001
