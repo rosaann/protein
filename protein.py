@@ -380,7 +380,7 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
            #     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                if gd == 6 and  iteration == (epoch_size - 1):
+                if gd == 6 and  iteration == (epoch_size - 2):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
 
