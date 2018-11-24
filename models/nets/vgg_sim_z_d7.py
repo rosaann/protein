@@ -100,6 +100,7 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
 
+        self.batch = nn.BatchNorm2d(360000)
         self.line = nn.Linear(360000 , 4)
         self.sigmoid = nn.Sigmoid()
         self.relu = nn.ReLU()
@@ -172,11 +173,12 @@ class VGG_SIM_Z_D7(nn.Module):
              #   print('k ', model.base[k])
                 x = model.base[k](x)
             x = x.view(x.size(0), -1)
+            x = model.batch(x)
             x = model.line(x)
             x = torch.unsqueeze(x, 2)
          #   print('xd ', x)
          #   x = model.sigmoid(x)
-            x = model.relu(x)
+         #   x = model.relu(x)
         #    print('x ', x.cpu().data.numpy())
             return x
             
