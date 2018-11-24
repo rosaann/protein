@@ -269,6 +269,8 @@ class Protein(object):
         
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
+            if len (images) == 1:
+                continue
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
            # print('iteration ', iteration)
@@ -342,6 +344,8 @@ class Protein(object):
     #    train_end = int( epoch_size * 0.1);
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
+            if len (images) == 1:
+                continue
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
             if 1: #iteration > train_end:
