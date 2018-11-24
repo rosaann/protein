@@ -100,7 +100,7 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
 
-        self.batch = nn.BatchNorm2d(360000)
+        self.batch = nn.BatchNorm1d(360000)
         self.line = nn.Linear(360000 , 4)
         self.sigmoid = nn.Sigmoid()
         self.relu = nn.ReLU()
