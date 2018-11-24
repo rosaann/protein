@@ -177,7 +177,7 @@ class VGG_SIM_Z_D7(nn.Module):
             x = model.line(x)
             x = torch.unsqueeze(x, 2)
          #   print('xd ', x)
-         #   x = model.sigmoid(x)
+            x = model.sigmoid(x)
          #   x = model.relu(x)
         #    print('x ', x.cpu().data.numpy())
             return x
