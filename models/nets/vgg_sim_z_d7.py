@@ -102,6 +102,7 @@ class VGG_SIM_Z(nn.Module):
 
         self.line = nn.Linear(360000 , 4)
         self.sigmoid = nn.Sigmoid()
+        self.relu = nn.ReLU()
         self.base = nn.ModuleList(layers)
        # self.out_layers = nn.ModuleList(out_layers)
         
@@ -174,7 +175,8 @@ class VGG_SIM_Z_D7(nn.Module):
             x = model.line(x)
             x = torch.unsqueeze(x, 2)
          #   print('xd ', x)
-            x = model.sigmoid(x)
+         #   x = model.sigmoid(x)
+            x = model.relu(x)
         #    print('x ', x.cpu().data.numpy())
             return x
             
