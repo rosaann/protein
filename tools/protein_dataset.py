@@ -102,8 +102,17 @@ class ProteinDataSet(data.Dataset):
             print('class ', class_id, "len ", len(img_id_list))        
             self.class_img_id_list.append(img_id_list)   
             
-            
     def __getitem__(self, index):
+        img_id, target = self.check_id_list[index]
+                
+        img_path = self.base_path + img_id + '_green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        
+        if self.preproc is not None:
+            img_merg = self.preproc(img)
+      #  print('gd ', self.current_train_group_idx, ' tar ', target)
+        return img_merg, target        
+    def __getitem__merge(self, index):
         img_id, target = self.check_id_list[index]
         
         imgs = []
