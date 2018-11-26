@@ -28,7 +28,7 @@ class Data_Preproc(object):
       #  image = image.astype(np.float32)
     #    image -= (103.94, 116.78, 123.68, 100.5)
         transform = transforms.Compose([
-                transforms.ToPILImage(),
+            #    transforms.ToPILImage(),
                 transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
               #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
                 ])
