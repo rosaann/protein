@@ -160,7 +160,7 @@ class Protein(object):
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
           #  print('imglist ', img_list.shape)        
-            out = self.model(img_list, phase='train', model_idx = 6)
+            out = self.model(img_list, phase='train')
          #   print('out ', out) 
             for i_im, imname in enumerate(name_list):
                  df.set_value(self.idx_df,'Id', imname )
