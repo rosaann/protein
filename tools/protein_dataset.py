@@ -29,7 +29,21 @@ class ProteinDataSet(data.Dataset):
     #    self.genImgIdListForEveryClass()
     #    self.genTrainImgList()
     
-        self.genDGroup()
+    #    self.genDGroup()
+        self.genChecklist()
+    def genChecklist(self):
+        self.check_id_list = []
+        id_to_check = self.config.v('check_id_list')
+        for img_id in range(self.df.shape[0]):
+            target = self.df.get_value(img_id, 'Target')
+            img_tars = [int(tar) for tar in target.split(' ')]
+            ifHasTarInCheckList = False
+            for thisTar i img_tars:
+                if thisTar in id_to_check:
+                    ifHasTarInCheckList = True
+                    break
+            if ifHasTarInCheckList == True:
+                    self.check_id_list.append((self.df.get_value(img_id, 'Id'), target))
     def genDGroup(self):
         self.group_list = []
         class_ids = [str(i) for i in range(28)]
@@ -90,7 +104,7 @@ class ProteinDataSet(data.Dataset):
             
             
     def __getitem__(self, index):
-        img_id, target = self.group_list[self.current_train_group_idx][index]
+        img_id, target = self.check_id_list[index]
         
         imgs = []
         
@@ -134,5 +148,5 @@ class ProteinDataSet(data.Dataset):
         return img_merg, target
         
     def __len__(self):
-        return len(self.group_list[self.current_train_group_idx])
+        return len(self.check_id_list)
       #  return self.df.shape[0]

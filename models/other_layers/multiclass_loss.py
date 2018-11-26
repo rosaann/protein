@@ -92,21 +92,18 @@ class MultiClassLoss(nn.Module):
      #   print('loss_c ', loss_c)
         return loss_c
     
-    def forward(self, predictions, targets,group_idx):
-        if group_idx == -1:
-            return self.forward_df(predictions, targets)
+    def forward(self, predictions, targets):
       #  print('predictions ',predictions)
         conf_data = predictions
        # print('loc_data ',loc_data.shape, ' conf_data ', conf_data.shape, 'targets ',len(targets), 'num ', num)
         num_img = len(conf_data)
      #   print('num_img ', num_img)
-        class_num = int(28 / 7)
-        conf_t = torch.Tensor(num_img, class_num, 1)
-        
         # match priors (default boxes) and ground truth boxes
      #   print('tttt ', targets)
      
-        tr_tar_list = self.config.v('group_id_list')[group_idx]
+        tr_tar_list = self.config.v('check_id_list')
+        class_num = int(len(tr_tar_list))
+        conf_t = torch.Tensor(num_img, class_num, 1)
         for i, img_targets in enumerate( targets):
             tar_list = []
             targets = img_targets.split(' ')
@@ -117,10 +114,8 @@ class MultiClassLoss(nn.Module):
             for target in tar_list:
              #   print('tar ', target)
                 if target in tr_tar_list:
-                    for ti, t_tar in enumerate( tr_tar_list):
-             #           print('ti ', ti, ' t_tar ', t_tar, ' t to check : ', target)
-                        if target == t_tar:
-                            labels[ti][0] = 1.0
+                    ti = tr_tar_list.index(target)
+                    labels[ti][0] = 1.0
          #   print('label ', labels)
             conf_t[i] = torch.from_numpy( labels).type(torch.cuda.FloatTensor)
             

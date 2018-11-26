@@ -12,10 +12,12 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from models.other_layers.l2norm import L2Norm
 import numpy as np
+from config import Config
+
 class VGG_SIM_Z(nn.Module):
     def __init__(self, batch_norm=True):
         super(VGG_SIM_Z, self).__init__()
-        
+        self.config = Config()
         layers = []
         in_channels = 4
     #    [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'C', 512, 512, 512, 'M',
@@ -99,9 +101,9 @@ class VGG_SIM_Z(nn.Module):
     #    in_channels = 512
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
-
-        self.batch = nn.BatchNorm1d(4)
-        self.line = nn.Linear(360000 , 4)
+        
+        self.line = nn.Linear(360000 , len(self.config.v('check_id_list')))
+        self.batch = nn.BatchNorm1d(len(self.config.v('check_id_list')))
         self.sigmoid = nn.Sigmoid()
         self.relu = nn.ReLU()
         self.base = nn.ModuleList(layers)

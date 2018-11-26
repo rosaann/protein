@@ -12,6 +12,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from models.other_layers.l2norm import L2Norm
 import numpy as np
+from config import Config
 class VGG_SIM_Z(nn.Module):
     def __init__(self, batch_norm=True):
         super(VGG_SIM_Z, self).__init__()
@@ -99,7 +100,7 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
 
-        self.line = nn.Linear(360000 , 28)
+        self.line = nn.Linear(360000 , len(self.config.v('check_id_list')))
         self.sigmoid = nn.Sigmoid()
         self.base = nn.ModuleList(layers)
        # self.out_layers = nn.ModuleList(out_layers)

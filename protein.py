@@ -34,29 +34,14 @@ class Protein(object):
         self.preproc = Data_Preproc()
         self.train_class = 0
         if self.ifTrain:
-            self.dataset_list = []
-            self.train_loader_list = []
-            for gd in range(7):
-                dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='train')
-                dataset.setTrain_group_idx(gd)
-
-                train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
-                                  shuffle=False, pin_memory=True)
-                self.train_loader_list.append(train_loader)
-                
-            self.eval_loader_list = []
-            for gd in range(7):
-                dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='eval')
-                dataset.setTrain_group_idx(gd)
-
-                eval_loader = data.DataLoader(dataset, self.config.v('batch_size_eval'), num_workers= 8,
-                                  shuffle=False, pin_memory=True)
-                self.eval_loader_list.append(eval_loader)
+            dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='train')
+            self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
+                                               shuffle=False, pin_memory=True)
             
-      #  self.model = create_model_vgg_sim_z()
+        self.model = create_model_vgg_sim_z()
       #  self.model = create_model_resnet_18()
       #  self.model = create_model_mul_line()
-        self.model = create_model_vgg_sim_z_d7()
+      #  self.model = create_model_vgg_sim_z_d7()
         
         self.use_gpu = torch.cuda.is_available()
         #self.use_gpu = False
@@ -253,14 +238,10 @@ class Protein(object):
         return self.model.load_state_dict(checkpoint)
 
     def train_per_epoch(self, epoch):
-      conf_loss = 0
-      _t = Timer()       
-      conf_loss_v = 0
-      for gd in [6]:
-      #  self.dataset.setTrain_group_idx(gd)
-      #  self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
-      #                            shuffle=False, pin_memory=True)
-        self.train_loader = self.train_loader_list[gd]
+        conf_loss = 0
+        _t = Timer()
+        conf_loss_v = 0
+      
         epoch_size = int( len(self.train_loader) )
         
         train_end = int( epoch_size * 0.1);
@@ -279,7 +260,7 @@ class Protein(object):
                 if self.use_gpu:
                     images = Variable(images.cuda())
                 self.visualize_epoch(images, epoch, gd)
-            if 1:#iteration <= train_end:
+            if iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
                   #  targets = [Variable(anno.cuda(), volatile=True) for anno in targets]
@@ -293,7 +274,7 @@ class Protein(object):
                 self.optimizer.zero_grad()
              #   print('out ', out)
              #   print('targets ', targets.shape)
-                loss_c = self.criterion(out, targets,gd)
+                loss_c = self.criterion(out, targets)
 
                 # some bugs in coco train2017. maybe the annonation bug.
                 if loss_c.data[0] == float("Inf"):
@@ -317,7 +298,7 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
                 
-                if gd == 6 and iteration == (epoch_size-1):
+                if iteration == (train_end-1):
                     # log per epoch
                     sys.stdout.write('\r')
                     sys.stdout.flush()
@@ -333,34 +314,18 @@ class Protein(object):
                     
                     conf_loss = 0
         
-      for gd in [6]:
-          
-    #    self.dataset.setTrain_group_idx(gd)
-    #    self.train_loader = data.DataLoader(self.dataset, self.config.v('batch_size'), num_workers= 8,
-    #                              shuffle=False, pin_memory=True)
-        self.eval_loader = self.eval_loader_list[gd]
-    
-        epoch_size = int( len(self.eval_loader) )
-        batch_iterator = iter(self.eval_loader)
-    #    train_end = int( epoch_size * 0.1);
-        for iteration  in range(epoch_size):
-            images, targets = next(batch_iterator)
-            if len (images) == 1:
-                continue
-         #   print('imgs from data_load shape ', images.shape)
-            targets = np.array(targets)
-            if 1: #iteration > train_end:
+            if iteration > train_end:
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
                 if self.use_gpu:
                     images = Variable(images.cuda())
                 else:
                     images = Variable(images)
-            #    self.model.eval()
-                out = self.model(images, phase='train')
+                self.model.eval()
+                out = self.model(images, phase='eval')
 
                 # loss
-                loss_c = self.criterion(out, targets, gd)
+                loss_c = self.criterion(out, targets)
                 
                 if loss_c.data[0] == float("Inf"):
                     continue
@@ -381,7 +346,7 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
            #     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                if gd == 6 and  iteration == (epoch_size - 2):
+                if iteration == (epoch_size - 1):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
 
