@@ -246,7 +246,7 @@ class Protein(object):
         
         train_end = int( epoch_size * 0.1);
         batch_iterator = iter(self.train_loader)
-        print('epoch_size ', epoch_size, " gd ", gd)
+        print('epoch_size ', epoch_size, " train_end ", train_end)
         
         
         for iteration  in range(epoch_size):
@@ -259,7 +259,7 @@ class Protein(object):
             if iteration == (train_end - 1):
                 if self.use_gpu:
                     images = Variable(images.cuda())
-                self.visualize_epoch(images, epoch, gd)
+                self.visualize_epoch(images, epoch)
             if iteration <= train_end:
                 if self.use_gpu:
                     images = Variable(images.cuda())
@@ -269,7 +269,7 @@ class Protein(object):
                 self.model.train()
                 #train:
                 _t.tic()
-                out = self.model(images, phase='train', model_idx = gd)
+                out = self.model(images, phase='train')
 
                 self.optimizer.zero_grad()
              #   print('out ', out)
@@ -364,14 +364,14 @@ class Protein(object):
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)
 
-    def visualize_epoch(self,images, epoch,group_idx):
+    def visualize_epoch(self,images, epoch):
         self.model.eval()
      #   for i, image in enumerate(images_list):
         image = Variable( images[0].unsqueeze(0), volatile=True)
         if self.use_gpu:
             image = image.cuda()
     #    print('image shpe', image.shape)
-        base_out = viz_module_feature_maps(self.writer, self.model.model_list[group_idx].base, image, module_name='base', epoch=epoch)
+        base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
     #    extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
    #     viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
