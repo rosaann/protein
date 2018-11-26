@@ -38,7 +38,7 @@ class ProteinDataSet(data.Dataset):
             target = self.df.get_value(img_id, 'Target')
             img_tars = [int(tar) for tar in target.split(' ')]
             ifHasTarInCheckList = False
-            for thisTar i img_tars:
+            for thisTar in img_tars:
                 if thisTar in id_to_check:
                     ifHasTarInCheckList = True
                     break
