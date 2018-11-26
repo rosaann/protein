@@ -26,7 +26,7 @@ import os
 import pandas as pd
 import cv2
 import visdom
-from torchsample.regularizers import L1Regularizer
+#from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
     def __init__(self, ifTrain = True):
@@ -40,8 +40,8 @@ class Protein(object):
                                                shuffle=False, pin_memory=True)
             
         self.model = create_model_vgg_sim_z()
-        regularizers = [L1Regularizer(scale=1e-4, module_filter='*line*')]
-        self.model.set_regularizers(regularizers)
+     #   regularizers = [L1Regularizer(scale=1e-4, module_filter='*line*')]
+     #   self.model.set_regularizers(regularizers)
       #  self.model = create_model_resnet_18()
       #  self.model = create_model_mul_line()
       #  self.model = create_model_vgg_sim_z_d7()
