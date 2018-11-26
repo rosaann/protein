@@ -244,7 +244,7 @@ class Protein(object):
       
         epoch_size = int( len(self.train_loader) )
         
-        train_end = int( epoch_size * 0.1);
+        train_end = int( epoch_size * 0.8);
         batch_iterator = iter(self.train_loader)
         print('epoch_size ', epoch_size, " train_end ", train_end)
         
