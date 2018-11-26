@@ -174,7 +174,7 @@ class Protein(object):
                  cla = data.argmax(0).item()
                  if data[cla] > 0.5:
                  #    result += ' '
-                     result += str(self.config.v('group_id_list')[6][ cla])
+                     result += str(self.config.v('group_id_list')[ cla])
                  if len(result) == 0:
                      result = '23'
                  df.set_value(self.idx_df, 'Predicted', result)
