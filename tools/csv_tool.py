@@ -149,10 +149,10 @@ def genImage(base_list, num_need, df, for_tar)  :
                 for idx_trans,  trans_base_img in enumerate( trans_base_list):
                     img = rotate(trans_base_img, arg)
                     this_id = start_idx + (idx_ang * 4 ) + idx_trans
-                    sub_img_id = (idx_ang * 4 ) + idx_trans
-                    cv2.imwrite(os.path.join(img_out_base,'{}-{}_{}.png'.format(img_id,sub_img_id, tail)), img)
+                    sub_img_id = int( (idx_ang * 4 ) + idx_trans)
+                    cv2.imwrite(os.path.join(img_out_base,'{}-{}_{}.png'.format(img_id,str(sub_img_id), tail)), img)
                     if ti == 0:
-                        df.set_value(this_id, 'Predicted', for_tar)
+                        df.set_value(this_id, 'Target', for_tar)
                         df.set_value(this_id, 'Id', img_id + '-' +str(sub_img_id))
                 #        df.to_csv('sample_arg.csv', index=None) #test
                 #    if idx_ang >= 10:
