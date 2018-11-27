@@ -8,7 +8,6 @@ Created on Wed Nov  7 13:34:34 2018
 import pandas as pd
 import cv2
 import os
-from config import Config
 import numpy as np
 
 def findAlltype():
@@ -90,10 +89,9 @@ def genBalencedData():
     max_num = 8000
     num_need_list = []
     for tar_class, tar_num in allClassNumList:
-        if tar_num > max_num:
+        if tar_num < max_num:
             num_need_list.append((tar_class, max_num - tar_num))
-    config = Config()
-    id_to_check = config.v('check_id_list')
+    id_to_check = [24,26,16,13,12,22,18,6,14,11,1,19,3,4,5,7,23,2,21,25,0]
     
     
     for tar_class, tar_num_need in num_need_list:
@@ -102,8 +100,10 @@ def genBalencedData():
                 if tar_class == s_class:
                     tar_single_list = s_list
                     break
+            print('len ', len(tar_single_list), ' num need ', tar_num_need, 'class ', tar_class)
             
             df = genImage(tar_single_list, tar_num_need, df,tar_class)
+            return #test
     df.to_csv('sample_arg.csv', index=None)
             
 def rotate(image, angle, center=None, scale=1.0): 
@@ -119,37 +119,44 @@ def rotate(image, angle, center=None, scale=1.0):
     return rotated
 
 
-def genImage(base_list, num_need, df, for_tar)  :     
+def genImage(base_list, num_need, df, for_tar)  :  
     img_name_tails = [ 'red', 'green', 'blue', 'yellow']  
     base_num = len(base_list)
     arg_by = int(num_need / base_num)
-    img_base = '../train/'
-    img_out_base = '../train_outtest/'
+    img_base = '../../train/'
+    img_out_base = '../../train_outtest/'
     for idx, img_idx in enumerate( base_list):
         img_id = df.get_value(img_idx, 'Id')
         ang_list = np.random.randint(0, 360, size= int(arg_by / 4))
         #get start idx
-        start_idx = len(df.shape[0])
-        
+        start_idx = df.shape[0]
+     #   print('start ', start_idx, ' img_id ', img_id, ' ang_ ', ang_list[:10])
         for ti, tail in enumerate( img_name_tails):
             #一个色一个色地处理，
-            img_path = self.base_path + img_id + '_' + tail + '.png'
+            img_path = img_base + img_id + '_' + tail + '.png'
             img_0 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
             img_1 = cv2.flip(img_0, 1)
             img_2 = cv2.flip(img_0, 0)
             img_3 = cv2.flip(img_0, -1)
+         #   cv2.imwrite(os.path.join(img_out_base,'{}_0.png'.format(1, tail)), img_0)
+         #   cv2.imwrite(os.path.join(img_out_base,'{}_1.png'.format(1, tail)), img_1)
+         #   cv2.imwrite(os.path.join(img_out_base,'{}_2.png'.format(1, tail)), img_2)
+        #    cv2.imwrite(os.path.join(img_out_base,'{}_3.png'.format(1, tail)), img_3)
             #先得到翻转基础图
             trans_base_list = [img_0, img_1, img_2, img_3]
             for idx_ang, arg in enumerate(ang_list):
-                
+                print('ang ', arg)
                 for idx_trans,  trans_base_img in enumerate( trans_base_list):
                     img = rotate(trans_base_img, arg)
                     this_id = start_idx + (idx_ang * 4 ) + idx_trans
-                    cv2.imwrite(os.path.join('img_out_base','{}_{}.png'.format(this_id, tail)), img)
+                    sub_img_id = (idx_ang * 4 ) + idx_trans
+                    cv2.imwrite(os.path.join(img_out_base,'{}-{}_{}.png'.format(img_id,sub_img_id, tail)), img)
                     if ti == 0:
                         df.set_value(this_id, 'Predicted', for_tar)
-                        df.set_value(this_id, 'Id', img_id + str((idx_ang * 4 ) + idx_trans))
-                        
+                        df.set_value(this_id, 'Id', img_id + '-' +str(sub_img_id))
+                #        df.to_csv('sample_arg.csv', index=None) #test
+                #    if idx_ang >= 10:
+                #        return #test
     return df
     
 genBalencedData()
