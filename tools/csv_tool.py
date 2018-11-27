@@ -124,7 +124,7 @@ def genImage(base_list, num_need, df, for_tar)  :
     base_num = len(base_list)
     arg_by = int(num_need / base_num)
     img_base = '../../train/'
-    img_out_base = '../../train_outtest/'
+    img_out_base = '../../train/'
     for idx, img_idx in enumerate( base_list):
         img_id = df.get_value(img_idx, 'Id')
         ang_list = np.random.randint(0, 360, size= int(arg_by / 4))
