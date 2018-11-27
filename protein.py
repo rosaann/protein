@@ -30,14 +30,17 @@ import visdom
 
 class Protein(object):
     def __init__(self, ifTrain = True):
+        seed = 10
+        torch.manual_seed(args.seed)#为CPU设置随机种子
+    
         self.config = Config()
         self.ifTrain = ifTrain
         self.preproc = Data_Preproc()
         self.train_class = 0
         if self.ifTrain:
-            dataset = ProteinDataSet(self.preproc,train_class = self.train_class,phase='train')
+            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', train_class = self.train_class,phase='train')
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
-                                               shuffle=False, pin_memory=True)
+                                               shuffle=True, pin_memory=True)
             
         self.model = create_model_vgg_sim_z()
      #   regularizers = [L1Regularizer(scale=1e-4, module_filter='*line*')]
@@ -50,6 +53,7 @@ class Protein(object):
         #self.use_gpu = False
         if self.use_gpu:
             self.model.cuda()
+            torch.cuda.manual_seed(seed)
             cudnn.benchmark = True
             if torch.cuda.device_count() > 1:
                  self.model = torch.nn.DataParallel(self.model).module
