@@ -31,7 +31,7 @@ import visdom
 class Protein(object):
     def __init__(self, ifTrain = True):
         seed = 10
-        torch.manual_seed(args.seed)#为CPU设置随机种子
+        torch.manual_seed(seed)#为CPU设置随机种子
     
         self.config = Config()
         self.ifTrain = ifTrain
