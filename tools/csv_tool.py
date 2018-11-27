@@ -103,8 +103,8 @@ def genBalencedData():
             print('len ', len(tar_single_list), ' num need ', tar_num_need, 'class ', tar_class)
             
             df = genImage(tar_single_list, tar_num_need, df,tar_class)
-            return #test
-    df.to_csv('sample_arg.csv', index=None)
+         #   return #test
+    df.to_csv('../../sample_arg.csv', index=None)
             
 def rotate(image, angle, center=None, scale=1.0): 
     # 获取图像尺寸 
@@ -145,7 +145,7 @@ def genImage(base_list, num_need, df, for_tar)  :
             #先得到翻转基础图
             trans_base_list = [img_0, img_1, img_2, img_3]
             for idx_ang, arg in enumerate(ang_list):
-                print('ang ', arg)
+            #    print('ang ', arg)
                 for idx_trans,  trans_base_img in enumerate( trans_base_list):
                     img = rotate(trans_base_img, arg)
                     this_id = start_idx + (idx_ang * 4 ) + idx_trans
