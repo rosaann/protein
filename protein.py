@@ -171,16 +171,16 @@ class Protein(object):
                  data = out[i_im]
               #   print('da ', data.float())
                  result = ''
-                # cla = data.argmax(0).item()
-                # result = str( self.config.v('group_id_list')[6][ cla])
+                 cla = data.argmax(0).item()
+                 result = str( self.config.v('check_id_list')[ cla])
                  
-                # data[cla] = 0
+                 data[cla] = 0
                  cla = data.argmax(0).item()
                  if data[cla] > 0.5:
-                 #    result += ' '
+                     result += ' '
                      result += str(self.config.v('check_id_list')[ cla])
-                 if len(result) == 0:
-                     result = '17'
+               #  if len(result) == 0:
+                #     result = '17'
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
             img_list = []     
