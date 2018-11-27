@@ -180,7 +180,7 @@ class Protein(object):
                  #    result += ' '
                      result += str(self.config.v('check_id_list')[ cla])
                  if len(result) == 0:
-                     result = '23'
+                     result = '17'
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
             img_list = []     

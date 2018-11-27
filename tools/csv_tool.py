@@ -158,8 +158,74 @@ def genImage(base_list, num_need, df, for_tar)  :
                 #    if idx_ang >= 10:
                 #        return #test
     return df
+import shutil
+def vis_every_class():
+    #每一类看10张，再看十张组合的
+    df = pd.read_csv('../../train.csv')
+    allTargets = [i for i in range(28)]
+    base_out_path = '../../sample_img/'
+    base_src_path = '../../train/'
     
-genBalencedData()
+    img_name_tails = [ 'red', 'green', 'blue', 'yellow']  
+    
+    for tar in allTargets:
+        dir_path = base_out_path + str(tar)
+        os.makedirs(dir_path)
+        count = 0
+        for i, row in df.iterrows():
+            targets = row['Target'].split(' ')
+            targets = [int (tthis) for tthis in targets]
+            if tar in targets:
+                if len(targets) == 1:
+                    file_name = row['Id']
+                    imgs_to_merge = []
+                    for tail in img_name_tails:
+                        srcFile = base_src_path + file_name + '_' + tail + '.png'
+                        targetFile = dir_path + '/'+ file_name + '_' + tail + '.png'
+                      #  shutil.copyfile(srcFile,targetFile)
+                        img = cv2.imread(srcFile, cv2.IMREAD_GRAYSCALE )
+                        imgs_to_merge.append(img)
+                    img_merg = cv2.merge(imgs_to_merge)
+                    cv2.imwrite(dir_path + '/'+ file_name + '_merge'  + '.jpg', img_merg)
+                    count += 1
+                    if count >= 10:
+                        break
+                    
+def vis_compond_class():
+    df = pd.read_csv('../../train.csv')
+    allTargets = [i for i in range(28)]
+    base_out_path = '../../sample_img/com/'
+    base_src_path = '../../train/'
+    
+    img_name_tails = [ 'red', 'green', 'blue', 'yellow']  
+    extrem_thin = [10, 15, 17, 27] 
+    for tar in allTargets:            
+        dir_path = base_out_path + str(tar)
+        os.makedirs(dir_path)
+        count = 0
+        for i, row in df.iterrows():
+            targets = row['Target'].split(' ')
+            targets = [int (tthis) for tthis in targets]
+            if tar in targets:
+                if len(targets) > 1:
+                    file_name = row['Id']
+                    imgs_to_merge = []
+                    for tail in img_name_tails:
+                        srcFile = base_src_path + file_name + '_' + tail + '.png'
+                        targetFile = dir_path + '/'+ file_name + '_' + row['Target'] + '_' + tail + '.png'
+                    #    shutil.copyfile(srcFile,targetFile)
+                        img = cv2.imread(srcFile, cv2.IMREAD_GRAYSCALE )
+                        imgs_to_merge.append(img)
+                    img_merg = cv2.merge(imgs_to_merge)
+                    cv2.imwrite(dir_path + '/'+ file_name + '_' + row['Target'] + '_merge'  + '.jpg', img_merg)
+                    count += 1
+                    if count >= 10:
+                        break
+
+
+vis_compond_class()                
+vis_every_class()
+#genBalencedData()
 #genSingleSampeIdList()
 #findAlltype()
 #test()
