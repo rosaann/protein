@@ -36,7 +36,7 @@ def xgboost_train():
         param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'reg:logistic' }
         num_round = 2
         train_end = int(len(images) * 0.8)
-        bst = xgb.train(param, images[:train_end], num_round)
+        bst = xgb.train(param, images[:train_end])
         # make prediction
         preds = bst.predict(images[train_end : ])
         print('i ' , index)
