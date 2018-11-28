@@ -14,13 +14,14 @@ import torch.utils.data as data
 from config import Config
 
 def randomForest():
-    preproc = Data_Preproc()
-    dataset = ProteinDataSet(preproc,csv_path='../train.csv', phase='train')
+  preproc = Data_Preproc()
+  dataset = ProteinDataSet(preproc,csv_path='../train.csv', phase='train')
    # config = Config()
-    train_loader = data.DataLoader(dataset, 31072, num_workers= 8,
+  train_loader = data.DataLoader(dataset, 31072, num_workers= 8,
                                                shuffle=True, pin_memory=True)
    # batch_iterator = iter(train_loader)
-    images, targets = train_loader[0]
+  for images, targets in train_loader:
+  #  images, targets = train_loader[0]
     print('len ',len(images))
     tr_hot = []
     for img_targets in targets:
