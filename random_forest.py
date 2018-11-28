@@ -50,6 +50,35 @@ def randomForest():
             print((tr_hot[train_end:] == predict).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
             dump(alg, './outs/filename_' + str(index)+ '.joblib') 
             index += 1
+def get_testimg_imgid_list(df):
+        file_list = []
+        for i, row in df.iterrows():
+            file_list.append(row['Id'])
+            
+        return file_list
+import cv2
+import os
+def get_test_image_list(pre_dir, df):
+        img_id_list = get_testimg_imgid_list(df)
+        imgs = []
+        for img_id in img_id_list:
+            img_path = pre_dir+ '_' + 'green' + '.png'
+            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+            imgs.append(img)
+        
 
+        return imgs
+def test():
+    alg = load('./outs/filename_10.joblib') 
+    test_image_dir = os.path.join('../', 'test/')
+    df=pd.read_csv('../sample_submission.csv')
 
-randomForest()
+    test_image_list = get_test_image_list(test_image_dir, df)
+    predicts = alg.predict(test_image_list)
+    print('len ', len(predicts))
+    for predict in predicts:
+        print(predict)
+        return
+
+#randomForest()
+test()
