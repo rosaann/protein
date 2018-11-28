@@ -11,7 +11,7 @@ import torch.utils.data as data
 import pandas as pd
 import numpy as np
 import xgboost as xgb
-from sklearn import cross_validation, metrics
+from sklearn import  metrics
 
 def xgboost_train():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
