@@ -64,7 +64,7 @@ def get_test_image_list(pre_dir, df):
         for idx, img_id in enumerate(img_id_list):
             img_path = pre_dir+ '_' + 'green' + '.png'
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
-            imgs[idx](img)
+            imgs[idx] = img
         
 
         return imgs
