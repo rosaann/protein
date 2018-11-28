@@ -19,8 +19,8 @@ def randomForest():
    # config = Config()
     train_loader = data.DataLoader(dataset, 31072, num_workers= 8,
                                                shuffle=True, pin_memory=True)
-    batch_iterator = iter(train_loader)
-    images, targets = batch_iterator[0]
+   # batch_iterator = iter(train_loader)
+    images, targets = train_loader[0]
     print('len ',len(images))
     tr_hot = []
     for img_targets in targets:
