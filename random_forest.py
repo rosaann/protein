@@ -15,7 +15,7 @@ from config import Config
 
 def randomForest():
   preproc = Data_Preproc()
-  dataset = ProteinDataSet(preproc,csv_path='../train.csv', phase='train')
+  dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
   train_loader = data.DataLoader(dataset,int( 31072 / 4), num_workers= 0,
                                                shuffle=True, pin_memory=True)
