@@ -36,9 +36,11 @@ def xgboost_train():
         param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'reg:logistic' }
         num_round = 2
         train_end = int(len(images) * 0.8)
-        bst = xgb.train(param, images[:train_end])
+        dtrain = xgb.DMatrix(images[:train_end])
+        dtest = xgb.DMatrix(images[train_end : ])
+        bst = xgb.train(param, dtrain)
         # make prediction
-        preds = bst.predict(images[train_end : ])
+        preds = bst.predict(dtest)
         print('i ' , index)
         print ("AUC Score (val): " , metrics.roc_auc_score(tr_hot[train_end:], preds))
         print((tr_hot[train_end:] == preds).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
