@@ -22,6 +22,8 @@ def randomForest():
    # batch_iterator = iter(train_loader)
   for images, targets in train_loader:
   #  images, targets = train_loader[0]
+    nsamples, nx, ny = images.shape
+    images = images.reshape((nsamples,nx*ny))
     print('len ',len(images))
     tr_hot = []
     for img_targets in targets:
