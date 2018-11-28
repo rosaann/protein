@@ -20,7 +20,8 @@ def randomForest():
     train_loader = data.DataLoader(dataset, 31072, num_workers= 8,
                                                shuffle=True, pin_memory=True)
     batch_iterator = iter(train_loader)
-    images, targets = next(batch_iterator)
+    images, targets = batch_iterator[0]
+    print('len ',len(images))
     tr_hot = []
     for img_targets in targets:
         targets = img_targets.split(' ')
