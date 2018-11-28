@@ -17,7 +17,7 @@ def randomForest():
   preproc = Data_Preproc()
   dataset = ProteinDataSet(preproc,csv_path='../train.csv', phase='train')
    # config = Config()
-  train_loader = data.DataLoader(dataset,int( 31072 / 4), num_workers= 0,
+  train_loader = data.DataLoader(dataset,int( 31072 / 2), num_workers= 0,
                                                shuffle=True, pin_memory=True)
    # batch_iterator = iter(train_loader)
   for images, targets in train_loader:
@@ -36,7 +36,7 @@ def randomForest():
     sample_leaf_options = list(range(5, 50, 500))
     n_estimators_options = list(range(1, 1000, 5))
     
-    train_end = 31072 * 0.8
+    train_end = len(images) * 0.8
     for leaf_size in sample_leaf_options: 
         for n_estimators_size in n_estimators_options: 
             alg = RandomForestClassifier(min_samples_leaf=leaf_size, n_estimators=n_estimators_size, random_state=50) 
