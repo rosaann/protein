@@ -17,7 +17,7 @@ def randomForest():
   preproc = Data_Preproc()
   dataset = ProteinDataSet(preproc,csv_path='../train.csv', phase='train')
    # config = Config()
-  train_loader = data.DataLoader(dataset, 31072, num_workers= 0,
+  train_loader = data.DataLoader(dataset,int( 31072 / 4), num_workers= 0,
                                                shuffle=True, pin_memory=True)
    # batch_iterator = iter(train_loader)
   for images, targets in train_loader:
