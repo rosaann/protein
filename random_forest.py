@@ -40,7 +40,7 @@ def randomForest():
             
     results = []
     sample_leaf_options = [500, 200, 50]
-    n_estimators_options = [50, 100]
+    n_estimators_options = [10, 20]
     
     train_end = int(len(images) * 0.8)
     for leaf_size in sample_leaf_options: 
@@ -49,9 +49,13 @@ def randomForest():
             alg.fit(images[: train_end], tr_hot[:train_end]) 
             predict = alg.predict(images[train_end : ]) # 用一个三元组，分别记录当前的 min_samples_leaf，n_estimators， 和在测试数据集上的精度 
             results.append((leaf_size, n_estimators_size, (tr_hot[train_end:] == predict).mean())) # 真实结果和预测结果进行比较，计算准确率 
+            print('leaf_size ', leaf_size, ' n_estimators_size ', n_estimators_size)
+            print ("AUC Score (val): " , metrics.roc_auc_score(tr_hot[train_end:], predict))
             print((tr_hot[train_end:] == predict).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
             dump(alg, './outs/filename_' + str(index)+ '.joblib') 
             index += 1
+            
+          
 def get_testimg_imgid_list(df):
         file_list = []
         for i, row in df.iterrows():
