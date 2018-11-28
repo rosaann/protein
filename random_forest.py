@@ -74,6 +74,8 @@ def test():
     df=pd.read_csv('../sample_submission.csv')
 
     test_image_list = get_test_image_list(test_image_dir, df)
+    nsamples, nx, ny = test_image_list.shape
+    test_image_list = test_image_list.reshape((nsamples,nx*ny))
     predicts = alg.predict(test_image_list)
     print('len ', len(predicts))
     for predict in predicts:
