@@ -12,14 +12,16 @@ from tools.protein_dataset import ProteinDataSet
 from tools.data_preproc import Data_Preproc
 import torch.utils.data as data
 from config import Config
+from joblib import dump, load
 
 def randomForest():
   preproc = Data_Preproc()
   dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
-  train_loader = data.DataLoader(dataset,int( 31072 / 4), num_workers= 0,
+  train_loader = data.DataLoader(dataset,int( 31072 / 1), num_workers= 0,
                                                shuffle=True, pin_memory=True)
    # batch_iterator = iter(train_loader)
+  index = 0
   for images, targets in train_loader:
   #  images, targets = train_loader[0]
     nsamples, nx, ny = images.shape
@@ -46,7 +48,8 @@ def randomForest():
             predict = alg.predict(images[train_end : ]) # 用一个三元组，分别记录当前的 min_samples_leaf，n_estimators， 和在测试数据集上的精度 
             results.append((leaf_size, n_estimators_size, (tr_hot[train_end:] == predict).mean())) # 真实结果和预测结果进行比较，计算准确率 
             print((tr_hot[train_end:] == predict).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
-            
+            dump(alg, './outs/filename_' + str(index)+ '.joblib') 
+            index += 1
 
 
 randomForest()
