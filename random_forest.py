@@ -61,10 +61,10 @@ import os
 def get_test_image_list(pre_dir, df):
         img_id_list = get_testimg_imgid_list(df)
         imgs = np.array((len(img_id_list), 3,3))
-        for img_id in img_id_list:
+        for idx, img_id in enumerate(img_id_list):
             img_path = pre_dir+ '_' + 'green' + '.png'
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
-            imgs.append(img)
+            imgs[idx](img)
         
 
         return imgs
