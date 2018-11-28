@@ -16,8 +16,8 @@ from sklearn import  metrics
 def xgboost_train():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
-    train_loader = data.DataLoader(dataset,int( 31072), num_workers= 8,
-                                               shuffle=True, pin_memory=True)
+    train_loader = data.DataLoader(dataset,int( 31072/300), num_workers= 8,
+                                               shuffle=True, pin_memory=False)
    # batch_iterator = iter(train_loader)
     index = 0
     for images, targets in train_loader:
