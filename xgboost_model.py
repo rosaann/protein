@@ -53,7 +53,7 @@ def xgboost_train():
         # make prediction
         preds = bst.predict(dtest)
         print('i ' , index)
-        print ("f1 Score (val): " , f1_score(tr_hot[train_end:], preds))
+        print ("Score (val): " , metrics.accuracy_score(tr_hot[train_end:], preds))
         print((tr_hot[train_end:] == preds).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
         index += 1
         
