@@ -26,14 +26,14 @@ def xgboost_train():
         images = images.reshape((nsamples,nx*ny))
         print('len ',len(images))
         
-        tr_hot = np.array((len(images), 28, 1))
+        tr_hot = []
         for ti, img_targets in enumerate( targets):
             targets_t = img_targets.split(' ')
             tar_t = np.zeros((28, 1))
             for tar in targets_t:
                 tar_t[int(tar)] = 1
           #  print('tar_t ', tar_t.shape)
-            tr_hot[ti] = tar_t
+            tr_hot.append(tar_t)
             
         param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'reg:linear', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
         num_round = 2
