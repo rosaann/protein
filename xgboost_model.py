@@ -33,15 +33,21 @@ def xgboost_train():
             for tar in targets_t:
                 tar_t[int(tar)] = 1
           #  print('tar_t ', tar_t.shape)
-            tr_hot.append(tar_t)
+          #  tr_hot.append(tar_t)
+            tr_hot.append(int(targets_t[0]))
             
         param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'reg:linear', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
+        param['eval_metric'] = ['auc', 'ams@0'] 
+        param['nthread'] = 4
         num_round = 2
         train_end = int(len(images) * 0.8)
         dtrain = xgb.DMatrix(images[:train_end], targets[ : train_end] )
-        dtest = xgb.DMatrix(images[train_end : ])
+        dtest = xgb.DMatrix(images[train_end : ], targets[train_end : ] )
         print('tr_hot ', tr_hot.shape)
-        bst = xgb.train(param, dtrain )
+        num_round = 10
+        evallist  = [(dtest,'eval'), (dtrain,'train')]
+
+        bst = xgb.train(param, dtrain , num_round, evallist)
         # make prediction
         preds = bst.predict(dtest)
         print('i ' , index)
