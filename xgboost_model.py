@@ -29,7 +29,7 @@ def xgboost_train():
         tr_hot = np.array((len(images), 28, 1))
         for ti, img_targets in enumerate( targets):
             targets = img_targets.split(' ')
-            tar_t = np.zeros(28, 1)
+            tar_t = np.zeros((28, 1))
             for tar in targets:
                 tar_t[int(tar)] = 1
             tr_hot[ti] = tar_t
