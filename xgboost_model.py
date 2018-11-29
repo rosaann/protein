@@ -26,7 +26,7 @@ def xgboost_train():
         images = images.reshape((nsamples,nx*ny))
         print('len ',len(images))
         
-        tr_hot = np.array(len(images), 28)
+        tr_hot = np.array((len(images), 28))
         for ti, img_targets in enumerate( targets):
             targets = img_targets.split(' ')
             tar_t = np.zeros(28)
