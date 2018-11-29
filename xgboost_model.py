@@ -34,7 +34,7 @@ def xgboost_train():
                 tar_t[int(tar)] = 1
             tr_hot[ti] = tar_t
             
-        param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'reg:linear', 'seed':10 }
+        param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'reg:linear', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
         num_round = 2
         train_end = int(len(images) * 0.8)
         dtrain = xgb.DMatrix(images[:train_end], tr_hot[ : train_end] )
