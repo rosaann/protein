@@ -36,7 +36,9 @@ def xgboost_train():
           #  tr_hot.append(tar_t)
             tr_hot.append(int(targets_t[0]))
             
-        param = {'max_depth':20,'num_class':28,  'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
+        param = {'max_depth':20,'num_class':28,  'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16, 'seed':10 }
+        #param = {'max_depth':20,'num_class':28,  'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
+
         param['eval_metric'] = ['auc'] 
       #  param['nthread'] = 4
         num_round = 2
