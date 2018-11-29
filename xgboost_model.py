@@ -20,7 +20,7 @@ from sklearn.multiclass import OneVsRestClassifier
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
   #  other_class = []
-    df = pd.read_csv('../../train.csv')
+    df = pd.read_csv('../train.csv')
     id_list = []
     for i, row in df.iterrows():
         targets = row['Target'].split(' ')
