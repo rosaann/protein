@@ -34,7 +34,7 @@ def xgboost_train():
                 tar_t[int(tar)] = 1
           #  print('tar_t ', tar_t.shape)
           #  tr_hot.append(tar_t)
-            tr_hot.append(int(targets_t[0]))
+            tr_hot.append(int(targets_t[0]) + 1)
             
         param = {'max_depth':20,  'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
         param['eval_metric'] = ['auc', 'ams@0'] 
