@@ -16,7 +16,7 @@ from sklearn.metrics import f1_score
 def xgboost_train():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
-    train_loader = data.DataLoader(dataset,int( 31072/300), num_workers= 8,
+    train_loader = data.DataLoader(dataset,int( 31072/1), num_workers= 8,
                                                shuffle=True, pin_memory=False)
    # batch_iterator = iter(train_loader)
     index = 0
@@ -49,12 +49,13 @@ def xgboost_train():
         num_round = 10
         evallist  = [(dtest,'eval'), (dtrain,'train')]
 
-        bst = xgb.train(param, dtrain , num_round)
+        bst = xgb.train(param, dtrain , num_round, evallist)
         # make prediction
         preds = bst.predict(dtest)
         print('i ' , index)
-        print ("Score (val): " , metrics.accuracy_score(tr_hot[train_end:], preds))
+        
         print((tr_hot[train_end:] == preds).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
+        print ("Score (val): " , bst.best_score)
         index += 1
         
 xgboost_train()
