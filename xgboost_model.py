@@ -41,8 +41,8 @@ def xgboost_train():
         param['nthread'] = 4
         num_round = 2
         train_end = int(len(images) * 0.8)
-        dtrain = xgb.DMatrix(images[:train_end], targets[ : train_end] )
-        dtest = xgb.DMatrix(images[train_end : ], targets[train_end : ] )
+        dtrain = xgb.DMatrix(images[:train_end], tr_hot[ : train_end] )
+        dtest = xgb.DMatrix(images[train_end : ], tr_hot[train_end : ] )
         print('tr_hot ', tr_hot.shape)
         num_round = 10
         evallist  = [(dtest,'eval'), (dtrain,'train')]
