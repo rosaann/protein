@@ -32,6 +32,7 @@ def xgboost_train():
             tar_t = np.zeros((28, 1))
             for tar in targets:
                 tar_t[int(tar)] = 1
+            print('tar_t ', tar_t.shape)
             tr_hot[ti] = tar_t
             
         param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'reg:linear', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
