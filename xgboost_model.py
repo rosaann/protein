@@ -44,7 +44,7 @@ def xgboost_train():
         data_list.append((img, tar_t))
     print('data count ', len(data_list))   
     
-    train_end = len(data_list) * 0.8
+    train_end = int(len(data_list) * 0.8)
     x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
     clf = OneVsRestClassifier(x)
     clf.fit(data_list[: train_end][0], data_list[: train_end][1])
