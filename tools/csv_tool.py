@@ -222,9 +222,21 @@ def vis_compond_class():
                     if count >= 10:
                         break
 
-
-vis_compond_class()                
-vis_every_class()
+def find_small_num_class_ids():
+    type_class = [8, 9, 10, 15, 16,17, 27]
+    other_class = []
+    df = pd.read_csv('../../train.csv')
+    id_list = []
+    for i, row in df.iterrows():
+        targets = row['Target'].split(' ')
+        targets_t = [int (tthis) for tthis in targets]
+      #  tar_in_typelist = []
+        for target in targets_t:
+            id_list.append(row['Id'])
+    return id_list
+find_small_num_class_ids()     
+#vis_compond_class()                
+#vis_every_class()
 #genBalencedData()
 #genSingleSampeIdList()
 #findAlltype()

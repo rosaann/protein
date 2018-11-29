@@ -13,7 +13,48 @@ import numpy as np
 import xgboost as xgb
 from sklearn import  metrics
 from sklearn.metrics import f1_score
+import cv2
+from xgboost import XGBClassifier
+from sklearn.multiclass import OneVsRestClassifier
+
+def find_small_num_class_ids():
+    type_class = [8, 9, 10, 15, 16,17, 27]
+  #  other_class = []
+    df = pd.read_csv('../../train.csv')
+    id_list = []
+    for i, row in df.iterrows():
+        targets = row['Target'].split(' ')
+        targets_t = [int (tthis) for tthis in targets]
+      #  tar_in_typelist = []
+        for targets_t in type_class:
+            id_list.append((row['Id'], targets))
+    return id_list
+
 def xgboost_train():
+    id_list = find_small_num_class_ids()
+    base_path = '../train/'
+    data_list = []
+    for img_id, targets in id_list:
+        img_path = base_path + img_id + '_' + 'green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        
+        targets_t = targets.split(' ')
+        tar_t = np.zeros((28, 1))
+        for tar in targets_t:
+            tar_t[int(tar)] = 1
+        data_list.append((img, tar_t))
+    print('data count ', len(data_list))   
+    
+    train_end = len(data_list) * 0.8
+    x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
+    clf = OneVsRestClassifier(x)
+    clf.fit(data_list[: train_end][0], data_list[: train_end][1])
+    y_p_x = clf.predict_proba(data_list[train_end : ][0])
+    
+    print('auc ', metrics.roc_auc_score(y_p_x, data_list[train_end : ][1]))
+    print('acc ', metrics.accuracy_score(y_p_x, data_list[train_end : ][1]))
+        
+def xgboost_train_old():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
     train_loader = data.DataLoader(dataset,int( 31072/2), num_workers= 8,
