@@ -39,6 +39,7 @@ def xgboost_train():
         train_end = int(len(images) * 0.8)
         dtrain = xgb.DMatrix(images[:train_end])
         dtest = xgb.DMatrix(images[train_end : ])
+        print('tr_hot ', tr_hot.shape)
         bst = xgb.train(param, dtrain,tr_hot[ : train_end] )
         # make prediction
         preds = bst.predict(dtest)
