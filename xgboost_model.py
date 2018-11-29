@@ -16,7 +16,7 @@ from sklearn.metrics import f1_score
 def xgboost_train():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
-    train_loader = data.DataLoader(dataset,int( 31072/1), num_workers= 8,
+    train_loader = data.DataLoader(dataset,int( 31072/2), num_workers= 8,
                                                shuffle=True, pin_memory=False)
    # batch_iterator = iter(train_loader)
     index = 0
