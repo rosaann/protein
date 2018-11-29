@@ -49,7 +49,7 @@ def xgboost_train():
         num_round = 10
         evallist  = [(dtest,'eval'), (dtrain,'train')]
 
-        bst = xgb.train(param, dtrain , num_round, evallist)
+        bst = xgb.train(param, dtrain , num_round)
         # make prediction
         preds = bst.predict(dtest)
         print('i ' , index)
