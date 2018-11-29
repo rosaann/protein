@@ -37,9 +37,9 @@ def xgboost_train():
         param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'multi:softprob', 'seed':10 }
         num_round = 2
         train_end = int(len(images) * 0.8)
-        dtrain = xgb.DMatrix(images[:train_end],tr_hot[train_end:] )
+        dtrain = xgb.DMatrix(images[:train_end])
         dtest = xgb.DMatrix(images[train_end : ])
-        bst = xgb.train(param, dtrain)
+        bst = xgb.train(param, dtrain,tr_hot[ : train_end] )
         # make prediction
         preds = bst.predict(dtest)
         print('i ' , index)
