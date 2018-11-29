@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 import xgboost as xgb
 from sklearn import  metrics
-
+from sklearn.metrics import f1_score
 def xgboost_train():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
    # config = Config()
@@ -36,7 +36,7 @@ def xgboost_train():
           #  tr_hot.append(tar_t)
             tr_hot.append(int(targets_t[0]))
             
-        param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'reg:linear', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
+        param = {'max_depth':20, 'num_class':28, 'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
         param['eval_metric'] = ['auc', 'ams@0'] 
         param['nthread'] = 4
         num_round = 2
