@@ -36,7 +36,7 @@ def xgboost_train():
           #  tr_hot.append(tar_t)
             tr_hot.append(int(targets_t[0]))
             
-        param = {'max_depth':20,'num_class':28,  'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16, 'seed':10 }
+        param = {'max_depth':20,'num_class':28,  'eta':1, 'silent':1, 'objective':'binary:logistic','nthread':8, 'scale_pos_weight':1, 'gpu_id':0, 'max_bin':16, 'seed':10 }
         #param = {'max_depth':20,'num_class':28,  'eta':1, 'silent':1, 'objective':'multi:softprob', 'gpu_id':0, 'max_bin':16,'tree_method': 'gpu_hist', 'seed':10 }
 
         param['eval_metric'] = ['auc'] 
@@ -53,7 +53,7 @@ def xgboost_train():
         # make prediction
         preds = bst.predict(dtest)
         print('i ' , index)
-        print ("AUC Score (val): " , metrics.roc_auc_score(tr_hot[train_end:], preds))
+        print ("f1 Score (val): " , f1_score(tr_hot[train_end:], preds))
         print((tr_hot[train_end:] == preds).mean()) # 打印精度最大的那一个三元组 print(max(results, key=lambda x: x[2]))
         index += 1
         
