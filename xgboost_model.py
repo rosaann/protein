@@ -25,6 +25,7 @@ def xgboost_train():
         nsamples, nx, ny = images.shape
         images = images.reshape((nsamples,nx*ny))
         print('len ',len(images))
+        
         tr_hot = []
         for img_targets in targets:
             targets = img_targets.split(' ')
@@ -33,10 +34,10 @@ def xgboost_train():
                 tar_t[int(tar)] = 1
             tr_hot.append(tar_t)  
             
-        param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'multi:softprob' }
+        param = {'max_depth':20, 'num_class':27, 'eta':1, 'silent':1, 'objective':'multi:softprob', 'seed':10 }
         num_round = 2
         train_end = int(len(images) * 0.8)
-        dtrain = xgb.DMatrix(images[:train_end])
+        dtrain = xgb.DMatrix(images[:train_end],tr_hot[train_end:] )
         dtest = xgb.DMatrix(images[train_end : ])
         bst = xgb.train(param, dtrain)
         # make prediction
