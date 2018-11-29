@@ -38,9 +38,8 @@ def xgboost_train():
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         
-        targets_t = targets.split(' ')
         tar_t = np.zeros((28, 1))
-        for tar in targets_t:
+        for tar in targets:
             tar_t[int(tar)] = 1
         data_list.append((img, tar_t))
     print('data count ', len(data_list))   
