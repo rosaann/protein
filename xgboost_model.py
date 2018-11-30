@@ -71,9 +71,9 @@ def xgboost_train():
                         idinfo_list[0].append(i)
                         idinfo_list[1].append(row['Id'])
                         idinfo_list[2].append(targets_t)
-                        if len(idinfo_list) >= train_once_num:
+                        if len(idinfo_list[0]) >= train_once_num:
                             break
-            print('len ', len(idinfo_list), ' ', idinfo_list)
+            print('len ', len(idinfo_list[0]), ' ', idinfo_list)
             train_data_id_class_list.append(idinfo_list)
             return
             
