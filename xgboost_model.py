@@ -58,8 +58,32 @@ def xgboost_train():
             class_pair = class_pair_list[ti]
             hav_gotten_id_list = idinfo_list[ 0]
            # print('hav_gotten_id_list ', hav_gotten_id_list)
-            for i, row in df.iterrows():
+            idinfo_list = get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list, train_once_num) 
+            print('len ', len(idinfo_list[0]), ' ')
+            train_data_id_class_list.append(idinfo_list)
+        else: 
+             full_timie = int(len(idinfo_list[0]) / train_once_num)
+             for i in range(full_timie):
+                 start = i * train_once_num
+                 end = start + train_once_num
+                 cut = [idinfo_list[0][start : end], idinfo_list[1][start : end], idinfo_list[2][start : end]]
+                 train_data_id_class_list.append(cut)
+                 print('cut len ', len(cut[0]))
+             rest = [idinfo_list[0][full_timie * train_once_num : ], idinfo_list[1][full_timie * train_once_num : ], idinfo_list[2][full_timie * train_once_num : ]]
+             idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
+             print('with rest len ', len(idinfo_list[0]), ' ', idinfo_list)
+             return
+         
+def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
+    for i, row in df.iterrows():
                 if i not in hav_gotten_id_list:
+                    if_in_saved_list = False
+                    for saved_train_list in train_data_id_class_list:
+                        if i in saved_train_list[0]:
+                            if_in_saved_list = True
+                            break
+                    if if_in_saved_list == True:
+                        continue
                     targets = row['Target'].split(' ')
                     targets_t = [int (tthis) for tthis in targets]
                     if_vali = False
@@ -68,15 +92,11 @@ def xgboost_train():
                             if_vali = True
                             break
                     if if_vali == True:
-                        idinfo_list[0].append(i)
-                        idinfo_list[1].append(row['Id'])
-                        idinfo_list[2].append(targets_t)
-                        if len(idinfo_list[0]) >= train_once_num:
-                            break
-            print('len ', len(idinfo_list[0]), ' ', idinfo_list)
-            train_data_id_class_list.append(idinfo_list)
-            return
-            
+                        idinfo_list_toadd[0].append(i)
+                        idinfo_list_toadd[1].append(row['Id'])
+                        idinfo_list_toadd[2].append(targets_t)
+                        if len(idinfo_list_toadd[0]) >= train_once_num:
+                            return idinfo_list_toadd        
 def get_type_class(type_check, df)  :     
     idx_list =[]
     id_list = []
