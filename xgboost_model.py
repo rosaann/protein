@@ -42,16 +42,20 @@ def xgboost_train():
     base_path = '../train/'
     data_img_list = []
     data_tar_list = []
+    log_idx = 0
     for img_id, targets in id_list:
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
-        
-        
+            
         tar_t = np.zeros((28))
         for tar in targets:
             tar_t[int(tar)] = 1
         data_img_list.append(img)
         data_tar_list.append(tar_t)
+        if log_idx < 10:
+            print(tar_t)
+            log_idx += 1
+        
     data_img_list = np.array(data_img_list)
     data_tar_list = np.array(data_tar_list)
 
@@ -67,7 +71,6 @@ def xgboost_train():
     #clf.fit(data_list[: train_end][0], data_list[: train_end][1])
     y_p_x = clf.predict_proba(data_img_list[train_end : ])
     
-    print('result ', y_p_x)
     print('f1 ',f1_score(y_p_x, Y_enc[train_end : ], average = "macro"))
     print('acc ', metrics.accuracy_score(y_p_x, Y_enc[train_end : ]))
         
