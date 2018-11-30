@@ -72,8 +72,8 @@ def xgboost_train():
     train_end = int(len(data_img_list) * 0.8)
     param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
-             ,'nthread':1, 'scale_pos_weight':1, 'gpu_id':0
-             ,'tree_method':'gpu_exact', 'predictor':'gpu_predictor'
+             ,'nthread':1, 'scale_pos_weight':1
+             ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'max_bin':16, 'seed':10 }
 
     x = xgb.XGBClassifier(**param)  
