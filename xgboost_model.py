@@ -54,7 +54,7 @@ def xgboost_train():
     Y_enc = MultiLabelBinarizer().fit_transform(id_list[:][1])
     train_end = int(len(data_list) * 0.8)
     x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
-    clf = MultiOutputClassifier(x)
+    clf = OneVsRestClassifier(x)
     clf.fit(data_list[: train_end][0], Y_enc[:train_end])
     #clf.fit(data_list[: train_end][0], data_list[: train_end][1])
     y_p_x = clf.predict_proba(data_list[train_end : ][0])
