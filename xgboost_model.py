@@ -72,8 +72,8 @@ def xgboost_train():
     train_end = int(len(data_img_list) * 0.8)
     x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_img_list[: train_end], Y_enc[:train_end])
-    #clf.fit(data_list[: train_end][0], data_list[: train_end][1])
+    #clf.fit(data_img_list[: train_end], Y_enc[:train_end])
+    clf.fit(data_img_list[: train_end][0], data_tar_list[: train_end][1])
     y_p_x = clf.predict_proba(data_img_list[train_end : ])
     
     log_idx = 0
@@ -84,8 +84,8 @@ def xgboost_train():
         else :
             break
         
-    print('f1 ',f1_score(y_p_x, Y_enc[train_end : ], average = "macro"))
-    print('acc ', metrics.accuracy_score(y_p_x, Y_enc[train_end : ]))
+    print('f1 ',f1_score(y_p_x, data_tar_list[train_end : ], average = "macro"))
+    print('acc ', metrics.accuracy_score(y_p_x, data_tar_list[train_end : ]))
         
 def xgboost_train_old():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
