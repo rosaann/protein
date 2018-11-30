@@ -36,7 +36,7 @@ def find_small_num_class_ids():
 
 def xgboost_train():
     id_list = find_small_num_class_ids()
-    return
+    
     base_path = '../train/'
     data_list = []
     for img_id, targets in id_list:
