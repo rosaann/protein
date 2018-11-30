@@ -50,7 +50,7 @@ def xgboost_train():
             tar_t[int(tar)] = 1
         data_list.append((img, tar_t))
     data_list = np.array(data_list)
-    print('img shape', data_list[:][0])   
+    print('img shape', data_list[:][0].shape)   
     
     Y_enc = MultiLabelBinarizer().fit_transform(id_list[:][1])
     train_end = int(len(data_list) * 0.8)
