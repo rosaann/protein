@@ -46,6 +46,7 @@ def xgboost_train():
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         
+        
         tar_t = np.zeros((28))
         for tar in targets:
             tar_t[int(tar)] = 1
@@ -54,6 +55,8 @@ def xgboost_train():
     data_img_list = np.array(data_img_list)
     data_tar_list = np.array(data_tar_list)
 
+    nsamples, nx, ny = data_img_list.shape
+    data_img_list = data_img_list.reshape((nsamples,nx*ny))
     print('img shape', data_img_list.shape)   
     
     Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
