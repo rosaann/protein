@@ -57,7 +57,24 @@ def xgboost_train():
         if len(idinfo_list) < train_once_num:
             class_pair = class_pair_list[ti]
             hav_gotten_id_list = idinfo_list[ 0]
-            print('hav_gotten_id_list ', hav_gotten_id_list)
+           # print('hav_gotten_id_list ', hav_gotten_id_list)
+            for i, row in df.iterrows():
+                if i not in hav_gotten_id_list:
+                    targets = row['Target'].split(' ')
+                    targets_t = [int (tthis) for tthis in targets]
+                    if_vali = False
+                    for t in targets_t:
+                        if t not in class_pair:
+                            if_vali = True
+                            break
+                    if if_vali == True:
+                        hav_gotten_id_list[0].append(i)
+                        hav_gotten_id_list[1].append(row['Id'])
+                        hav_gotten_id_list[2].append(targets_t)
+                        if len(hav_gotten_id_list) >= train_once_num:
+                            break
+            print('len ', len(hav_gotten_id_list), ' ', hav_gotten_id_list)
+            train_data_id_class_list.append(hav_gotten_id_list)
             return
             
 def get_type_class(type_check, df)  :     
