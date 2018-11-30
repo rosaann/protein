@@ -37,13 +37,13 @@ def find_small_num_class_ids():
     return id_list
 def xgboost_train():
     id_list = find_small_num_class_ids()
-    train_end = int(len(id_list) * 0.6)
+    train_end = int(len(id_list) * 0.5)
     type_class = []
     for img_id, targets in id_list[train_end : ]:
         for target in targets:
             if target not in type_class:
                 type_class.append(target)
-    print('type kind : ', len(type_class))    
+    print('type kind : ', len(type_class), ' total ', len(id_list) - train_end)    
     print(type_class)    
     
 def xgboost_train_old_again():
