@@ -65,7 +65,7 @@ def xgboost_train():
     
     Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
     for i, y_en in enumerate(Y_enc):
-        if i < 10:
+        if i < 1:
             print(y_en)
         else :
             break
@@ -79,9 +79,10 @@ def xgboost_train():
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
     
-    for i in range(10):
-        start = int( i * (len(data_img_list)/10))
-        end = start + int(len(data_img_list)/10)
+    steps = 120
+    for i in range(steps):
+        start = int( i * (len(data_img_list)/steps))
+        end = start + int(len(data_img_list)/steps)
         if end > train_end:
             end = train_end
         clf.fit(data_img_list[start: end], Y_enc[start : end])
