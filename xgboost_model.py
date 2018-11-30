@@ -35,14 +35,26 @@ def find_small_num_class_ids():
             
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list
-
 def xgboost_train():
+    id_list = find_small_num_class_ids()
+    train_end = int(len(id_list) * 0.8)
+    type_class = []
+    for img_id, targets in id_list[train_end : ]:
+        for target in targets:
+            if target not in type_class:
+                type_class.append(target)
+    print('type kind : ', len(type_class))    
+    print(type_class)    
+    
+def xgboost_train_old_again():
     id_list = find_small_num_class_ids()
     
     base_path = '../train/'
     data_img_list = []
     data_tar_list = []
     log_idx = 0
+    
+   
     for img_id, targets in id_list:
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
@@ -79,7 +91,7 @@ def xgboost_train():
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
     
-    steps = 7
+    steps = 10
     for i in range(steps):
         start = int( i * (len(data_img_list)/steps))
         end = start + int(len(data_img_list)/steps)
