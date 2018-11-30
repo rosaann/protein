@@ -70,7 +70,9 @@ def xgboost_train():
         else :
             break
     train_end = int(len(data_img_list) * 0.8)
-    x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1, gpu_id=0)  
+    param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10,'learning_rate':0.05, 'objective':'binary:logistic','nthread':1, 'scale_pos_weight':1, 'gpu_id':0,'tree_method':['gpu_hist'], 'predictor':['gpu_predictor'],  'max_bin':16, 'seed':10 }
+
+    x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
     clf.fit(data_img_list[: train_end], Y_enc[:train_end])
     #clf.fit(data_img_list[: train_end][0], data_tar_list[: train_end][1])
