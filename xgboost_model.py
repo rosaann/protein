@@ -79,7 +79,7 @@ def xgboost_train():
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
     
-    steps = 32
+    steps = 10
     for i in range(steps):
         start = int( i * (len(data_img_list)/steps))
         end = start + int(len(data_img_list)/steps)
@@ -92,7 +92,7 @@ def xgboost_train():
         log_idx = 0
         for y in y_p_x:
             if log_idx < 10:
-                print('pre ', y)
+               # print('pre ', y)
                 log_idx += 1
             else :
                 break
@@ -103,7 +103,7 @@ def xgboost_train():
         log_idx = 0
         for y in y_p_x:
             if log_idx < 10:
-                print('pre-2 ', y)
+              #  print('pre-2 ', y)
                 log_idx += 1
             else :
                 break
