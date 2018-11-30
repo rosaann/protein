@@ -67,6 +67,7 @@ def xgboost_train():
     #clf.fit(data_list[: train_end][0], data_list[: train_end][1])
     y_p_x = clf.predict_proba(data_img_list[train_end : ])
     
+    print('result ', y_p_x)
     print('f1 ',f1_score(y_p_x, Y_enc[train_end : ], average = "macro"))
     print('acc ', metrics.accuracy_score(y_p_x, Y_enc[train_end : ]))
         
