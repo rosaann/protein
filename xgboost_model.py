@@ -68,13 +68,13 @@ def xgboost_train():
                             if_vali = True
                             break
                     if if_vali == True:
-                        hav_gotten_id_list[0].append(i)
-                        hav_gotten_id_list[1].append(row['Id'])
-                        hav_gotten_id_list[2].append(targets_t)
-                        if len(hav_gotten_id_list) >= train_once_num:
+                        idinfo_list[0].append(i)
+                        idinfo_list[1].append(row['Id'])
+                        idinfo_list[2].append(targets_t)
+                        if len(idinfo_list) >= train_once_num:
                             break
-            print('len ', len(hav_gotten_id_list), ' ', hav_gotten_id_list)
-            train_data_id_class_list.append(hav_gotten_id_list)
+            print('len ', len(idinfo_list), ' ', idinfo_list)
+            train_data_id_class_list.append(idinfo_list)
             return
             
 def get_type_class(type_check, df)  :     
