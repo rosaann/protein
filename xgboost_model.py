@@ -61,14 +61,14 @@ def xgboost_train():
             return
             
 def get_type_class(type_check, df)  :     
-    id_list = np.array([])
+    id_list =[]
     for i, row in df.iterrows():
         targets = row['Target'].split(' ')
         targets_t = [int (tthis) for tthis in targets]
         for t in targets_t:
             if t == type_check:
                id_list.append([i, row['Id'], targets_t]) 
-    return id_list
+    return np.array( id_list)
 def get_type_class_num_info(type_check, df):
     id_list = []
     for i, row in df.iterrows():
