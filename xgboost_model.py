@@ -72,14 +72,14 @@ def xgboost_train():
     train_end = int(len(data_img_list) * 0.8)
     param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
-             ,'nthread':4, 'scale_pos_weight':1
+             ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'max_bin':16, 'seed':10 }
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
     
-    steps = 5
+    steps = 7
     for i in range(steps):
         start = int( i * (len(data_img_list)/steps))
         end = start + int(len(data_img_list)/steps)
