@@ -40,7 +40,8 @@ def xgboost_train():
     id_list = find_small_num_class_ids()
     
     base_path = '../train/'
-    data_list = []
+    data_img_list = []
+    data_tar_list = []
     for img_id, targets in id_list:
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
@@ -48,20 +49,23 @@ def xgboost_train():
         tar_t = np.zeros((28))
         for tar in targets:
             tar_t[int(tar)] = 1
-        data_list.append((img, tar_t))
-    data_list = np.array(data_list)
-    print('img shape', data_list[:][0].shape)   
+        data_img_list.append(img)
+        data_tar_list.append(tar_t)
+    data_img_list = np.array(data_img_list)
+    data_tar_list = np.array(data_tar_list)
+
+    print('img shape', data_img_list.shape)   
     
-    Y_enc = MultiLabelBinarizer().fit_transform(id_list[:][1])
-    train_end = int(len(data_list) * 0.8)
+    Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
+    train_end = int(len(data_img_list) * 0.8)
     x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_list[: train_end][0], Y_enc[:train_end])
+    clf.fit(data_img_list[: train_end], Y_enc[:train_end])
     #clf.fit(data_list[: train_end][0], data_list[: train_end][1])
-    y_p_x = clf.predict_proba(data_list[train_end : ][0])
+    y_p_x = clf.predict_proba(data_img_list[train_end : ])
     
-    print('auc ', metrics.roc_auc_score(y_p_x, data_list[train_end : ][1]))
-    print('acc ', metrics.accuracy_score(y_p_x, data_list[train_end : ][1]))
+    print('auc ', metrics.roc_auc_score(y_p_x, Y_enc[train_end : ]))
+    print('acc ', metrics.accuracy_score(y_p_x, Y_enc[train_end : ]))
         
 def xgboost_train_old():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
