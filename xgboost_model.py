@@ -99,7 +99,7 @@ def xgboost_train():
         y_p_x[y_p_x >= 0.5] = 1
         y_p_x[y_p_x < 0.5] = 0
         
-        print('acc ', metrics.accuracy_score(y_p_x, data_tar_list[train_end : ]))
+      #  print('acc ', metrics.accuracy_score(y_p_x, data_tar_list[train_end : ]))
         log_idx = 0
         for y in y_p_x:
             if log_idx < 10:
