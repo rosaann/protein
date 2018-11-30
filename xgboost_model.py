@@ -19,6 +19,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer
 
+
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
   #  other_class = []
@@ -36,6 +37,7 @@ def find_small_num_class_ids():
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list
 def xgboost_train():
+    df = pd.read_csv('../train.csv')
     id_list = find_small_num_class_ids()
     #每一次模型的验证集，都从id_list中取   
     train_data_id_class_list = []
@@ -43,9 +45,9 @@ def xgboost_train():
     major_type_class_pair = []
     #先从type_class中，选含有其中一种的，剩下的
     for type_class in minor_type_class:
-        get_type_class_num_info(type_class)
+        get_type_class_num_info(type_class, df)
                 
-def get_type_class_num_info(type_check):
+def get_type_class_num_info(type_check, df):
     id_list = []
     for i, row in df.iterrows():
         targets = row['Target'].split(' ')
