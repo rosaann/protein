@@ -49,6 +49,7 @@ def xgboost_train():
         for tar in targets:
             tar_t[int(tar)] = 1
         data_list.append((img, tar_t))
+    data_list = np.array(data_list)
     print('data count ', len(data_list))   
     
     Y_enc = MultiLabelBinarizer().fit_transform(id_list[:][1])
