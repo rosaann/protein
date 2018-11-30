@@ -38,8 +38,7 @@ def find_small_num_class_ids():
     return id_list
 def xgboost_train():
     df = pd.read_csv('../train.csv')
-    id_list = find_small_num_class_ids()
-    #每一次模型的验证集，都从id_list中取   
+      
     train_data_id_class_list = []
     minor_type_class = [8, 9, 10, 15, 16,17, 27]
     class_pair_list = [[0, 8, 2, 3, 25, 21, 7],
@@ -92,13 +91,22 @@ def xgboost_train():
           tar_list.append(targets_t)
           if len(idx_list) >= train_once_num:
               train_data_id_class_list.append([idx_list, id_list, tar_list])
-              print('jkj len ', len(idx_list))
+             # print('jkj len ', len(idx_list))
               idx_list = []
               id_list = []
               tar_list = []
     train_data_id_class_list.append([idx_list, id_list, tar_list])
     print('last len ', len(idx_list))
     print('train_group ', len(train_data_id_class_list))
+    
+    clr_list = []
+    for train_data_id_class in train_data_id_class_list:
+        clr = train_one_model(train_data_id_class)
+        clr_list.append(clr)
+    
+    id_list = find_small_num_class_ids()
+    #验证集，都从id_list中取     
+    
          
 def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
     for i, row in df.iterrows():
@@ -152,7 +160,44 @@ def get_type_class_num_info(type_check, df):
             if t not in class_type_list:
                 class_type_list.append(t)
     print('type ', type_check,' total ',len(id_list), ' with ', class_type_list)
+def train_one_model(idinfo_list):
+    base_path = '../train/'
+    data_img_list = []
+    data_tar_list = []
+    
+   
+    for img_id, targets in idinfo_list[1]:
+        img_path = base_path + img_id + '_' + 'green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
+
+        data_img_list.append(img)
+        data_tar_list.append(targets)
         
+    data_img_list = np.array(data_img_list)
+    data_tar_list = np.array(data_tar_list)
+
+    nsamples, nx, ny = data_img_list.shape
+    data_img_list = data_img_list.reshape((nsamples,nx*ny))
+    print('img shape', data_img_list.shape)   
+    
+    Y_enc = MultiLabelBinarizer().fit_transform(idinfo_list[2])
+    for i, y_en in enumerate(Y_enc):
+        if i < 1:
+            print(y_en)
+        else :
+            break
+    param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
+             ,'learning_rate':0.05, 'objective':'binary:logistic'
+             ,'nthread':8, 'scale_pos_weight':1
+             ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
+             ,'max_bin':16, 'seed':10 }
+
+    x = xgb.XGBClassifier(**param)  
+    clf = OneVsRestClassifier(x)
+    clf.fit(data_img_list, Y_enc)
+    
+    return clf
 def xgboost_train_old_again():
     id_list = find_small_num_class_ids()
     
