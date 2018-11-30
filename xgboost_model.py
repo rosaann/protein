@@ -42,7 +42,9 @@ def xgboost_train():
     #每一次模型的验证集，都从id_list中取   
     train_data_id_class_list = []
     minor_type_class = [8, 9, 10, 15, 16,17, 27]
-    major_type_class_pair = []
+    class_pair = [[0, 8, 2, 3, 25, 21, 7],
+                  [6, 9, 10],
+                  ]
     #先从type_class中，选含有其中一种的，剩下的
     for type_class in minor_type_class:
         get_type_class_num_info(type_class, df)
@@ -61,7 +63,7 @@ def get_type_class_num_info(type_check, df):
         for t in targets_i : 
             if t not in class_type_list:
                 class_type_list.append(t)
-    print('type ', type_check, ' with ', class_type_list)
+    print('type ', type_check,' total ',len(id_list), ' with ', class_type_list)
         
 def xgboost_train_old_again():
     id_list = find_small_num_class_ids()
