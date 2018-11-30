@@ -53,24 +53,29 @@ def xgboost_train():
     
     train_once_num = 80
     for ti, type_class in enumerate( minor_type_class) :
-        id_list = get_type_class(type_class, df)
+        idinfo_list = get_type_class(type_class, df)
         if len(id_list) < train_once_num:
             class_pair = class_pair_list[ti]
-            hav_gotten_id_list = id_list[:, 0]
+            hav_gotten_id_list = idinfo_list[ 0]
             print('hav_gotten_id_list ', hav_gotten_id_list)
             return
             
 def get_type_class(type_check, df)  :     
-    id_list =[]
+    idx_list =[]
+    id_list = []
+    tar_list = []
     for i, row in df.iterrows():
         targets = row['Target'].split(' ')
         targets_t = [int (tthis) for tthis in targets]
         for t in targets_t:
             if t == type_check:
-               id_list.append((i, row['Id'], targets_t )) 
-    return np.array( id_list)
+               idx_list.append(i)
+               id_list.append(row['Id'])
+               tar_list.append(targets_t) 
+    return [idx_list, id_list, tar_list]
 def get_type_class_num_info(type_check, df):
     id_list = []
+    
     for i, row in df.iterrows():
         targets = row['Target'].split(' ')
         targets_t = [int (tthis) for tthis in targets]
