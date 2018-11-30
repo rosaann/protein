@@ -71,8 +71,34 @@ def xgboost_train():
                  print('cut len ', len(cut[0]))
              rest = [idinfo_list[0][full_timie * train_once_num : ], idinfo_list[1][full_timie * train_once_num : ], idinfo_list[2][full_timie * train_once_num : ]]
              idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
+             train_data_id_class_list.append(idinfo_list)
              print('with rest len ', len(idinfo_list[0]), ' ')
-             
+    
+    idx_list = []
+    id_list = []
+    tar_list = []
+    for i, row in df.iterrows(): 
+          if_in_saved_list = False
+          for saved_train_list in train_data_id_class_list:
+              if i in saved_train_list[0]:
+                  if_in_saved_list = True
+                  break
+              if if_in_saved_list == True:
+                  continue
+          targets = row['Target'].split(' ')
+          targets_t = [int (tthis) for tthis in targets]  
+          idx_list.append(i)
+          id_list.append(row['Id'])
+          tar_list.append(targets_t)
+          if len(idx_list) >= train_once_num:
+              train_data_id_class_list.append([idx_list, id_list, tar_list])
+              print('jkj len ', len(idx_list))
+              idx_list = []
+              id_list = []
+              tar_list = []
+    train_data_id_class_list.append([idx_list, id_list, tar_list])
+    print('last len ', len(idx_list))
+    print('train_group ', len(train_data_id_class_list))
          
 def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
     for i, row in df.iterrows():
