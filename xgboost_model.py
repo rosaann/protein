@@ -26,9 +26,10 @@ def find_small_num_class_ids():
         targets = row['Target'].split(' ')
         targets_t = [int (tthis) for tthis in targets]
       #  tar_in_typelist = []
-        for targets_t in type_class:
-            id_list.append((row['Id'], targets))
-            break
+        for t in targets_t:
+            if t in type_class:
+                id_list.append((row['Id'], targets))
+                break
             
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list
