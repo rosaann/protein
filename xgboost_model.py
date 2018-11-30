@@ -42,13 +42,33 @@ def xgboost_train():
     #每一次模型的验证集，都从id_list中取   
     train_data_id_class_list = []
     minor_type_class = [8, 9, 10, 15, 16,17, 27]
-    class_pair = [[0, 8, 2, 3, 25, 21, 7],
+    class_pair_list = [[0, 8, 2, 3, 25, 21, 7],
                   [6, 9, 10],
-                  ]
+                  [6, 9, 10],
+                  [15, 5, 0, 16, 2],
+                  [16, 0, 6, 14, 17, 18, 25, 11, 21, 7, 3, 5, 2, 22, 23, 4, 26, 19, 12, 15, 24],
+                  [16, 14, 17, 18, 25, 0, 21, 19, 7, 5, 2, 23, 22],
+                  [2, 0, 27, 5, 19, 4, 23]]
     #先从type_class中，选含有其中一种的，剩下的
-    for type_class in minor_type_class:
-        get_type_class_num_info(type_class, df)
-                
+    
+    train_once_num = 80
+    for ti, type_class in enumerate( minor_type_class) :
+        id_list = get_type_class(type_class, df)
+        if len(id_list) < train_once_num:
+            class_pair = class_pair_list[ti]
+            hav_gotten_id_list = id_list[:,0]
+            print('hav_gotten_id_list ', hav_gotten_id_list)
+            return
+            
+def get_type_class(type_check, df)  :     
+    id_list = []
+    for i, row in df.iterrows():
+        targets = row['Target'].split(' ')
+        targets_t = [int (tthis) for tthis in targets]
+        for t in targets_t:
+            if t == type_check:
+               id_list.append((i, row['Id'], targets_t)) 
+    return id_list
 def get_type_class_num_info(type_check, df):
     id_list = []
     for i, row in df.iterrows():
