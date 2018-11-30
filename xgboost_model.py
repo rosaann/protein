@@ -72,7 +72,7 @@ def xgboost_train():
     train_end = int(len(data_img_list) * 0.8)
     param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
-             ,'nthread':1, 'scale_pos_weight':1
+             ,'nthread':4, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'max_bin':16, 'seed':10 }
 
@@ -96,9 +96,19 @@ def xgboost_train():
                 log_idx += 1
             else :
                 break
+        y_p_x[y_p_x >= 0.5] = 1
+        y_p_x[y_p_x < 0.5] = 0
         
-        print('f1 ',f1_score(y_p_x, data_tar_list[train_end : ], average = "macro"))
         print('acc ', metrics.accuracy_score(y_p_x, data_tar_list[train_end : ]))
+        log_idx = 0
+        for y in y_p_x:
+            if log_idx < 10:
+                print('pre-2 ', y)
+                log_idx += 1
+            else :
+                break
+        print('f1 ',f1_score(y_p_x, data_tar_list[train_end : ], average = "macro"))
+        
         
 def xgboost_train_old():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
