@@ -61,7 +61,7 @@ def xgboost_train():
             return
             
 def get_type_class(type_check, df)  :     
-    id_list = np.array()
+    id_list = np.array([])
     for i, row in df.iterrows():
         targets = row['Target'].split(' ')
         targets_t = [int (tthis) for tthis in targets]
