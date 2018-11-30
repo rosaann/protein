@@ -37,15 +37,30 @@ def find_small_num_class_ids():
     return id_list
 def xgboost_train():
     id_list = find_small_num_class_ids()
-    train_end = int(len(id_list) * 0.5)
-    type_class = []
-    for img_id, targets in id_list[train_end : ]:
-        for target in targets:
-            if target not in type_class:
-                type_class.append(target)
-    print('type kind : ', len(type_class), ' total ', len(id_list) - train_end)    
-    print(type_class)    
+    #每一次模型的验证集，都从id_list中取   
+    train_data_id_class_list = []
+    minor_type_class = [8, 9, 10, 15, 16,17, 27]
+    major_type_class_pair = []
+    #先从type_class中，选含有其中一种的，剩下的
+    for type_class in minor_type_class:
+        get_type_class_num_info(type_class)
+                
+def get_type_class_num_info(type_check):
+    id_list = []
+    for i, row in df.iterrows():
+        targets = row['Target'].split(' ')
+        targets_t = [int (tthis) for tthis in targets]
+        for t in targets_t:
+            if t == type_check:
+               id_list.append((row['Id'], targets_t)) 
     
+    class_type_list = []           
+    for id_t, targets_i in id_list:
+        for t in targets_i : 
+            if t not in class_type_list:
+                class_type_list.append(t)
+    print('type ', type_check, ' with ', class_type_list)
+        
 def xgboost_train_old_again():
     id_list = find_small_num_class_ids()
     
