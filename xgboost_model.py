@@ -64,6 +64,11 @@ def xgboost_train():
     print('img shape', data_img_list.shape)   
     
     Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
+    for i, y_en in enumerate(Y_enc):
+        if i < 10:
+            print(y_en)
+        else :
+            break
     train_end = int(len(data_img_list) * 0.8)
     x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
     clf = OneVsRestClassifier(x)
