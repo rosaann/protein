@@ -70,24 +70,34 @@ def xgboost_train():
         else :
             break
     train_end = int(len(data_img_list) * 0.8)
-    param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10,'learning_rate':0.05, 'objective':'binary:logistic','nthread':1, 'scale_pos_weight':1, 'gpu_id':0,'tree_method':'gpu_exact', 'predictor':'gpu_predictor',  'max_bin':16, 'seed':10 }
+    param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
+             ,'learning_rate':0.05, 'objective':'binary:logistic'
+             ,'nthread':1, 'scale_pos_weight':1, 'gpu_id':0
+             ,'tree_method':'gpu_exact', 'predictor':'gpu_predictor'
+             ,'max_bin':16, 'seed':10 }
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_img_list[: train_end], Y_enc[:train_end])
-    #clf.fit(data_img_list[: train_end][0], data_tar_list[: train_end][1])
-    y_p_x = clf.predict_proba(data_img_list[train_end : ])
     
-    log_idx = 0
-    for y in y_p_x:
-        if log_idx < 10:
-            print('pre ', y)
-            log_idx += 1
-        else :
-            break
+    for i in range(10):
+        start = int( i * (len(data_img_list)/10))
+        end = start + int(len(data_img_list)/10)
+        if end > train_end:
+            end = train_end
+        clf.fit(data_img_list[start: end], Y_enc[start : end])
+    #clf.fit(data_img_list[: train_end][0], data_tar_list[: train_end][1])
+        y_p_x = clf.predict_proba(data_img_list[train_end : ])
+    
+        log_idx = 0
+        for y in y_p_x:
+            if log_idx < 10:
+                print('pre ', y)
+                log_idx += 1
+            else :
+                break
         
-    print('f1 ',f1_score(y_p_x, data_tar_list[train_end : ], average = "macro"))
-    print('acc ', metrics.accuracy_score(y_p_x, data_tar_list[train_end : ]))
+        print('f1 ',f1_score(y_p_x, data_tar_list[train_end : ], average = "macro"))
+        print('acc ', metrics.accuracy_score(y_p_x, data_tar_list[train_end : ]))
         
 def xgboost_train_old():
     dataset = ProteinDataSet(None,csv_path='../train.csv', phase='train')
