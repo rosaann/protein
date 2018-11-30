@@ -46,7 +46,7 @@ def xgboost_train():
     for img_id, targets in id_list:
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
-            
+        img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
      #   tar_t = np.zeros((28))
      #   for tar in targets:
      #       tar_t[int(tar)] = 1
