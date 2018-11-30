@@ -79,7 +79,7 @@ def xgboost_train():
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
     
-    steps = 320
+    steps = 32
     for i in range(steps):
         start = int( i * (len(data_img_list)/steps))
         end = start + int(len(data_img_list)/steps)
