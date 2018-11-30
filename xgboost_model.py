@@ -47,14 +47,14 @@ def xgboost_train():
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
             
-        tar_t = np.zeros((28))
-        for tar in targets:
-            tar_t[int(tar)] = 1
+     #   tar_t = np.zeros((28))
+     #   for tar in targets:
+     #       tar_t[int(tar)] = 1
         data_img_list.append(img)
         data_tar_list.append(targets)
-        if log_idx < 10:
-            print(tar_t)
-            log_idx += 1
+     #   if log_idx < 10:
+     #       print(tar_t)
+     #       log_idx += 1
         
     data_img_list = np.array(data_img_list)
     data_tar_list = np.array(data_tar_list)
@@ -70,7 +70,7 @@ def xgboost_train():
         else :
             break
     train_end = int(len(data_img_list) * 0.8)
-    x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
+    x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1, 'gpu_id'=0)  
     clf = OneVsRestClassifier(x)
     clf.fit(data_img_list[: train_end], Y_enc[:train_end])
     #clf.fit(data_img_list[: train_end][0], data_tar_list[: train_end][1])
