@@ -16,6 +16,7 @@ from sklearn.metrics import f1_score
 import cv2
 from xgboost import XGBClassifier
 from sklearn.multiclass import OneVsRestClassifier
+from sklearn.preprocessing import MultiLabelBinarizer
 
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
@@ -49,10 +50,12 @@ def xgboost_train():
         data_list.append((img, tar_t))
     print('data count ', len(data_list))   
     
+    Y_enc = MultiLabelBinarizer().fit_transform(id_list[:][1])
     train_end = int(len(data_list) * 0.8)
     x = xgb.XGBClassifier(learning_rate=0.05, n_estimators=10,objective='binary:logistic', seed=1)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_list[: train_end][0], data_list[: train_end][1])
+    clf.fit(data_list[: train_end][0], Y_enc[:train_end])
+    #clf.fit(data_list[: train_end][0], data_list[: train_end][1])
     y_p_x = clf.predict_proba(data_list[train_end : ][0])
     
     print('auc ', metrics.roc_auc_score(y_p_x, data_list[train_end : ][1]))
