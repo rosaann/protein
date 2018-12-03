@@ -104,6 +104,7 @@ def xgboost_train():
     model_base_path = 'outs/'
     start_from = 0
     for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list):
+        print('part ', train_i , ' of ', len(train_data_id_class_list))
         if train_i < start_from:
             continue
         clr, new_c_pair = train_one_model(train_data_id_class, c_pair)
