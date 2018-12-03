@@ -212,6 +212,7 @@ def train_one_model(idinfo_list, class_pair):
     print('img shape', data_img_list.shape)   
     
     Y_enc = MultiLabelBinarizer()
+    print('class ', class_pair)
     Y_enc.fit(class_pair)
     Y_enc.transform(idinfo_list[2])
     for i, y_en in enumerate(Y_enc):
