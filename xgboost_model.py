@@ -196,7 +196,6 @@ def train_one_model(idinfo_list, class_pair):
     data_tar_list = []
     
     print('class ', class_pair)
-    Y_enc.fit(class_pair)
     for img_idx, img_id, targets in zip(idinfo_list[0], idinfo_list[1],idinfo_list[2]):
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
@@ -215,7 +214,8 @@ def train_one_model(idinfo_list, class_pair):
     print('img shape', data_img_list.shape)   
     
    
-    Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
+    Y_enc = MultiLabelBinarizer(class_pair).transform(data_tar_list)
+    
    # for i, y_en in enumerate(Y_enc):
    #     if i < 1:
    #         print(y_en)
