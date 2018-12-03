@@ -155,7 +155,7 @@ def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pai
                         if t not in class_pair:
                             if_vali = True
                             break
-                    if if_vali == True:
+                    if if_vali == False:
                         idinfo_list_toadd[0].append(i)
                         idinfo_list_toadd[1].append(row['Id'])
                         idinfo_list_toadd[2].append(targets_t)
