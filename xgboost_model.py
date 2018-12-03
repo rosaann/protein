@@ -195,7 +195,6 @@ def train_one_model(idinfo_list, class_pair):
     data_img_list = []
     data_tar_list = []
     
-    Y_enc = LabelEncoder()
     print('class ', class_pair)
     Y_enc.fit(class_pair)
     for img_idx, img_id, targets in zip(idinfo_list[0], idinfo_list[1],idinfo_list[2]):
@@ -205,10 +204,8 @@ def train_one_model(idinfo_list, class_pair):
 
         data_img_list.append(img)
         
-        
-        tr_enc = Y_enc.transform(targets)
-        print('tr ', targets,'lab_tr ', tr_enc)
-        data_tar_list.append(tr_enc)
+
+        data_tar_list.append(targets)
         
     data_img_list = np.array(data_img_list)
     data_tar_list = np.array(data_tar_list)
@@ -218,7 +215,7 @@ def train_one_model(idinfo_list, class_pair):
     print('img shape', data_img_list.shape)   
     
    
-    
+    Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
    # for i, y_en in enumerate(Y_enc):
    #     if i < 1:
    #         print(y_en)
@@ -232,7 +229,7 @@ def train_one_model(idinfo_list, class_pair):
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_img_list, data_tar_list)
+    clf.fit(data_img_list, Y_enc)
     
     return clf
 
