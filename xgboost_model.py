@@ -214,13 +214,13 @@ def train_one_model(idinfo_list, class_pair):
     print('img shape', data_img_list.shape)   
     
    
-    Y_enc = MultiLabelBinarizer(class_pair).transform(data_tar_list)
+    Y_enc = MultiLabelBinarizer().fit(class_pair).transform(data_tar_list)
     
-   # for i, y_en in enumerate(Y_enc):
-   #     if i < 1:
-   #         print(y_en)
-   #     else :
-   #         break
+    for i, y_en in enumerate(Y_enc):
+        if i < 1:
+            print(y_en)
+        else :
+            break
     param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
