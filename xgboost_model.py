@@ -211,7 +211,9 @@ def train_one_model(idinfo_list, class_pair):
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
     print('img shape', data_img_list.shape)   
     
-    Y_enc = MultiLabelBinarizer(class_pair).transform(idinfo_list[2])
+    Y_enc = MultiLabelBinarizer()
+    Y_enc.fit(class_pair)
+    Y_enc.transform(idinfo_list[2])
     for i, y_en in enumerate(Y_enc):
         if i < 1:
             print(y_en)
