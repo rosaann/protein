@@ -18,7 +18,7 @@ from xgboost import XGBClassifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
-
+from sklearn.externals import joblib
 
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
@@ -101,9 +101,14 @@ def xgboost_train():
     
     clr_list = []
     real_class_pair_list = []
-    for train_data_id_class, c_pair in train_data_id_class_list:
+    model_base_path = 'outs/'
+    for train_i, train_data_id_class, c_pair in enumerate( train_data_id_class_list):
         clr, new_c_pair = train_one_model(train_data_id_class, c_pair)
-        clr_list.append(clr)
+        model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
+      #  clr_list.append(clr)
+     #   with open(model_path, 'wb') as f:
+     #       pickle.dump(clr, f)
+        joblib.dump(clr, model_path)
         real_class_pair_list.append(new_c_pair)
     
     id_list, c_list = find_small_num_class_ids()
@@ -111,13 +116,16 @@ def xgboost_train():
     val_img_list, val_tar_list = get_val_data_from_idinfolist(id_list, c_list)
     
     sub_result = []
-    for ci, clr in enumerate( clr_list):
+    for ci, class_pair in enumerate( real_class_pair_list):
+        model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
+
+        clr =  joblib.load(model_path)
         y_p_x = clr.predict_proba(val_img_list)
     
         y_p_x[y_p_x >= 0.5] = 1
         y_p_x[y_p_x < 0.5] = 0
         
-        class_pair = real_class_pair_list[ci]
+     #   class_pair = real_class_pair_list[ci]
         
         for iy, y in enumerate( y_p_x ):
             if y > 0:
