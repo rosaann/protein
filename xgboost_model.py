@@ -195,14 +195,20 @@ def train_one_model(idinfo_list, class_pair):
     data_img_list = []
     data_tar_list = []
     
-   
+    Y_enc = LabelEncoder()
+    print('class ', class_pair)
+    Y_enc.fit(class_pair)
     for img_idx, img_id, targets in zip(idinfo_list[0], idinfo_list[1],idinfo_list[2]):
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
 
         data_img_list.append(img)
-        data_tar_list.append(targets)
+        
+        
+        tr_enc = Y_enc.transform(targets)
+        print('tr ', targets,'lab_tr ', tr_enc)
+        data_tar_list.append(tr_enc)
         
     data_img_list = np.array(data_img_list)
     data_tar_list = np.array(data_tar_list)
@@ -211,16 +217,13 @@ def train_one_model(idinfo_list, class_pair):
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
     print('img shape', data_img_list.shape)   
     
-    Y_enc = LabelEncoder()
-    print('class ', class_pair)
-    Y_enc.fit(class_pair)
-    print(idinfo_list[2])
-    Y_enc.transform(idinfo_list[2])
-    for i, y_en in enumerate(Y_enc):
-        if i < 1:
-            print(y_en)
-        else :
-            break
+   
+    
+   # for i, y_en in enumerate(Y_enc):
+   #     if i < 1:
+   #         print(y_en)
+   #     else :
+   #         break
     param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
@@ -229,7 +232,7 @@ def train_one_model(idinfo_list, class_pair):
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_img_list, Y_enc)
+    clf.fit(data_img_list, data_tar_list)
     
     return clf
 
