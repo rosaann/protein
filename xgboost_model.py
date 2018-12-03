@@ -196,6 +196,13 @@ def train_one_model(idinfo_list, class_pair):
     data_tar_list = []
     
     print('class ', class_pair)
+    
+    pre_c = []
+    for targets in idinfo_list[2]:
+        for t in targets:
+            if t not in pre_c:
+                pre_c.append(t)
+    print('cc ', pre_c)
     for img_idx, img_id, targets in zip(idinfo_list[0], idinfo_list[1],idinfo_list[2]):
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
@@ -203,7 +210,6 @@ def train_one_model(idinfo_list, class_pair):
 
         data_img_list.append(img)
         
-
         data_tar_list.append(targets)
         
     data_img_list = np.array(data_img_list)
