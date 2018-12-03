@@ -102,7 +102,7 @@ def xgboost_train():
     clr_list = []
     real_class_pair_list = []
     model_base_path = 'outs/'
-    for train_i, train_data_id_class, c_pair in enumerate( train_data_id_class_list):
+    for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list):
         clr, new_c_pair = train_one_model(train_data_id_class, c_pair)
         model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
       #  clr_list.append(clr)
