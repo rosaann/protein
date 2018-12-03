@@ -216,7 +216,7 @@ def train_one_model(idinfo_list, class_pair):
    
     Y_enc_factory = MultiLabelBinarizer()
     Y_enc = Y_enc_factory.fit_transform(data_tar_list)
-    c = Y_enc_factory.class_
+    c = Y_enc_factory.classes_
     print('c ', c)
     for i, y_en in enumerate(Y_enc):
         if i < 1:
