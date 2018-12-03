@@ -196,7 +196,7 @@ def train_one_model(idinfo_list, class_pair):
     data_tar_list = []
     
    
-    for img_id, targets in idinfo_list[1]:
+    for img_idx, img_id, targets in idinfo_list[1]:
         img_path = base_path + img_id + '_' + 'green' + '.png'
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
