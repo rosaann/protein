@@ -102,7 +102,10 @@ def xgboost_train():
     clr_list = []
     real_class_pair_list = []
     model_base_path = 'outs/'
+    start_from = 0
     for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list):
+        if train_i < start_from:
+            continue
         clr, new_c_pair = train_one_model(train_data_id_class, c_pair)
         model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
       #  clr_list.append(clr)
@@ -111,11 +114,15 @@ def xgboost_train():
         joblib.dump(clr, model_path)
         real_class_pair_list.append(new_c_pair)
     
+        file=open('outs/class_pair.txt','w')
+        file.write(str(real_class_pair_list));
+        file.close()
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
     val_img_list, val_tar_list = get_val_data_from_idinfolist(id_list, c_list)
     
     sub_result = []
+    print('real_class_pair ', real_class_pair_list)
     for ci, class_pair in enumerate( real_class_pair_list):
         model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
 
@@ -227,7 +234,7 @@ def train_one_model(idinfo_list, class_pair):
 
     nsamples, nx, ny = data_img_list.shape
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
-    print('img shape', data_img_list.shape)   
+ #   print('img shape', data_img_list.shape)   
     
    
     Y_enc_factory = MultiLabelBinarizer()
@@ -274,7 +281,7 @@ def get_val_data_from_idinfolist(id_list,class_pair):
 
     nsamples, nx, ny = data_img_list.shape
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
-    print('img shape', data_img_list.shape)   
+  #  print('img shape', data_img_list.shape)   
     
     Y_enc = MultiLabelBinarizer(class_pair).fit_transform(data_tar_list)
     
