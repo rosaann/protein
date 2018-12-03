@@ -214,8 +214,9 @@ def train_one_model(idinfo_list, class_pair):
     print('img shape', data_img_list.shape)   
     
    
-    Y_enc = MultiLabelBinarizer().fit(class_pair).transform(data_tar_list)
-    
+    Y_enc = MultiLabelBinarizer().fit_transform(data_tar_list)
+    c = Y_enc.class_
+    print('c ', c)
     for i, y_en in enumerate(Y_enc):
         if i < 1:
             print(y_en)
