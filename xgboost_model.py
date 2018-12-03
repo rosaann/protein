@@ -214,6 +214,7 @@ def train_one_model(idinfo_list, class_pair):
     Y_enc = LabelEncoder()
     print('class ', class_pair)
     Y_enc.fit(class_pair)
+    print(idinfo_list[2])
     Y_enc.transform(idinfo_list[2])
     for i, y_en in enumerate(Y_enc):
         if i < 1:
