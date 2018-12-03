@@ -17,7 +17,7 @@ import cv2
 from xgboost import XGBClassifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
-from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 
 
 def find_small_num_class_ids():
@@ -211,7 +211,7 @@ def train_one_model(idinfo_list, class_pair):
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
     print('img shape', data_img_list.shape)   
     
-    Y_enc = MultiLabelBinarizer()
+    Y_enc = LabelEncoder()
     print('class ', class_pair)
     Y_enc.fit(class_pair)
     Y_enc.transform(idinfo_list[2])
