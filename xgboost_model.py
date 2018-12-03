@@ -212,7 +212,7 @@ def train_one_model(idinfo_list, class_pair):
     data_img_list = []
     data_tar_list = []
     
-    print('class ', class_pair)
+  #  print('class ', class_pair)
     
     pre_c = []
     for targets in idinfo_list[2]:
