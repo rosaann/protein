@@ -35,7 +35,7 @@ def find_small_num_class_ids():
                 break
             
     print('total ', df.shape[0], 'small ', len(id_list))
-    return id_list
+    return id_list, class_list
 def xgboost_train():
     df = pd.read_csv('../train.csv')
       
@@ -59,7 +59,7 @@ def xgboost_train():
            # print('hav_gotten_id_list ', hav_gotten_id_list)
             idinfo_list = get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list, train_once_num) 
             print('len ', len(idinfo_list[0]), ' ')
-            train_data_id_class_list.append(idinfo_list)
+            train_data_id_class_list.append((idinfo_list, class_pair))
         else: 
              full_timie = int(len(idinfo_list[0]) / train_once_num)
              for i in range(full_timie):
@@ -70,7 +70,7 @@ def xgboost_train():
                  print('cut len ', len(cut[0]))
              rest = [idinfo_list[0][full_timie * train_once_num : ], idinfo_list[1][full_timie * train_once_num : ], idinfo_list[2][full_timie * train_once_num : ]]
              idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
-             train_data_id_class_list.append(idinfo_list)
+             train_data_id_class_list.append((idinfo_list, class_pair))
              print('with rest len ', len(idinfo_list[0]), ' ')
     
     idx_list = []
@@ -90,23 +90,53 @@ def xgboost_train():
           id_list.append(row['Id'])
           tar_list.append(targets_t)
           if len(idx_list) >= train_once_num:
-              train_data_id_class_list.append([idx_list, id_list, tar_list])
+              train_data_id_class_list.append(([idx_list, id_list, tar_list], class_pair))
              # print('jkj len ', len(idx_list))
               idx_list = []
               id_list = []
               tar_list = []
-    train_data_id_class_list.append([idx_list, id_list, tar_list])
+    train_data_id_class_list.append(([idx_list, id_list, tar_list], class_pair))
     print('last len ', len(idx_list))
     print('train_group ', len(train_data_id_class_list))
     
     clr_list = []
-    for train_data_id_class in train_data_id_class_list:
-        clr = train_one_model(train_data_id_class)
+    for train_data_id_class, c_pair in train_data_id_class_list:
+        clr = train_one_model(train_data_id_class, c_pair)
         clr_list.append(clr)
     
-    id_list = find_small_num_class_ids()
+    id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
+    val_img_list, val_tar_list = get_val_data_from_idinfolist(id_list, c_list)
     
+    sub_result = []
+    for ci, clr in enumerate( clr_list):
+        y_p_x = clr.predict_proba(val_img_list)
+    
+        y_p_x[y_p_x >= 0.5] = 1
+        y_p_x[y_p_x < 0.5] = 0
+        
+        class_pair = train_data_id_class_list[ci][3]
+        
+        for iy, y in enumerate( y_p_x ):
+            if y > 0:
+               sub_result.append(class_pair[iy]) 
+               
+        print('sub ', ci, ' r:', sub_result)
+        return
+    result_i = np.zero(28)
+    for i_s, s in enumerate( sub_result):
+        result_i[i_s] = 1
+    
+    result = []
+    for i, r_i in enumerate(result_i):
+        if r_i > 0:
+          result.append(i)
+    
+    pair = [n for n in range(28)]
+    y_p_en = MultiLabelBinarizer(pair).fit_transform(result)
+    y_t_en = MultiLabelBinarizer(pair).fit_transform(val_tar_list)
+
+    print('---------f1 ',f1_score(y_p_en, y_t_en, average = "macro"))
          
 def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
     for i, row in df.iterrows():
@@ -160,7 +190,7 @@ def get_type_class_num_info(type_check, df):
             if t not in class_type_list:
                 class_type_list.append(t)
     print('type ', type_check,' total ',len(id_list), ' with ', class_type_list)
-def train_one_model(idinfo_list):
+def train_one_model(idinfo_list, class_pair):
     base_path = '../train/'
     data_img_list = []
     data_tar_list = []
@@ -181,7 +211,7 @@ def train_one_model(idinfo_list):
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
     print('img shape', data_img_list.shape)   
     
-    Y_enc = MultiLabelBinarizer().fit_transform(idinfo_list[2])
+    Y_enc = MultiLabelBinarizer(class_pair).fit_transform(idinfo_list[2])
     for i, y_en in enumerate(Y_enc):
         if i < 1:
             print(y_en)
@@ -198,6 +228,35 @@ def train_one_model(idinfo_list):
     clf.fit(data_img_list, Y_enc)
     
     return clf
+
+def get_val_data_from_idinfolist(id_list,class_pair):
+    base_path = '../train/'
+    data_img_list = []
+    data_tar_list = []
+    log_idx = 0
+    
+   
+    for img_id, targets in id_list:
+        img_path = base_path + img_id + '_' + 'green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
+
+        data_img_list.append(img)
+        targets_t = [int (tthis) for tthis in targets]
+
+        data_tar_list.append(targets_t)
+
+        
+    data_img_list = np.array(data_img_list)
+    data_tar_list = np.array(data_tar_list)
+
+    nsamples, nx, ny = data_img_list.shape
+    data_img_list = data_img_list.reshape((nsamples,nx*ny))
+    print('img shape', data_img_list.shape)   
+    
+    Y_enc = MultiLabelBinarizer(class_pair).fit_transform(data_tar_list)
+    
+    return data_img_list, Y_enc
 def xgboost_train_old_again():
     id_list = find_small_num_class_ids()
     
