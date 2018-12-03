@@ -100,9 +100,11 @@ def xgboost_train():
     print('train_group ', len(train_data_id_class_list))
     
     clr_list = []
+    real_class_pair_list = []
     for train_data_id_class, c_pair in train_data_id_class_list:
-        clr = train_one_model(train_data_id_class, c_pair)
+        clr, new_c_pair = train_one_model(train_data_id_class, c_pair)
         clr_list.append(clr)
+        real_class_pair_list.append(new_c_pair)
     
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
@@ -115,7 +117,7 @@ def xgboost_train():
         y_p_x[y_p_x >= 0.5] = 1
         y_p_x[y_p_x < 0.5] = 0
         
-        class_pair = train_data_id_class_list[ci][3]
+        class_pair = real_class_pair_list[ci]
         
         for iy, y in enumerate( y_p_x ):
             if y > 0:
@@ -239,7 +241,7 @@ def train_one_model(idinfo_list, class_pair):
     clf = OneVsRestClassifier(x)
     clf.fit(data_img_list, Y_enc)
     
-    return clf
+    return clf, c
 
 def get_val_data_from_idinfolist(id_list,class_pair):
     base_path = '../train/'
