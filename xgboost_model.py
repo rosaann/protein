@@ -127,7 +127,7 @@ def val_model():
     
     sub_result = []
     real_class_pair_list = cut_class_pair
-    print('real_class_pair ', real_class_pair_list)
+  #  print('real_class_pair ', real_class_pair_list)
     
     model_base_path = 'outs/'
     for ci, class_pair in enumerate( real_class_pair_list):
@@ -142,7 +142,7 @@ def val_model():
      #   class_pair = real_class_pair_list[ci]
         
         for iy, y in enumerate( y_p_x ):
-            if y > 0:
+            if y == 1:
                sub_result.append(class_pair[iy]) 
                
         print('sub ', ci, ' r:', sub_result)
