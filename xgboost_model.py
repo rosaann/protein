@@ -141,11 +141,13 @@ def val_model():
         
      #   class_pair = real_class_pair_list[ci]
         print('y_p ', y_p_x.shape, ' ', y_p_x)
-        sub_result = []
-        for iy, y in enumerate( y_p_x ):
-            if y == 1:
-               sub_result.append(class_pair[iy]) 
-        result_list[ci] = sub_result       
+        
+        for iy, ys in enumerate( y_p_x ):
+            sub_result = []
+            for y in ys:
+                if y == 1:
+                    sub_result.append(class_pair[iy]) 
+            result_list[ci] = sub_result       
         print('sub ', ci, ' r:', sub_result)
         return
     result_i = np.zero(28)
