@@ -19,6 +19,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
+from class_pair import cut_class_pair
 
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
@@ -118,14 +119,19 @@ def xgboost_train():
         file=open('outs/class_pair.txt','w')
         file.write(str(real_class_pair_list));
         file.close()
+    
+def val_model():
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
     val_img_list, val_tar_list = get_val_data_from_idinfolist(id_list, c_list)
     
     sub_result = []
+    real_class_pair_list = cut_class_pair
     print('real_class_pair ', real_class_pair_list)
+    
+    model_base_path = 'outs/'
     for ci, class_pair in enumerate( real_class_pair_list):
-        model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
+        model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
 
         clr =  joblib.load(model_path)
         y_p_x = clr.predict_proba(val_img_list)
@@ -408,4 +414,5 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
+#xgboost_train()
+val_model()
