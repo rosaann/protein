@@ -140,7 +140,7 @@ def val_model():
         y_p_x[y_p_x < 0.5] = 0
         
      #   class_pair = real_class_pair_list[ci]
-        
+        print('y_p ', y_p_x.shape, ' ', y_p_x)
         for iy, y in enumerate( y_p_x ):
             if y == 1:
                sub_result.append(class_pair[iy]) 
