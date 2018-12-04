@@ -129,7 +129,6 @@ def val_model():
   #  print('real_class_pair ', real_class_pair_list)
     
     model_base_path = 'outs/'
-    print('img ', len(val_img_list))
     result_list = [list() for i in range(len(val_img_list))]
     for ci, class_pair in enumerate( real_class_pair_list):
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
@@ -143,9 +142,9 @@ def val_model():
      #   class_pair = real_class_pair_list[ci]
         print('y_p ', y_p_x.shape, ' ', y_p_x)
         
-        for iy, ys in enumerate( y_p_x ):
+        for  ys in y_p_x :
             sub_result = []
-            for y in ys:
+            for iy, y in enumerate(ys):
                 if y == 1:
                     sub_result.append(class_pair[iy]) 
             result_list[ci] = sub_result       
