@@ -139,7 +139,7 @@ def start_pre(val_img_list):
     
     model_base_path = 'outs/'
     result_list = [list() for i in range(len(val_img_list))]
-    for ci, class_pair in enumerate( real_class_pair_list):
+    for ci, class_pair in enumerate( real_class_pair_list[:2]):
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
@@ -162,7 +162,7 @@ def start_pre(val_img_list):
     
     pre_list = []    
     for this_sub_i, sub_result in enumerate( result_list):
-        result_i = np.zero(28)
+        result_i = np.zeros(28)
         for i_s, s in enumerate( sub_result):
             result_i[s] = 1
     
@@ -467,5 +467,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-#val_model()
-test_xg_model()
+val_model()
+#test_xg_model()
