@@ -36,7 +36,7 @@ def find_small_num_class_ids():
                 break
             
     print('total ', df.shape[0], 'small ', len(id_list))
-    return id_list, class_list
+    return id_list, type_class
 def xgboost_train():
     df = pd.read_csv('../train.csv')
       
