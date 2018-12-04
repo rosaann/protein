@@ -20,6 +20,7 @@ from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
 from class_pair import cut_class_pair
+import os
 
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
@@ -125,13 +126,22 @@ def val_model():
     #验证集，都从id_list中取     
     val_img_list, val_tar_list,  c_list= get_val_data_from_idinfolist(id_list, c_list)
     
+    
+    pre_list = start_pre(val_img_list)
+  #  pair = [n for n in range(28)]
+    y_p_en = MultiLabelBinarizer().fit_transform(pre_list)
+    y_t_en = MultiLabelBinarizer().fit_transform(val_tar_list)
+
+    print('---------f1 ',f1_score(y_p_en, y_t_en, average = "macro"))
+    
+def start_pre(val_img_list):
     real_class_pair_list = cut_class_pair
-  #  print('real_class_pair ', real_class_pair_list)
     
     model_base_path = 'outs/'
     result_list = [list() for i in range(len(val_img_list))]
     for ci, class_pair in enumerate( real_class_pair_list):
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
+        print('part ', ci , ' of ', len(real_class_pair_list))
 
         clr =  joblib.load(model_path)
         y_p_x = clr.predict_proba(val_img_list)
@@ -162,13 +172,46 @@ def val_model():
                 result.append(i)
         
         pre_list.append(result)
-    
-  #  pair = [n for n in range(28)]
-    y_p_en = MultiLabelBinarizer().fit_transform(pre_list)
-    y_t_en = MultiLabelBinarizer().fit_transform(val_tar_list)
+    return pre_list
 
-    print('---------f1 ',f1_score(y_p_en, y_t_en, average = "macro"))
-         
+def test_xg_model():
+    pre_dir = os.path.join('../', 'test/')
+    
+    df=pd.read_csv('../sample_submission.csv')
+    df = pd.DataFrame(columns = ["Id", "Predicted"])
+    file_list = []
+    for i, row in df.iterrows():
+        file_list.append(row['Id'])
+        
+    img_list = []
+    for file_id in file_list:
+        img_path = pre_dir+ '_' + 'green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
+        img_list.append(img)
+        
+    img_list = np.array(img_list)
+
+    nsamples, nx, ny = img_list.shape
+    img_list = img_list.reshape((nsamples,nx*ny))
+    print('img shape', img_list.shape)
+    
+    pre_list = start_pre(img_list)
+    for i, row in df.iterrows():
+        r = pre_list[i]
+        if len(r) == 0:
+            continue
+        result = r[0]
+        if len(r) > 1:
+            for r_sub in r[1:]:
+                result += ' '
+                result += r_sub
+        df.set_value(i, 'Predicted', result)
+
+    df.to_csv('pred.csv', index=None)
+    df.head(10)    
+    print('Evaluating detections')
+    
 def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
     for i, row in df.iterrows():
                 if i not in hav_gotten_id_list:
