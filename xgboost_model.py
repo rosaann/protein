@@ -132,11 +132,11 @@ def val_model():
     y_p_factory = MultiLabelBinarizer()
     y_p_en = y_p_factory.fit_transform(pre_list)
     print('c_p ', y_p_factory.classes_)
-    y_t_en = y_p_factory.fit_transform(val_tar_list)
-    print('c_t ', y_p_factory.classes_)
+   # y_t_en = y_p_factory.fit_transform(val_tar_list)
+    print('c_t ', c_list)
 
 
-    print('---------f1 ',f1_score(y_p_en, y_t_en, average = "macro"))
+    print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
     
 def start_pre(val_img_list):
     real_class_pair_list = cut_class_pair
