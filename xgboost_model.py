@@ -125,11 +125,11 @@ def val_model():
     #验证集，都从id_list中取     
     val_img_list, val_tar_list,  c_list= get_val_data_from_idinfolist(id_list, c_list)
     
-    sub_result = []
     real_class_pair_list = cut_class_pair
   #  print('real_class_pair ', real_class_pair_list)
     
     model_base_path = 'outs/'
+    result_list = [list() for i in range(len(val_img_list))]
     for ci, class_pair in enumerate( real_class_pair_list):
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
 
@@ -141,10 +141,11 @@ def val_model():
         
      #   class_pair = real_class_pair_list[ci]
         print('y_p ', y_p_x.shape, ' ', y_p_x)
+        sub_result = []
         for iy, y in enumerate( y_p_x ):
             if y == 1:
                sub_result.append(class_pair[iy]) 
-               
+        result_list[ci] = sub_result       
         print('sub ', ci, ' r:', sub_result)
         return
     result_i = np.zero(28)
