@@ -140,28 +140,32 @@ def val_model():
         y_p_x[y_p_x < 0.5] = 0
         
      #   class_pair = real_class_pair_list[ci]
-        print('y_p ', y_p_x.shape, ' ', y_p_x)
+     #   print('y_p ', y_p_x.shape, ' ', y_p_x)
         
-        for  ys in y_p_x :
-            sub_result = []
+        for i_ys,  ys in enumerate( y_p_x ):
+            sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
                 if y == 1:
                     sub_result.append(class_pair[iy]) 
             result_list[ci] = sub_result       
-        print('sub ', ci, ' r:', sub_result)
-        return
-    result_i = np.zero(28)
-    for i_s, s in enumerate( sub_result):
-        result_i[i_s] = 1
+      #  print('sub ', ci, ' r:', sub_result)
     
-    result = []
-    for i, r_i in enumerate(result_i):
-        if r_i > 0:
-          result.append(i)
+    pre_list = []    
+    for this_sub_i, sub_result in enumerate( result_list):
+        result_i = np.zero(28)
+        for i_s, s in enumerate( sub_result):
+            result_i[s] = 1
     
-    pair = [n for n in range(28)]
-    y_p_en = MultiLabelBinarizer(pair).fit_transform(result)
-    y_t_en = MultiLabelBinarizer(pair).fit_transform(val_tar_list)
+        result = []
+        for i, r_i in enumerate(result_i):
+            if r_i > 0:
+                result.append(i)
+        
+        pre_list.append(result)
+    
+  #  pair = [n for n in range(28)]
+    y_p_en = MultiLabelBinarizer().fit_transform(pre_list)
+    y_t_en = MultiLabelBinarizer().fit_transform(val_tar_list)
 
     print('---------f1 ',f1_score(y_p_en, y_t_en, average = "macro"))
          
