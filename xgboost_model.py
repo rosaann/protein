@@ -123,7 +123,7 @@ def xgboost_train():
 def val_model():
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
-    val_img_list, val_tar_list = get_val_data_from_idinfolist(id_list, c_list)
+    val_img_list, val_tar_list,  c_list= get_val_data_from_idinfolist(id_list, c_list)
     
     sub_result = []
     real_class_pair_list = cut_class_pair
@@ -290,9 +290,11 @@ def get_val_data_from_idinfolist(id_list,class_pair):
     data_img_list = data_img_list.reshape((nsamples,nx*ny))
   #  print('img shape', data_img_list.shape)   
     
-    Y_enc = MultiLabelBinarizer(class_pair).fit_transform(data_tar_list)
-    
-    return data_img_list, Y_enc
+    Y_enc_factory = MultiLabelBinarizer()
+    Y_enc = Y_enc_factory.fit_transform(data_tar_list)
+    c = Y_enc_factory.classes_
+
+    return data_img_list, Y_enc, c
 def xgboost_train_old_again():
     id_list = find_small_num_class_ids()
     
