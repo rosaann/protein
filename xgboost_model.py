@@ -467,4 +467,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-val_model()
+#val_model()
+test_xg_model()
