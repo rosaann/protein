@@ -129,8 +129,12 @@ def val_model():
     
     pre_list = start_pre(val_img_list)
   #  pair = [n for n in range(28)]
-    y_p_en = MultiLabelBinarizer().fit_transform(pre_list)
-    y_t_en = MultiLabelBinarizer().fit_transform(val_tar_list)
+    y_p_factory = MultiLabelBinarizer()
+    y_p_en = y_p_factory.fit_transform(pre_list)
+    print('c_p ', y_p_factory.classes_)
+    y_t_en = y_p_factory.fit_transform(val_tar_list)
+    print('c_t ', y_p_factory.classes_)
+
 
     print('---------f1 ',f1_score(y_p_en, y_t_en, average = "macro"))
     
