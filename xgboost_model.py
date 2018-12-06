@@ -313,7 +313,7 @@ def train_one_model(idinfo_list, class_pair):
   #           ,'nthread':8, 'scale_pos_weight':1
   #           ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
   #           ,'max_bin':16, 'seed':10,'scale_pos_weight':1 }
-    param = {'silent':0,'n_estimators':10
+    param = {'max_depth':8,'silent':0,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
@@ -321,22 +321,22 @@ def train_one_model(idinfo_list, class_pair):
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
-  #  clf.fit(data_img_list, Y_enc)
+    clf.fit(data_img_list, Y_enc)
     
-  #  return clf, c
+    return clf, c
   
-    parameters = {
-    "estimator__max_depth": [2,4,8]
-    }
+  #  parameters = {
+  #  "estimator__max_depth": [2,4,8]
+  #  }
 
-    model_tunning = GridSearchCV(clf, param_grid=parameters,
-                             scoring='f1')
+  #  model_tunning = GridSearchCV(clf, param_grid=parameters,
+  #                           scoring='f1')
 
-    model_tunning.fit(data_img_list, Y_enc)
+  #  model_tunning.fit(data_img_list, Y_enc)
 
-    print (model_tunning.best_score_)
-    print (model_tunning.best_params_)
-    return model_tunning.best_estimator_
+  #  print (model_tunning.best_score_)
+  #  print (model_tunning.best_params_)
+  #  return model_tunning.best_estimator_
 
 def get_val_data_from_idinfolist(id_list,class_pair):
     base_path = '../train/'
