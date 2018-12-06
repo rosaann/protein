@@ -24,7 +24,7 @@ import os
 from sklearn.model_selection import GridSearchCV
 
 def find_small_num_class_ids():
-    type_class = [8, 9, 10, 15, 16,17, 27]
+    type_class = [1,8, 9, 10,13, 15, 16,17,20, 27]
   #  other_class = []
     df = pd.read_csv('../train.csv')
     id_list = []
