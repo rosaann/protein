@@ -21,6 +21,7 @@ from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
 from class_pair import cut_class_pair
 import os
+from sklearn.model_selection import GridSearchCV
 
 def find_small_num_class_ids():
     type_class = [8, 9, 10, 15, 16,17, 27]
@@ -307,17 +308,35 @@ def train_one_model(idinfo_list, class_pair):
             print(y_en)
         else :
             break
-    param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
+  #  param = {'max_depth':20,'eta':1, 'silent':0,'n_estimators':10
+  #           ,'learning_rate':0.05, 'objective':'binary:logistic'
+  #           ,'nthread':8, 'scale_pos_weight':1
+  #           ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
+  #           ,'max_bin':16, 'seed':10,'scale_pos_weight':1 }
+    param = {'silent':0,'n_estimators':10
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'max_bin':16, 'seed':10 }
+             ,'seed':10 }
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
-    clf.fit(data_img_list, Y_enc)
+  #  clf.fit(data_img_list, Y_enc)
     
-    return clf, c
+  #  return clf, c
+  
+    parameters = {
+    "estimator__max_depth": [2,4,8]
+    }
+
+    model_tunning = GridSearchCV(clf, param_grid=parameters,
+                             scoring='f1')
+
+    model_tunning.fit(data_img_list, Y_enc)
+
+    print (model_tunning.best_score_)
+    print (model_tunning.best_params_)
+    return model_tunning.best_estimator_
 
 def get_val_data_from_idinfolist(id_list,class_pair):
     base_path = '../train/'
