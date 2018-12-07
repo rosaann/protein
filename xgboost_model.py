@@ -75,7 +75,8 @@ def xgboost_train(ifTrain = True):
              idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
              train_data_id_class_list.append((idinfo_list, class_pair))
              print('with rest len ', len(idinfo_list[0]), ' ')
-    
+    min_group_len = len(train_data_id_class_list)
+    print('min_group_len ', min_group_len)
     idx_list = []
     id_list = []
     tar_list = []
@@ -192,21 +193,21 @@ def test_xg_model():
     file_list = []
     for i, row in df.iterrows():
         file_list.append(row['Id'])
-    print('len ', len(file_list))   
+  #  print('len ', len(file_list))   
     img_list = []
     for file_id in file_list:
         img_path = pre_dir + file_id + '_' + 'green' + '.png'
-        print(img_path)
+     #   print(img_path)
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
         img_list.append(img)
         
     img_list = np.array(img_list)
     
-    print('img shape qq ', img_list.shape)
+  #  print('img shape qq ', img_list.shape)
     nsamples, nx, ny = img_list.shape
     img_list = img_list.reshape((nsamples,nx*ny))
-    print('img shape', img_list.shape)
+  #  print('img shape', img_list.shape)
     
     pre_list = start_pre(img_list)
     for i, row in df.iterrows():
@@ -498,4 +499,4 @@ def xgboost_train_old():
         
 #xgboost_train()
 #val_model()
-test_xg_model()
+#test_xg_model()
