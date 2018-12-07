@@ -21,8 +21,8 @@ class ProteinDataSet(data.Dataset):
         self.src_data_list = src_data_list
         self.config = Config()
         self.idx = 0
-        self.id_list = src_data_list[0][1][start_idx:]
-        self.tar_list = src_data_list[0][2][start_idx:]
+        self.id_list = [ data_info[0][1] for data_info, c_p in src_data_list[start_idx:]] 
+        self.tar_list = [ data_info[0][2] for data_info, c_p in src_data_list[start_idx:]] 
     
     def __init__original(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
         self.df = pd.read_csv(csv_path)
