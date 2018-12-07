@@ -188,7 +188,7 @@ def test_xg_model():
     pre_dir = '../test/'
     
     df=pd.read_csv('../sample_submission.csv')
-    df = pd.DataFrame(columns = ["Id", "Predicted"])
+   # df = pd.DataFrame(columns = ["Id", "Predicted"])
     file_list = []
     for i, row in df.iterrows():
         file_list.append(row['Id'])

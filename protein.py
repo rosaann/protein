@@ -26,6 +26,7 @@ import os
 import pandas as pd
 import cv2
 import visdom
+from xgboost_model import xgboost_train
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
@@ -37,8 +38,9 @@ class Protein(object):
         self.ifTrain = ifTrain
         self.preproc = Data_Preproc()
         self.train_class = 0
+        train_data = xgboost_train(False)
         if self.ifTrain:
-            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', train_class = self.train_class,phase='train')
+            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=0)
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
             

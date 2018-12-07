@@ -14,7 +14,17 @@ import random
 from config import Config
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
+    def __init__(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
+        self.df = pd.read_csv(csv_path)
+        self.preproc = preproc
+        self.base_path = base_path
+        self.src_data_list = src_data_list
+        self.config = Config()
+        self.idx = 0
+        self.id_list = src_data_list[0][1][start_idx:]
+        self.tar_list = src_data_list[0][2][start_idx:]
+    
+    def __init__original(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
         self.base_path = base_path
@@ -102,7 +112,26 @@ class ProteinDataSet(data.Dataset):
             print('class ', class_id, "len ", len(img_id_list))        
             self.class_img_id_list.append(img_id_list)   
             
-    def __getitem__(self, index):   
+    def __getitem__(self, index):  
+        img_id = self.id_list[index]
+        target = self.tar_list[index]
+        
+        img_path = self.base_path + img_id + '_' + 'green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        
+        if self.preproc is not None:
+            img = self.preproc(img)
+        
+        target_str = str(target[0])
+        if len(target) > 1:
+            for tar in target[1 : ]:
+                target_str += ' '
+                target_str += str(tar)
+        
+        return img, target_str
+            
+        
+    def __getitem__ori(self, index):   
         img_id, target = self.check_id_list[index]
         
         img_path = self.base_path + img_id + '_' + 'green' + '.png'
@@ -157,5 +186,6 @@ class ProteinDataSet(data.Dataset):
         return img_merg, target
         
     def __len__(self):
-        return len(self.check_id_list)
+        return len(self.id_list)
+      #  return len(self.check_id_list)
       #  return self.df.shape[0]
