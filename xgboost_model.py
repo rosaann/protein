@@ -313,7 +313,7 @@ def train_one_model(idinfo_list, class_pair):
   #           ,'nthread':8, 'scale_pos_weight':1
   #           ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
   #           ,'max_bin':16, 'seed':10,'scale_pos_weight':1 }
-    param = {'max_depth':8,'silent':0,'n_estimators':5
+    param = {'max_depth':3,'silent':0,'n_estimators':5
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
