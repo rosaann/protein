@@ -21,9 +21,6 @@ class ProteinDataSet(data.Dataset):
         self.src_data_list = src_data_list
         self.config = Config()
         self.idx = 0
-        self.id_list = [ data_info[0][1] for data_info, c_p in src_data_list[start_idx:]] 
-        print('id_list ', self.id_list)
-        self.tar_list = [ data_info[0][2] for data_info, c_p in src_data_list[start_idx:]] 
         self.id_list = []
         self.tar_list = []
         for train_i, (train_data_id_class, c_pair ) in enumerate( src_data_list[start_idx:]):
@@ -35,7 +32,8 @@ class ProteinDataSet(data.Dataset):
                     target_str += ' '
                     target_str += str(tar)
                 self.tar_list.append(target_str)
-    
+        print('id_list ', self.id_list)
+
     def __init__original(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
