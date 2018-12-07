@@ -24,6 +24,17 @@ class ProteinDataSet(data.Dataset):
         self.id_list = [ data_info[0][1] for data_info, c_p in src_data_list[start_idx:]] 
         print('id_list ', self.id_list)
         self.tar_list = [ data_info[0][2] for data_info, c_p in src_data_list[start_idx:]] 
+        self.id_list = []
+        self.tar_list = []
+        for train_i, (train_data_id_class, c_pair ) in enumerate( src_data_list[start_idx:]):
+            for img_id, target in zip( train_data_id_class[1],train_data_id_class[2]):
+                self.id_list.append(img_id)
+                target_str = str(target[0])
+                if len(target) > 1:
+                  for tar in target[1 : ]:
+                    target_str += ' '
+                    target_str += str(tar)
+                self.tar_list.append(target_str)
     
     def __init__original(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
         self.df = pd.read_csv(csv_path)
@@ -123,13 +134,9 @@ class ProteinDataSet(data.Dataset):
         if self.preproc is not None:
             img = self.preproc(img)
         
-        target_str = str(target[0])
-        if len(target) > 1:
-            for tar in target[1 : ]:
-                target_str += ' '
-                target_str += str(tar)
         
-        return img, target_str
+        
+        return img, target
             
         
     def __getitem__ori(self, index):   
