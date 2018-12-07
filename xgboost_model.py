@@ -317,7 +317,7 @@ def train_one_model(idinfo_list, class_pair):
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':6}
+             ,'seed':10 ,'max_bin':3}
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
