@@ -32,7 +32,7 @@ class ProteinDataSet(data.Dataset):
                     target_str += ' '
                     target_str += str(tar)
                 self.tar_list.append(target_str)
-        print('id_list ', self.id_list)
+      #  print('id_list ', self.id_list)
 
     def __init__original(self,preproc=None,train_class = 0, base_path='../train/', csv_path='../train.csv',group_class_num = 4,phase='train'):
         self.df = pd.read_csv(csv_path)
