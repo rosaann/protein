@@ -192,7 +192,7 @@ def test_xg_model():
     file_list = []
     for i, row in df.iterrows():
         file_list.append(row['Id'])
-        
+    print('len ', len(file_list))   
     img_list = []
     for file_id in file_list:
         img_path = pre_dir + file_id + '_' + 'green' + '.png'
