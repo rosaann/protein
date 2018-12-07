@@ -196,6 +196,7 @@ def test_xg_model():
     img_list = []
     for file_id in file_list:
         img_path = pre_dir + file_id + '_' + 'green' + '.png'
+        print(img_path)
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
         img_list.append(img)
