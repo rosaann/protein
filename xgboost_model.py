@@ -39,7 +39,7 @@ def find_small_num_class_ids():
             
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list, type_class
-def xgboost_train(ifTrain = True):
+def xgboost_train(ifTrain = True, train_to = 15):
     df = pd.read_csv('../train.csv')
       
     train_data_id_class_list = []
@@ -110,7 +110,7 @@ def xgboost_train(ifTrain = True):
     real_class_pair_list = []
     model_base_path = 'outs/'
     start_from = 0
-    for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list):
+    for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list[:train_to]):
         print('part ', train_i , ' of ', len(train_data_id_class_list))
         if train_i < start_from:
             continue
