@@ -39,7 +39,7 @@ def find_small_num_class_ids():
             
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list, type_class
-def xgboost_train():
+def xgboost_train(ifTrain = True):
     df = pd.read_csv('../train.csv')
       
     train_data_id_class_list = []
@@ -102,6 +102,9 @@ def xgboost_train():
     print('last len ', len(idx_list))
     print('train_group ', len(train_data_id_class_list))
     
+    if ifTrain == False:
+        return train_data_id_class_list;
+    
     clr_list = []
     real_class_pair_list = []
     model_base_path = 'outs/'
@@ -121,6 +124,8 @@ def xgboost_train():
         file=open('outs/class_pair.txt','w')
         file.write(str(real_class_pair_list));
         file.close()
+        
+    
     
 def val_model():
     id_list, c_list = find_small_num_class_ids()
@@ -196,7 +201,8 @@ def test_xg_model():
         img_list.append(img)
         
     img_list = np.array(img_list)
-
+    
+    print('img shape qq ', img_list.shape)
     nsamples, nx, ny = img_list.shape
     img_list = img_list.reshape((nsamples,nx*ny))
     print('img shape', img_list.shape)
@@ -490,5 +496,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-val_model()
+#val_model()
 test_xg_model()
