@@ -438,6 +438,7 @@ class Protein(object):
         
 def train_model():
   #  xgboost_train()
+    print('start ')
     s = Protein(ifTrain = True)
     s.train_model()
     return True
