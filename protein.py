@@ -437,7 +437,7 @@ class Protein(object):
         return scheduler
         
 def train_model():
-    xgboost_train()
+  #  xgboost_train()
     s = Protein(ifTrain = True)
     s.train_model()
     return True
