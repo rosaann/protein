@@ -26,11 +26,11 @@ import os
 import pandas as pd
 import cv2
 import visdom
-from xgboost_model import xgboost_train
+from xgboost_model import xgboost_train, test_xg_model
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
-    def __init__(self, ifTrain = True):
+    def __init__(self, ifTrain = True, xgb_test_result = None):
         seed = 10
         torch.manual_seed(seed)#为CPU设置随机种子
     
@@ -38,6 +38,7 @@ class Protein(object):
         self.ifTrain = ifTrain
         self.preproc = Data_Preproc()
         self.train_class = 0
+        self.xgb_test_result = xgb_test_result
         train_data = xgboost_train(False)
         if self.ifTrain:
             dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=15)
@@ -121,6 +122,13 @@ class Protein(object):
         if self.preproc is not None:
             img_merg = self.preproc(img_merg) 
         return img_merg
+    
+    def get_gray_image(self, pre_dir):
+        img_path = pre_dir+ '_' + 'green' + '.png'
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+        if self.preproc is not None:
+            img = self.preproc(img) 
+        return img
     def test_epoch(self):
         
         self.model.train()
@@ -139,7 +147,7 @@ class Protein(object):
         print('len ', len(test_image_merge_list))
         
         for i, img_name in enumerate( test_image_merge_list):
-            img = self.get_merge_image(test_image_dir + img_name)
+            img = self.get_gray_image(test_image_dir + img_name)
             img = Variable( img, volatile=True)
             
             if self.use_gpu:
@@ -171,18 +179,25 @@ class Protein(object):
             for i_im, imname in enumerate(name_list):
                  df.set_value(self.idx_df,'Id', imname )
                  data = out[i_im]
+                 result_all = []
+                 for t_i, tar_rat in enumerate( data):
+                     if tar_rat >=0.5:
+                         result_all.append(self.config.v('check_id_list')[t_i])
+                 result_xgb = self.xgb_test_result[self.idx_df]
+                 for r_x in result_xgb:
+                     result_all.append(r_x)
               #   print('da ', data.float())
                  result = ''
-                 cla = data.argmax(0).item()
-                 result = str( self.config.v('check_id_list')[ cla])
+                # cla = data.argmax(0).item()
+               #  result = str( self.config.v('check_id_list')[ cla])
+                 if len(result_all) > 0:
+                     result = str(result_all[0])
+                     if len(result_all) > 1:
+                         for r in result_all[1: ]:
+                             result += ' '
+                             result += str(r)
                  
-                 data[cla] = 0
-                 cla = data.argmax(0).item()
-                 if data[cla] > 0.5:
-                     result += ' '
-                     result += str(self.config.v('check_id_list')[ cla])
-               #  if len(result) == 0:
-                #     result = '17'
+
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
             img_list = []     
@@ -446,6 +461,7 @@ def train_model():
     return True
 
 def test_model():
+    xgb_test = test_xg_model()
     s = Protein(ifTrain = False)
     s.test_model()
     return True       

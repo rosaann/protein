@@ -143,7 +143,7 @@ def start_pre(val_img_list):
     
     model_base_path = 'outs/'
     result_list = [list() for i in range(len(val_img_list))]
-    for ci, class_pair in enumerate( real_class_pair_list[:103]):
+    for ci, class_pair in enumerate( real_class_pair_list[:15]):
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
@@ -203,6 +203,8 @@ def test_xg_model():
   #  print('img shape', img_list.shape)
     
     pre_list = start_pre(img_list)
+    return pre_list
+    
     for i, row in df.iterrows():
         r = pre_list[i]
         if len(r) == 0:
@@ -492,6 +494,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
+#xgboost_train()
 val_model()
 #test_xg_model()

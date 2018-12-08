@@ -24,7 +24,9 @@ class Config(object):
        self.data['out_dir'] = 'outs/'
        self.data['save_per'] = 3
        #self.data['group_id_list']=[[27, 15, 10,9], [8,20,17,24],[26,16,13,12],[22,18,6,14],[11,1,19,3],[4,5,7,23],[2,21,25,0]]
+      # self.data['check_id_list'] = [24,26,16,13,12,22,18,6,14,11,1,19,3,4,5,7,23,2,21,25,0][8, 9, 10, 15, 16, 17, 27]
        self.data['check_id_list'] = [24,26,16,13,12,22,18,6,14,11,1,19,3,4,5,7,23,2,21,25,0]
+
        
     def v(self, key):
         return self.data[key]
