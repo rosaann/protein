@@ -19,7 +19,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
-from class_pair import cut_class_pair
+from class_pair import cut_class_pair, minor_type_class, class_pair_list
 import os
 from sklearn.model_selection import GridSearchCV
 
@@ -43,14 +43,7 @@ def xgboost_train(ifTrain = True, train_to = 15):
     df = pd.read_csv('../train.csv')
       
     train_data_id_class_list = []
-    minor_type_class = [8, 9, 10, 15, 16,17, 27]
-    class_pair_list = [[0, 8, 2, 3, 25, 21, 7],
-                  [6, 9, 10],
-                  [6, 9, 10],
-                  [15, 5, 0, 16, 2],
-                  [16, 0, 6, 14, 17, 18, 25, 11, 21, 7, 3, 5, 2, 22, 23, 4, 26, 19, 12, 15, 24],
-                  [16, 14, 17, 18, 25, 0, 21, 19, 7, 5, 2, 23, 22],
-                  [2, 0, 27, 5, 19, 4, 23]]
+    
     #先从type_class中，选含有其中一种的，剩下的
     
     train_once_num = 80
@@ -179,7 +172,7 @@ def start_pre(val_img_list):
     
         result = []
         for i, r_i in enumerate(result_i):
-            if r_i > 0:
+            if r_i > 0 and (i in minor_type_class):
                 result.append(i)
         
         pre_list.append(result)
@@ -359,8 +352,10 @@ def get_val_data_from_idinfolist(id_list,class_pair):
         img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
 
         data_img_list.append(img)
-        targets_t = [int (tthis) for tthis in targets]
-
+        targets_t = []
+        for tthis in targets:
+            if int(tthis) in minor_type_class:
+                targets_t.append(int(tthis))
         data_tar_list.append(targets_t)
 
         
@@ -498,5 +493,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-#val_model()
+val_model()
 #test_xg_model()
