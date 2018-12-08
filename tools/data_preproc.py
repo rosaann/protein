@@ -34,5 +34,5 @@ class Data_Preproc(object):
               #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
                 ])
       #  image = transform(image)
-        return image
+        return np.expand_dims(image, axis=0)
       #  return image.transpose(2, 0, 1)
