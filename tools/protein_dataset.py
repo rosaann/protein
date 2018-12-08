@@ -130,7 +130,7 @@ class ProteinDataSet(data.Dataset):
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         
         if self.preproc is not None:
-            img = self.preproc(img).unsqueeze(0)
+            img = self.preproc(img)
         
         
         
