@@ -30,11 +30,11 @@ class Data_Preproc(object):
     #    image -= (103.94, 116.78, 123.68, 100.5)
     #    image.transpose(2, 0, 1)    
         
-        print('pre img shape ', image.shape)
+    #    print('pre img shape ', image.shape)
         image = np.expand_dims(image, axis=0)
         
        
-        print('aft img shape ', image.shape)
+    #    print('aft img shape ', image.shape)
         image = F.to_pil_image(image)
         transform = transforms.Compose([
               #  transforms.ToPILImage(),

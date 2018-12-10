@@ -261,9 +261,9 @@ class Protein(object):
         
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
-          #  print('images ', images.shape)
-            if len (images) == 1:
-                continue
+            print('images ', images.shape)
+         #   if len (images) == 1:
+         #       continue
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
            # print('iteration ', iteration)
@@ -280,7 +280,7 @@ class Protein(object):
                 self.model.train()
                 #train:
                 _t.tic()
-                print('img shape ', images.shape)
+                print('---img shape 2 ', images.shape)
                 out = self.model(images, phase='train')
 
                 self.optimizer.zero_grad()
