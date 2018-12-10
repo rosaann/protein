@@ -28,7 +28,7 @@ import cv2
 import visdom
 from xgboost_model import xgboost_train, test_xg_model
 from torchvision import transforms
-from protein_test_dataset import ProteinTestDataSet
+from tools.protein_test_dataset import ProteinTestDataSet
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
