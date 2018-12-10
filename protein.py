@@ -49,7 +49,7 @@ class Protein(object):
             
         else:
             dataset = ProteinTestDataSet(self.preproc)
-            self.test_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 1,
+            self.test_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=False, pin_memory=True)
         self.model = create_model_vgg_sim_z()
      #   regularizers = [L1Regularizer(scale=1e-4, module_filter='*line*')]
@@ -261,7 +261,7 @@ class Protein(object):
         
         for iteration  in range(epoch_size):
             images, targets = next(batch_iterator)
-            print('images ', images.shape)
+       #     print('images ', images.shape)
          #   if len (images) == 1:
          #       continue
          #   print('imgs from data_load shape ', images.shape)
@@ -280,7 +280,7 @@ class Protein(object):
                 self.model.train()
                 #train:
                 _t.tic()
-                print('---img shape 2 ', images.shape)
+             #   print('---img shape 2 ', images.shape)
                 out = self.model(images, phase='train')
 
                 self.optimizer.zero_grad()
