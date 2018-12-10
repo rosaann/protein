@@ -157,9 +157,9 @@ class Protein(object):
             
             if self.use_gpu:
                 img = Variable(img.cuda())
-            img_to_add = img
+         #   img_to_add = img
           #      print('img shape ', img.shape)
-             #   img_to_add = img.unsqueeze(0)
+                img_to_add = img.unsqueeze(0)
              #   print('img_to_add shape ', img_to_add.shape)
 
                # img_to_add.transpose(0, 2, 1, 3)
@@ -179,13 +179,13 @@ class Protein(object):
             
 
             _t.tic()
-            img_list = np.array(img_list)
-            print('img_list shape pre 1 ', img_list.shape)
+            
+         #   print('img_list shape pre 1 ', img_list.shape)
             
           #  print('img_list shape pre 2 ', img_list.shape)
             
-         #   img_list = torch.cat(img_list, 0)
-         #   print('img_list shape ', img_list.shape)
+            img_list = torch.cat(img_list, 0)
+            print('img_list shape ', img_list.shape)
             
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
