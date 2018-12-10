@@ -48,7 +48,7 @@ class Protein(object):
                                                shuffle=True, pin_memory=True)
             
         else:
-            dataset = ProteinTestDataSet()
+            dataset = ProteinTestDataSet(self.preproc)
             self.test_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=False, pin_memory=True)
         self.model = create_model_vgg_sim_z()
