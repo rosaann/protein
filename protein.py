@@ -49,7 +49,7 @@ class Protein(object):
             
         else:
             dataset = ProteinTestDataSet(self.preproc)
-            self.test_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
+            self.test_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 1,
                                                shuffle=False, pin_memory=True)
         self.model = create_model_vgg_sim_z()
      #   regularizers = [L1Regularizer(scale=1e-4, module_filter='*line*')]
