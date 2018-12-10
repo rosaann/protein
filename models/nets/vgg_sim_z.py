@@ -18,7 +18,7 @@ class VGG_SIM_Z(nn.Module):
         super(VGG_SIM_Z, self).__init__()
         layers = []
         self.config = Config()
-        in_channels = 1
+        in_channels = 3
     #    [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'C', 512, 512, 512, 'M',
     #        512, 512, 512]
         

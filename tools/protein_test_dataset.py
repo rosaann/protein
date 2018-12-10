@@ -57,8 +57,18 @@ class ProteinTestDataSet(data.Dataset):
     def __getitem__(self, index):  
       #   print('idx ', index)
          img_name = self.test_image_merge_list[index]
-         img = self.get_gray_image(self.test_image_dir + img_name)
-         return img, img_name
+         imgs = []
+         img_name_tails = [ 'green',  'green','green']
+         for tail in img_name_tails:
+            img_path = self.base_path + img_name + '_' + tail + '.png'
+            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+            imgs.append(img)
+         img_merg = cv2.merge(imgs)
+        
+         if self.preproc is not None:
+            img_merg = self.preproc(img_merg)
+      #  print('gd ', self.current_train_group_idx, ' tar ', target)
+         return img_merg, img_name
          
     def __len__(self):
         return len(self.test_image_merge_list)

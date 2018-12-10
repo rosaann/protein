@@ -122,7 +122,7 @@ class ProteinDataSet(data.Dataset):
             print('class ', class_id, "len ", len(img_id_list))        
             self.class_img_id_list.append(img_id_list)   
             
-    def __getitem__(self, index):  
+    def __getitem__1chanel(self, index):  
         img_id = self.id_list[index]
         target = self.tar_list[index]
         
@@ -147,12 +147,12 @@ class ProteinDataSet(data.Dataset):
             img = self.preproc(img)
       #  print('gd ', self.current_train_group_idx, ' tar ', target)
         return img, target
-    def __getitem__merge(self, index):
+    def __getitem__(self, index):
         img_id, target = self.check_id_list[index]
         
         imgs = []
-        
-        for tail in self.img_name_tails:
+        img_name_tails = [ 'green',  'green','green']
+        for tail in img_name_tails:
             img_path = self.base_path + img_id + '_' + tail + '.png'
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
             imgs.append(img)
