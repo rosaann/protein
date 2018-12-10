@@ -185,7 +185,7 @@ class Protein(object):
           #  print('img_list shape pre 2 ', img_list.shape)
             
           #  img_list = torch.cat(img_list, 0)
-            img_list = Variable( img_list, volatile=True)
+            img_list = torch.tensor(img_list)
             print('img_list shape ', img_list.shape)
             
             if check_i == 3:
