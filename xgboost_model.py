@@ -136,7 +136,7 @@ def val_model():
     print('c_t ', c_list)
 
 
-    print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
+  #  print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
     
 def start_pre(val_img_list):
     real_class_pair_list = cut_class_pair
