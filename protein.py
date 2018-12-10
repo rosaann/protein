@@ -180,7 +180,7 @@ class Protein(object):
 
             _t.tic()
             
-            print('img_list shape pre 1 ', img_list.shape)
+        #    print('img_list shape pre 1 ', img_list.shape)
             
            # img_list = transform( img_list)
           #  print('img_list shape pre 2 ', img_list.shape)
