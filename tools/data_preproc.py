@@ -44,6 +44,6 @@ class Data_Preproc(object):
     
         image = transform(image)
         
-        print('aft img shape 2 ', image.shape)
+     #   print('aft img shape 2 ', image.shape)
         return image
       #  return image.transpose(2, 0, 1)
