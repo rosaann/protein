@@ -155,14 +155,14 @@ class Protein(object):
             img_to_add = img
           #  img = Variable( img, volatile=True)
             
-          #  if self.use_gpu:
-          #      img = Variable(img.cuda())
+            if self.use_gpu:
+                img = Variable(img.cuda())
           #      print('img shape ', img.shape)
              #   img_to_add = img.unsqueeze(0)
              #   print('img_to_add shape ', img_to_add.shape)
 
                # img_to_add.transpose(0, 2, 1, 3)
-              #  img_to_add = img
+                img_to_add = img
             if i %  banch_num > 0 and i <= (len(test_image_merge_list) - 1):
                 img_list.append(img_to_add)
                 name_list.append(img_name)
@@ -182,10 +182,10 @@ class Protein(object):
               #  transforms.ToPILImage(),
          #       transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
               #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
-                ])
+          #      ])
          #   img_list = transform( np.array(img_list))
-            if self.use_gpu:
-                img_list = Variable(img_list.cuda())
+         #   if self.use_gpu:
+          #      img_list = Variable(img_list.cuda())
             img_list = torch.cat(img_list, 0)
             print('img_list shape ', img_list.shape)
             #
