@@ -148,7 +148,8 @@ class ProteinDataSet(data.Dataset):
       #  print('gd ', self.current_train_group_idx, ' tar ', target)
         return img, target
     def __getitem__(self, index):
-        img_id, target = self.check_id_list[index]
+        img_id = self.id_list[index]
+        target = self.tar_list[index]
         
         imgs = []
         img_name_tails = [ 'green',  'green','green']
