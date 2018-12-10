@@ -161,14 +161,16 @@ class Protein(object):
             
             if self.use_gpu:
                 img = Variable(img.cuda())
+              #  img_to_add = img.unsqueeze(0)
+                img_to_add = img
             if i %  banch_num > 0 and i <= (len(test_image_merge_list) - 1):
-                img_list.append(img.unsqueeze(0))
+                img_list.append(img_to_add)
                 name_list.append(img_name)
                 if i < (len(test_image_merge_list) - 1):
                    continue
             if i % banch_num == 0:
                 if i == 0:
-                    img_list.append(img.unsqueeze(0))
+                    img_list.append(img_to_add)
                     name_list.append(img_name)
 
                     continue
@@ -210,7 +212,7 @@ class Protein(object):
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
             img_list = []     
-            img_list.append(img.unsqueeze(0))
+            img_list.append(img_to_add)
             name_list = []
             name_list.append(img_name)
 
