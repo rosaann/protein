@@ -179,13 +179,12 @@ class Protein(object):
             
 
             _t.tic()
+            img_list = np.array(img_list)
+            print('img_list shape pre 1 ', img_list.shape)
             
-        #    print('img_list shape pre 1 ', img_list.shape)
-            
-           # img_list = transform( img_list)
           #  print('img_list shape pre 2 ', img_list.shape)
             
-          #  img_list = torch.cat(img_list, 0)
+         #   img_list = torch.cat(img_list, 0)
          #   print('img_list shape ', img_list.shape)
             
             if check_i == 3:
