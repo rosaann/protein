@@ -32,7 +32,7 @@ class Data_Preproc(object):
         
         print('pre img shape ', image.shape)
         image = np.expand_dims(image, axis=0)
-        image.transpose(2, 0, 1)  
+        image.permute(2, 0, 1)  
        
         print('aft img shape ', image.shape)
         image = F.to_pil_image(image)
