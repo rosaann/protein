@@ -152,6 +152,7 @@ class Protein(object):
         
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_gray_image(test_image_dir + img_name)
+            img_to_add = img
           #  img = Variable( img, volatile=True)
             
           #  if self.use_gpu:
