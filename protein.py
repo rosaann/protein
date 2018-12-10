@@ -152,11 +152,12 @@ class Protein(object):
         
         for i, img_name in enumerate( test_image_merge_list):
             img = self.get_gray_image(test_image_dir + img_name)
-          #  img_to_add = img
+          #  
           #  img = Variable( img, volatile=True)
             
-          #  if self.use_gpu:
-          #      img = Variable(img.cuda())
+            if self.use_gpu:
+                img = Variable(img.cuda())
+            img_to_add = img
           #      print('img shape ', img.shape)
              #   img_to_add = img.unsqueeze(0)
              #   print('img_to_add shape ', img_to_add.shape)
@@ -178,20 +179,15 @@ class Protein(object):
             
 
             _t.tic()
-            img_list = np.array(img_list)
+            
             print('img_list shape pre 1 ', img_list.shape)
-            transform = transforms.Compose([
-              #  transforms.ToPILImage(),
-                transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
-              #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
-                ])
+            
            # img_list = transform( img_list)
           #  print('img_list shape pre 2 ', img_list.shape)
             
             img_list = torch.cat(img_list, 0)
             print('img_list shape ', img_list.shape)
-            if self.use_gpu:
-                img_list = Variable(img_list.cuda())
+            
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
                 self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
