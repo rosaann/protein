@@ -143,12 +143,11 @@ def start_pre(val_img_list):
     
     model_base_path = 'outs/'
     result_list = [list() for i in range(len(val_img_list))]
-    for ci, class_pair in enumerate( real_class_pair_list[:15]):
+    for ci, class_pair in enumerate( real_class_pair_list[:1]):
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
         clr =  joblib.load(model_path)
-        clr.set_param('predictor', 'gpu_predictor')
         y_p_x = clr.predict_proba(val_img_list)
     
         y_p_x[y_p_x >= 0.5] = 1
