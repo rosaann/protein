@@ -150,7 +150,7 @@ class Protein(object):
    #     batch_iterator = iter(self.test_loader)
         self.idx_df = 0
         
-        for images, name_list  in self.test_loader:
+        for images  in self.test_loader:
             
           #  print('images ', images.shape)
            # if len (images) == 1:
