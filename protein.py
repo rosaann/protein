@@ -183,7 +183,7 @@ class Protein(object):
                 transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
               #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
                 ])
-            img_list = transform(img_list)
+            img_list = transform( np.array(img_list))
             if self.use_gpu:
                 img_list = Variable(img_list.cuda())
             img_list = torch.cat(img_list, 0)
