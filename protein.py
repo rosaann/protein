@@ -185,8 +185,8 @@ class Protein(object):
            # img_list = transform( img_list)
           #  print('img_list shape pre 2 ', img_list.shape)
             
-            img_list = torch.cat(img_list, 0)
-            print('img_list shape ', img_list.shape)
+          #  img_list = torch.cat(img_list, 0)
+         #   print('img_list shape ', img_list.shape)
             
             if check_i == 3:
                 vis.images(img_list[0], win=2, opts={'title': 'Reals'})
