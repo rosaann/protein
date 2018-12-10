@@ -52,6 +52,8 @@ class ProteinTestDataSet(data.Dataset):
         if self.preproc is not None:
             img = self.preproc(img) 
             
+        return img
+            
     def __getitem__(self, index):  
          print('idx ', index)
          img_name = self.test_image_merge_list[index]
