@@ -462,6 +462,6 @@ def train_model():
 
 def test_model():
     xgb_test = test_xg_model()
-    s = Protein(ifTrain = False)
+    s = Protein(ifTrain = False, xgb_test_result = xgb_test)
     s.test_model()
     return True       
