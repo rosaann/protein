@@ -53,9 +53,10 @@ class ProteinTestDataSet(data.Dataset):
             img = self.preproc(img) 
             
     def __getitem__(self, index):  
+         print('idx ', index)
          img_name = self.test_image_merge_list[index]
          img = self.get_gray_image(self.test_image_dir + img_name)
-         return img
+         return img, img_name
          
     def __len__(self):
         return len(self.test_image_merge_list)

@@ -149,8 +149,10 @@ class Protein(object):
    #     epoch_size = int( len(self.test_loader) )
    #     batch_iterator = iter(self.test_loader)
         self.idx_df = 0
+        epoch_size = int( len(self.test_loader) )
         
-        for images  in self.test_loader:
+        print('epoch_size ', epoch_size)
+        for images , name_list in self.test_loader:
             
           #  print('images ', images.shape)
            # if len (images) == 1:
