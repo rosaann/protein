@@ -27,6 +27,8 @@ import pandas as pd
 import cv2
 import visdom
 from xgboost_model import xgboost_train, test_xg_model
+from torchvision import transforms
+
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
@@ -128,6 +130,13 @@ class Protein(object):
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         if self.preproc is not None:
             img = self.preproc(img) 
+            
+        transform = transforms.Compose([
+              #  transforms.ToPILImage(),
+                transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
+              #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
+                ])
+        img = transform(img)
         return img
     def test_epoch(self):
         
