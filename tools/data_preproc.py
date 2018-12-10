@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 import random
 from torchvision import transforms
+import torchvision.transforms.functional as F
 
 class Data_Preproc(object):
     def __init__(self, resize = [300, 300]):
@@ -39,6 +40,6 @@ class Data_Preproc(object):
        #         ])
        # image = transform(image)
         print('aft img shape ', image.shape)
-
+        image = F.to_pil_image(image)
         return image
       #  return image.transpose(2, 0, 1)
