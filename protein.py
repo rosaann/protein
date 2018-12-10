@@ -146,12 +146,12 @@ class Protein(object):
         check_i = 0;
         _t = Timer()
         df = pd.read_csv('../sample_submission.csv')
-        epoch_size = int( len(self.test_loader) )
-        batch_iterator = iter(self.test_loader)
+   #     epoch_size = int( len(self.test_loader) )
+   #     batch_iterator = iter(self.test_loader)
         self.idx_df = 0
         
-        for iteration  in range(epoch_size):
-            images, name_list = next(batch_iterator)
+        for images, name_list  in range(self.test_loader):
+            
           #  print('images ', images.shape)
             if len (images) == 1:
                 continue
