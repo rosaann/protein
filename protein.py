@@ -153,8 +153,8 @@ class Protein(object):
         for images, name_list  in self.test_loader:
             
           #  print('images ', images.shape)
-            if len (images) == 1:
-                continue
+           # if len (images) == 1:
+           #     continue
             if self.use_gpu:
                     images = Variable(images.cuda())
         
