@@ -33,13 +33,14 @@ class Data_Preproc(object):
         print('pre img shape ', image.shape)
         image = np.expand_dims(image, axis=0)
         
-       # transform = transforms.Compose([
-              #  transforms.ToPILImage(),
-       #         transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
-              #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
-       #         ])
-       # image = transform(image)
+       
         print('aft img shape ', image.shape)
         image = F.to_pil_image(image)
+        transform = transforms.Compose([
+              #  transforms.ToPILImage(),
+                transforms.ToTensor(), # range [0, 255] -> [0.0,1.0]
+              #  transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
+                ])
+        image = transform(image)
         return image
       #  return image.transpose(2, 0, 1)
