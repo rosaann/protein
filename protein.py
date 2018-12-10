@@ -28,7 +28,7 @@ import cv2
 import visdom
 from xgboost_model import xgboost_train, test_xg_model
 from torchvision import transforms
-
+from protein_test_dataset import ProteinTestDataSet
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
@@ -47,6 +47,10 @@ class Protein(object):
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
             
+        else:
+            dataset = ProteinTestDataSet()
+            self.test_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
+                                               shuffle=False, pin_memory=True)
         self.model = create_model_vgg_sim_z()
      #   regularizers = [L1Regularizer(scale=1e-4, module_filter='*line*')]
      #   self.model.set_regularizers(regularizers)
@@ -136,63 +140,25 @@ class Protein(object):
     def test_epoch(self):
         
         self.model.train()
-        test_image_dir = os.path.join('../', 'test/')
+        
 
        # vis = visdom.Visdom(server="http://localhost", port=8888)
         check_i = 0;
         _t = Timer()
-        df = pd.DataFrame(columns = ["Id", "Predicted"])
+        df = pd.read_csv('../sample_submission.csv')
+        epoch_size = int( len(self.test_loader) )
+        batch_iterator = iter(self.test_loader)
         self.idx_df = 0
-        test_image_merge_list = self.get_testimg_merge_list(test_image_dir)
         
-        banch_num = int(self.config.v('batch_size'))
-        img_list = []
-        name_list = []
-        print('len ', len(test_image_merge_list))
-        
-        for i, img_name in enumerate( test_image_merge_list):
-            img = self.get_gray_image(test_image_dir + img_name)
-          #  
-          #  img = Variable( img, volatile=True)
-            
+        for iteration  in range(epoch_size):
+            images, name_list = next(batch_iterator)
+          #  print('images ', images.shape)
+            if len (images) == 1:
+                continue
             if self.use_gpu:
-                img = Variable(img.cuda())
-         #   img_to_add = img
-          #      print('img shape ', img.shape)
-                img_to_add = img.unsqueeze(0)
-             #   print('img_to_add shape ', img_to_add.shape)
-
-               # img_to_add.transpose(0, 2, 1, 3)
-            img_to_add = img
-            if i %  banch_num > 0 and i <= (len(test_image_merge_list) - 1):
-                img_list.append(img_to_add)
-                name_list.append(img_name)
-                if i < (len(test_image_merge_list) - 1):
-                   continue
-            if i % banch_num == 0:
-                if i == 0:
-                    img_list.append(img_to_add)
-                    name_list.append(img_name)
-
-                    continue
-     #       images = images.unsqueeze(0)
-            
-
-            _t.tic()
-            
-         #   print('img_list shape pre 1 ', img_list.shape)
-            
-          #  print('img_list shape pre 2 ', img_list.shape)
-            
-          #  img_list = torch.cat(img_list, 0)
-            img_list = torch.tensor(img_list)
-            print('img_list shape ', img_list.shape)
-            
-            if check_i == 3:
-                vis.images(img_list[0], win=2, opts={'title': 'Reals'})
-                self.visTest(self.model, img_list[0], self.priorbox, self.writer, 1, self.use_gpu)
-          #  print('imglist ', img_list.shape)        
-            out = self.model(img_list, phase='train')
+                    images = Variable(images.cuda())
+        
+            out = self.model(images, phase='train')
          #   print('out ', out) 
             for i_im, imname in enumerate(name_list):
                  df.set_value(self.idx_df,'Id', imname )
@@ -218,10 +184,10 @@ class Protein(object):
 
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
-            img_list = []     
-            img_list.append(img_to_add)
-            name_list = []
-            name_list.append(img_name)
+        
+        
+        
+        
 
          #   check_i += 1  
         df.to_csv('pred.csv', index=None)
