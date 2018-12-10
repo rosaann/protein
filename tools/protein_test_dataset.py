@@ -47,7 +47,7 @@ class ProteinTestDataSet(data.Dataset):
     
     def get_gray_image(self, pre_dir):
         img_path = pre_dir+ '_' + 'green' + '.png'
-        print('img_path ', img_path)
+     #   print('img_path ', img_path)
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
         if self.preproc is not None:
             img = self.preproc(img) 
@@ -55,7 +55,7 @@ class ProteinTestDataSet(data.Dataset):
         return img
             
     def __getitem__(self, index):  
-         print('idx ', index)
+      #   print('idx ', index)
          img_name = self.test_image_merge_list[index]
          img = self.get_gray_image(self.test_image_dir + img_name)
          return img, img_name
