@@ -165,7 +165,7 @@ def start_pre(val_img_list):
         y_p_x[y_p_x < 0.5] = 0
         
      #   class_pair = real_class_pair_list[ci]
-        print('y_p ', y_p_x)
+     #   print('y_p ', y_p_x)
         
         for i_ys,  ys in enumerate( y_p_x ):
             sub_result = result_list[i_ys]
