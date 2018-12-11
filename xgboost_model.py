@@ -210,7 +210,7 @@ def test_xg_model():
     
     pre_list = start_pre(img_list)
     
-    return pre_list
+  #  return pre_list
     
     for i, row in df.iterrows():
         r = pre_list[i]
@@ -227,6 +227,7 @@ def test_xg_model():
     df.to_csv('pred.csv', index=None)
     df.head(10)    
     print('Evaluating detections')
+    return pre_list
     
 def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
     for i, row in df.iterrows():
