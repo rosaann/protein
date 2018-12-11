@@ -172,7 +172,9 @@ class Protein(object):
                  df.set_value(self.idx_df,'Id', imname )
                  data = out[i_im]
                  result_all = []
+                 print(' pre ', data)
                  for t_i, tar_rat in enumerate( data):
+                    
                      if tar_rat >=0.5:
                          result_all.append(self.config.v('check_id_list')[t_i])
                  result_xgb = self.xgb_test_result[self.idx_df]
