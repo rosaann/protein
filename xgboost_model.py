@@ -187,7 +187,7 @@ def start_pre(val_img_list):
 def test_xg_model():
     pre_dir = '../test/'
     
-    df=pd.read_csv('../sample_submission.csv')
+    df=pd.read_csv('../sample_submission_1.csv')
    # df = pd.DataFrame(columns = ["Id", "Predicted"])
     file_list = []
     for i, row in df.iterrows():
@@ -210,7 +210,7 @@ def test_xg_model():
     
     pre_list = start_pre(img_list)
     
-  #  return pre_list, df
+    return pre_list
     
     for i, row in df.iterrows():
         r = pre_list[i]
