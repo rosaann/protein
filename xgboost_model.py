@@ -149,7 +149,12 @@ def start_pre(val_img_list):
     model_base_path = 'outs/'
     result_list = [list() for i in range(len(val_img_list))]
     config = Config()
+    
+    class_pair_reference = np.zeros(28)
     for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):
+        for ref in class_pair_reference:
+            class_pair_reference[ref] = class_pair_reference[ref] + 1
+        
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
@@ -171,14 +176,17 @@ def start_pre(val_img_list):
       #  print('sub ', ci, ' r:', sub_result)
     
     pre_list = []    
+    print('class_pair_reference ', class_pair_reference)
     for this_sub_i, sub_result in enumerate( result_list):
         result_i = np.zeros(28)
         for i_s, s in enumerate( sub_result):
-            result_i[s] = 1
+            result_i[s] += 1
     
         result = []
         for i, r_i in enumerate(result_i):
-            if r_i > 0 and (i in minor_type_class):
+            t_ref = class_pair_reference[i] / 2
+            if r_i >= t_ref and (i in minor_type_class):
+                print('i ', i, ' t_ref ', t_ref, ' r_i ', r_i)
                 result.append(i)
         
         pre_list.append(result)
