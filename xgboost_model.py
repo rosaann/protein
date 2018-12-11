@@ -210,7 +210,7 @@ def test_xg_model():
     
     pre_list = start_pre(img_list)
     
-  #  return pre_list
+    return pre_list
     
     for i, row in df.iterrows():
         r = pre_list[i]
@@ -222,7 +222,7 @@ def test_xg_model():
                 result += ' '
                 result += r_sub
         df.set_value(i, 'Predicted', result)
-        print('idx ', i)
+    #    print('idx ', i)
 
     df.to_csv('pred.csv', index=None)
     df.head(10)    
