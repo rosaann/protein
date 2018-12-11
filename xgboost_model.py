@@ -21,6 +21,8 @@ from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
 from class_pair import cut_class_pair, minor_type_class, class_pair_list
 import os
+from config import Config
+
 from sklearn.model_selection import GridSearchCV
 
 def find_small_num_class_ids():
