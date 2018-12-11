@@ -176,7 +176,11 @@ class Protein(object):
                  for t_i, tar_rat in enumerate( data):
                     
                      if tar_rat >=0.3:
-                         result_all.append(self.config.v('check_id_list')[t_i])
+                         if self.config.v('check_id_list')[t_i] == 0:
+                             if tar_rat >=0.4: 
+                                 result_all.append(self.config.v('check_id_list')[t_i])
+                         else:
+                             result_all.append(self.config.v('check_id_list')[t_i])
                  result_xgb = self.xgb_test_result[self.idx_df]
                  print('idx ', self.idx_df, 'result_xgb ', result_xgb)
                  for r_x in result_xgb:
