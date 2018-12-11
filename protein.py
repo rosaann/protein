@@ -43,7 +43,7 @@ class Protein(object):
         self.xgb_test_result = xgb_test_result
         train_data = xgboost_train(False)
         if self.ifTrain:
-            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=16)
+            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=config.v('xgb_len'))
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
             
@@ -148,7 +148,7 @@ class Protein(object):
         df = pd.read_csv('../sample_submission.csv')
    #     epoch_size = int( len(self.test_loader) )
    #     batch_iterator = iter(self.test_loader)
-        self.idx_df = 0
+        self.idx_df = int(0)
         epoch_size = int( len(self.test_loader) )
         
         print('epoch_size ', epoch_size)
@@ -183,7 +183,7 @@ class Protein(object):
                              result += ' '
                              result += str(r)
                  
-
+                 print('idx ', self.idx_df, 'result ', result)
                  df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
         
