@@ -153,9 +153,9 @@ class Protein(object):
         epoch_size = int( len(self.test_loader) )
         
         print('epoch_size ', epoch_size)
-        for i, row in df.iterrows():
-             self.idx_df = i
-             break
+      #  for i, row in df.iterrows():
+     #        self.idx_df = i
+      #       break
         print('start idx ', self.idx_df)
         for images , name_list in self.test_loader:
             
