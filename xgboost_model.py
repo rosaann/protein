@@ -209,8 +209,8 @@ def test_xg_model():
   #  print('img shape', img_list.shape)
     
     pre_list = start_pre(img_list)
-    df.closed
-    return pre_list
+    
+    return pre_list, df
     
     for i, row in df.iterrows():
         r = pre_list[i]

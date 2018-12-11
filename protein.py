@@ -32,7 +32,7 @@ from tools.protein_test_dataset import ProteinTestDataSet
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
-    def __init__(self, ifTrain = True, xgb_test_result = None):
+    def __init__(self, ifTrain = True, xgb_test_result = None, df = None):
         seed = 10
         torch.manual_seed(seed)#为CPU设置随机种子
     
@@ -41,6 +41,7 @@ class Protein(object):
         self.preproc = Data_Preproc()
         self.train_class = 0
         self.xgb_test_result = xgb_test_result
+        self.df = df
         train_data = xgboost_train(False)
         if self.ifTrain:
             dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=config.v('xgb_len'))
@@ -145,7 +146,7 @@ class Protein(object):
        # vis = visdom.Visdom(server="http://localhost", port=8888)
         check_i = 0;
         _t = Timer()
-        df = pd.read_csv('../sample_submission.csv')
+   #     df = pd.read_csv('../sample_submission.csv')
    #     epoch_size = int( len(self.test_loader) )
    #     batch_iterator = iter(self.test_loader)
         self.idx_df = int(0)
@@ -163,7 +164,7 @@ class Protein(object):
             out = self.model(images, phase='train')
          #   print('out ', out) 
             for i_im, imname in enumerate(name_list):
-                 df.set_value(self.idx_df,'Id', imname )
+                 self.df.set_value(self.idx_df,'Id', imname )
                  data = out[i_im]
                  result_all = []
                  for t_i, tar_rat in enumerate( data):
@@ -184,7 +185,7 @@ class Protein(object):
                              result += str(r)
                  
                  print('idx ', self.idx_df, 'result ', result)
-                 df.set_value(self.idx_df, 'Predicted', result)
+                 self.df.set_value(self.idx_df, 'Predicted', result)
                  self.idx_df += 1;
         
         
@@ -192,8 +193,8 @@ class Protein(object):
         
 
          #   check_i += 1  
-        df.to_csv('pred.csv', index=None)
-        df.head(10)    
+        self.df.to_csv('pred.csv', index=None)
+        self.df.head(10)    
         print('Evaluating detections')
         
         
@@ -447,7 +448,7 @@ def train_model():
     return True
 
 def test_model():
-    xgb_test = test_xg_model()
-    s = Protein(ifTrain = False, xgb_test_result = xgb_test)
+    xgb_test, df = test_xg_model()
+    s = Protein(ifTrain = False, xgb_test_result = xgb_test, df = df)
     s.test_model()
     return True       
