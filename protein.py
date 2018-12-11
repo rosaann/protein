@@ -196,7 +196,7 @@ class Protein(object):
                              result += ' '
                              result += str(r)
                  if len(result) == 0:
-                     result = '17'
+                     result = '0'
                      print('idx ', self.idx_df, 'print none  ------')
                  print('idx ', self.idx_df, 'result ', result)
                  df.set_value(self.idx_df, 'Predicted', result)

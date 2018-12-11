@@ -172,7 +172,7 @@ def start_pre(val_img_list):
             for iy, y in enumerate(ys):
                 if y >= 0.5:
                     if class_pair[iy] == 8:
-                        if y >= 0.7:
+                        if y >= 0.6:
                             sub_result.append(class_pair[iy]) 
                     else:
                         sub_result.append(class_pair[iy]) 
