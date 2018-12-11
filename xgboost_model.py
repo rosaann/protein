@@ -57,7 +57,7 @@ def xgboost_train(ifTrain = True, train_to = 15):
             print('len ', len(idinfo_list[0]), ' ')
             train_data_id_class_list.append((idinfo_list, class_pair))
         else: 
-             train_once_per = int( train_once_num * 0.7)
+             train_once_per = int( train_once_num * 0.9)
              full_timie = int(len(idinfo_list[0]) / train_once_per)
              for i in range(full_timie):
                  start = i * train_once_per
@@ -497,6 +497,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
+xgboost_train()
 val_model()
 #test_xg_model()
