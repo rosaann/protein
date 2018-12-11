@@ -57,15 +57,18 @@ def xgboost_train(ifTrain = True, train_to = 15):
             print('len ', len(idinfo_list[0]), ' ')
             train_data_id_class_list.append((idinfo_list, class_pair))
         else: 
-             full_timie = int(len(idinfo_list[0]) / train_once_num)
+             train_once_per = int( train_once_num * 0.7)
+             full_timie = int(len(idinfo_list[0]) / train_once_per)
              for i in range(full_timie):
-                 start = i * train_once_num
-                 end = start + train_once_num
+                 start = i * train_once_per
+                 end = start + train_once_per
                  cut = [idinfo_list[0][start : end], idinfo_list[1][start : end], idinfo_list[2][start : end]]
-                 train_data_id_class_list.append((cut, class_pair))
+                 idinfo_list = get_rest_id_info(df, cut[0], train_data_id_class_list, class_pair,idinfo_list, train_once_num) 
+
+                 train_data_id_class_list.append((idinfo_list, class_pair))
                  print('cut len ', len(cut[0]))
-             rest = [idinfo_list[0][full_timie * train_once_num : ], idinfo_list[1][full_timie * train_once_num : ], idinfo_list[2][full_timie * train_once_num : ]]
-             idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
+             rest = [idinfo_list[0][full_timie * train_once_per : ], idinfo_list[1][full_timie * train_once_per : ], idinfo_list[2][full_timie * train_once_per : ]]
+             idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_per)
              train_data_id_class_list.append((idinfo_list, class_pair))
              print('with rest len ', len(idinfo_list[0]), ' ')
     min_group_len = len(train_data_id_class_list)
