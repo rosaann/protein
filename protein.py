@@ -43,7 +43,7 @@ class Protein(object):
         self.xgb_test_result = xgb_test_result
         train_data = xgboost_train(False)
         if self.ifTrain:
-            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=15)
+            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=16)
             self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
             
