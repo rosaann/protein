@@ -161,8 +161,8 @@ def start_pre(val_img_list):
         clr =  joblib.load(model_path)
         y_p_x = clr.predict_proba(val_img_list)
     
-        y_p_x[y_p_x >= 0.5] = 1
-        y_p_x[y_p_x < 0.5] = 0
+      #  y_p_x[y_p_x >= 0.5] = 1
+      #  y_p_x[y_p_x < 0.5] = 0
         
      #   class_pair = real_class_pair_list[ci]
      #   print('y_p ', y_p_x)
@@ -170,8 +170,12 @@ def start_pre(val_img_list):
         for i_ys,  ys in enumerate( y_p_x ):
             sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
-                if y == 1:
-                    sub_result.append(class_pair[iy]) 
+                if y >= 0.5:
+                    if class_pair[iy] == 8:
+                        if y >= 0.7:
+                            sub_result.append(class_pair[iy]) 
+                    else:
+                        sub_result.append(class_pair[iy]) 
             result_list[ci] = sub_result       
       #  print('sub ', ci, ' r:', sub_result)
     
