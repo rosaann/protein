@@ -497,6 +497,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
+#xgboost_train()
 val_model()
 #test_xg_model()
