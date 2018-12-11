@@ -161,11 +161,11 @@ def start_pre(val_img_list):
         clr =  joblib.load(model_path)
         y_p_x = clr.predict_proba(val_img_list)
     
-        y_p_x[y_p_x >= 0.7] = 1
-        y_p_x[y_p_x < 0.7] = 0
+        y_p_x[y_p_x >= 0.5] = 1
+        y_p_x[y_p_x < 0.5] = 0
         
      #   class_pair = real_class_pair_list[ci]
-     #   print('y_p ', y_p_x.shape, ' ', y_p_x)
+        print('y_p ', y_p_x)
         
         for i_ys,  ys in enumerate( y_p_x ):
             sub_result = result_list[i_ys]
@@ -185,7 +185,7 @@ def start_pre(val_img_list):
         result = []
         for i, r_i in enumerate(result_i):
             t_ref = class_pair_reference[i] / 2
-            if r_i >= t_ref and (i in minor_type_class):
+            if r_i > t_ref and (i in minor_type_class):
                 print('i ', i, ' t_ref ', t_ref, ' r_i ', r_i)
                 result.append(i)
         
