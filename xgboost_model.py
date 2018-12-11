@@ -152,7 +152,7 @@ def start_pre(val_img_list):
     
     class_pair_reference = np.zeros(28)
     for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):
-        for ref in class_pair_reference:
+        for ref in  class_pair:
             class_pair_reference[ref] = class_pair_reference[ref] + 1
         
         model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
