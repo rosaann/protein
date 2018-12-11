@@ -210,7 +210,7 @@ def test_xg_model():
     
     pre_list = start_pre(img_list)
     
-    return pre_list, df
+  #  return pre_list, df
     
     for i, row in df.iterrows():
         r = pre_list[i]
