@@ -119,7 +119,7 @@ def xgboost_train(ifTrain = True, train_to = 15):
         file.write(str(real_class_pair_list));
         file.close()
         
-    
+    val_model()
     
 def val_model():
     id_list, c_list = find_small_num_class_ids()
