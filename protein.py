@@ -149,7 +149,8 @@ class Protein(object):
         df = pd.read_csv('../sample_submission.csv')
    #     epoch_size = int( len(self.test_loader) )
    #     batch_iterator = iter(self.test_loader)
-        self.idx_df = int(1)
+        self.idx_df = int(0)
+        df = df.astype({"Predicted": str})
         epoch_size = int( len(self.test_loader) )
         
         print('epoch_size ', epoch_size)
