@@ -222,6 +222,7 @@ def test_xg_model():
                 result += ' '
                 result += r_sub
         df.set_value(i, 'Predicted', result)
+        print('idx ', i)
 
     df.to_csv('pred.csv', index=None)
     df.head(10)    
