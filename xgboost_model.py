@@ -174,7 +174,7 @@ def start_pre(val_img_list, val_tar_list):
             sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
                 if y >= 0.5:
-                    if class_pair[iy] == 8:
+                    if class_pair[iy] == 8 or class_pair[iy] == 16:
                         if y >= 0.6:
                             sub_result.append(class_pair[iy]) 
                     else:
@@ -197,7 +197,7 @@ def start_pre(val_img_list, val_tar_list):
             if r_i > t_ref and (i in minor_type_class):
                 print('i ', i, ' t_ref ', t_ref, ' r_i ', r_i)
                 result.append(i)
-        
+        print('pre ', result , ' t ', val_tar_list[this_sub_i])
         pre_list.append(result)
     return pre_list
 
@@ -521,5 +521,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-#val_model()
+val_model()
 #test_xg_model()
