@@ -65,9 +65,9 @@ def xgboost_train(ifTrain = True, train_to = 15):
                  start = i * train_once_per
                  end = start + train_once_per
                  cut = [idinfo_list[0][start : end], idinfo_list[1][start : end], idinfo_list[2][start : end]]
-                 idinfo_list = get_rest_id_info(df, cut[0], train_data_id_class_list, class_pair,cut, train_once_num) 
+                 idinfo_list_sub = get_rest_id_info(df, cut[0], train_data_id_class_list, class_pair,cut, train_once_num) 
 
-                 train_data_id_class_list.append((idinfo_list, class_pair))
+                 train_data_id_class_list.append((idinfo_list_sub, class_pair))
                  print('cut len ', len(cut[0]))
              rest = [idinfo_list[0][full_timie * train_once_per : ], idinfo_list[1][full_timie * train_once_per : ], idinfo_list[2][full_timie * train_once_per : ]]
              idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
@@ -338,7 +338,7 @@ def train_one_model(idinfo_list, class_pair):
   #           ,'nthread':8, 'scale_pos_weight':1
   #           ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
   #           ,'max_bin':16, 'seed':10,'scale_pos_weight':1 }
-    param = {'max_depth':3,'silent':0,'n_estimators':5
+    param = {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
@@ -516,6 +516,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
-val_model()
+xgboost_train()
+#val_model()
 #test_xg_model()
