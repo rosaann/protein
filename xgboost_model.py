@@ -219,7 +219,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
                     if t == c:
                         trans_t = 1
                         break
-                id_list.append(img_id)
+              #  id_list.append(img_id)
                 tar_list.append(trans_t)
                 
                 img_path = base_path + img_id + '_' + 'green' + '.png'
@@ -228,7 +228,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
                 data_img_list.append(img)
                 
         train_once_num = 80
-        train_time = int(len(id_list) / train_once_num)
+        train_time = int(len(tar_list) / train_once_num)
         data_img_list = np.array(data_img_list)
         tar_list = np.array(tar_list)
 
@@ -238,8 +238,8 @@ def xgboost_train(ifTrain = True, train_to = 16):
         for train_i in range(train_time):
             start = train_i * train_once_num
             end = start + train_once_num
-            if end >= len(id_list):
-                end = len(id_list) - 1
+            if end >= len(tar_list):
+                end = len(tar_list) - 1
             print('start fit ', c, ' part ', train_i, 'of ', train_time)
             x.fit(data_img_list[ start : end], tar_list[start : end])
         model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
@@ -278,17 +278,12 @@ def start_pre(val_img_list, val_tar_list):
             class_pair_reference[ref] = class_pair_reference[ref] + 1
     
     for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):    
-        model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
+        model_path = model_base_path + 'xgboost_model_per_class' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
         clr =  joblib.load(model_path)
         y_p_x = clr.predict_proba(val_img_list)
-    
-      #  y_p_x[y_p_x >= 0.5] = 1
-      #  y_p_x[y_p_x < 0.5] = 0
-        
-     #   class_pair = real_class_pair_list[ci]
-     #   print('y_p ', y_p_x)
+
         
         for i_ys,  ys in enumerate( y_p_x ):
           #  if val_tar_list != None:
@@ -322,7 +317,58 @@ def start_pre(val_img_list, val_tar_list):
         print('pre ', result , ' t ', val_tar_list[this_sub_i])
         pre_list.append(result)
     return pre_list
+def start_pre_16seperate_model(val_img_list, val_tar_list):
+    real_class_pair_list = cut_class_pair
+    
+    model_base_path = 'outs/'
+    result_list = [list() for i in range(len(val_img_list))]
+    config = Config()
+    
+    class_pair_reference = np.zeros(28)
+    for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):
+        for ref in  class_pair:
+            class_pair_reference[ref] = class_pair_reference[ref] + 1
+    
+    for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):    
+        model_path = model_base_path + 'xgboost_' + str(ci) + '.pkl'
+        print('part ', ci , ' of ', len(real_class_pair_list))
 
+        clr =  joblib.load(model_path)
+        y_p_x = clr.predict_proba(val_img_list)
+
+        
+        for i_ys,  ys in enumerate( y_p_x ):
+          #  if val_tar_list != None:
+            print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
+            sub_result = result_list[i_ys]
+            for iy, y in enumerate(ys):
+                if y >= 0.5:
+                    if class_pair[iy] == 8 or class_pair[iy] == 16:
+                        if y >= 0.6:
+                            sub_result.append(class_pair[iy]) 
+                    else:
+                        sub_result.append(class_pair[iy]) 
+            result_list[i_ys] = sub_result       
+      #  print('sub ', ci, ' r:', sub_result)
+    
+    pre_list = []    
+    print('class_pair_reference ', class_pair_reference)
+    for this_sub_i, sub_result in enumerate( result_list):
+        print('this_sub_i ', this_sub_i, ' sub_result ', sub_result)
+        result_i = np.zeros(28)
+        for i_s, s in enumerate( sub_result):
+            result_i[s] += 1
+        
+        print('result_i ', result_i)
+        result = []
+        for i, r_i in enumerate(result_i):
+            t_ref = class_pair_reference[i] / 2
+            if r_i > t_ref and (i in minor_type_class):
+                print('i ', i, ' t_ref ', t_ref, ' r_i ', r_i)
+                result.append(i)
+        print('pre ', result , ' t ', val_tar_list[this_sub_i])
+        pre_list.append(result)
+    return pre_list
 def test_xg_model():
     pre_dir = '../test/'
     
