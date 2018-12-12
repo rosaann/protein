@@ -277,8 +277,9 @@ def start_pre(val_img_list, val_tar_list):
         model_path = model_base_path + 'xgboost_model_per_class' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
-        clr =  joblib.load(model_path)
-        y_p_x = clr.predict_proba(val_img_list)
+        clr = XGBClassifier()
+        clr.load_model(model_path)
+        y_p_x = clr.predict(val_img_list)
 
         
         for i_ys,  ys in enumerate( y_p_x ):
