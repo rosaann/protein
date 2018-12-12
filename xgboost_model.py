@@ -300,11 +300,11 @@ def start_pre(val_img_list, val_tar_list):
         for i_s, s in enumerate( sub_result):
             result_i[s] += 1
         
-        print('result_i ', result_i)
+      #  print('result_i ', result_i)
         result = []
         for i, r_i in enumerate(result_i):
             if r_i == 1 and (i in minor_type_class):
-                print('i ', i,  ' r_i ', r_i)
+           #     print('i ', i,  ' r_i ', r_i)
                 result.append(i)
         print('pre ', result , ' t ', val_tar_list[this_sub_i])
         pre_list.append(result)
