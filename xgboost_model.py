@@ -169,8 +169,8 @@ def start_pre(val_img_list, val_tar_list):
      #   print('y_p ', y_p_x)
         
         for i_ys,  ys in enumerate( y_p_x ):
-            if val_tar_list != None:
-                print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
+          #  if val_tar_list != None:
+            print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
                 if y >= 0.5:
@@ -436,7 +436,7 @@ def xgboost_train_old_again():
             break
     train_end = int(len(data_img_list) * 0.8)
     param = {'max_depth':20,'eta':1, 'silent':1,'n_estimators':10
-             ,'learning_rate':0.05, 'objective':'binary:logistic'
+             ,'learning_rate':0.3, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'max_bin':16, 'seed':10 }
