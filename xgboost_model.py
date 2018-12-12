@@ -229,7 +229,12 @@ def xgboost_train(ifTrain = True, train_to = 16):
                 
         train_once_num = 80
         train_time = int(len(id_list) / train_once_num)
-        
+        data_img_list = np.array(data_img_list)
+        tar_list = np.array(tar_list)
+
+        nsamples, nx, ny = data_img_list.shape
+        data_img_list = data_img_list.reshape((nsamples,nx*ny))
+        print('img shape', data_img_list.shape)  
         for trani_i in range(train_time):
             start = train_i * train_once_num
             end = start + train_once_num
