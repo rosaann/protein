@@ -240,6 +240,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
             end = start + train_once_num
             if end >= len(id_list):
                 end = len(id_list) - 1
+            print('start fit ', c, ' part ', train_i, 'of ', train_time)
             x.fit(data_img_list[ start : end], tar_list[start : end])
         model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
         x.save_model(model_path)     
