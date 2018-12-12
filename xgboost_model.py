@@ -272,12 +272,8 @@ def start_pre(val_img_list, val_tar_list):
     result_list = [list() for i in range(len(val_img_list))]
     config = Config()
     
-    class_pair_reference = np.zeros(28)
-    for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):
-        for ref in  class_pair:
-            class_pair_reference[ref] = class_pair_reference[ref] + 1
     
-    for ci, class_pair in enumerate( real_class_pair_list[:config.v('xgb_len')]):    
+    for ci, class_pair in enumerate( minor_type_class):    
         model_path = model_base_path + 'xgboost_model_per_class' + str(ci) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
@@ -290,17 +286,13 @@ def start_pre(val_img_list, val_tar_list):
             print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
-                if y >= 0.5:
-                    if class_pair[iy] == 8 or class_pair[iy] == 16:
-                        if y >= 0.6:
-                            sub_result.append(class_pair[iy]) 
-                    else:
-                        sub_result.append(class_pair[iy]) 
+                if y >= 0.5:   
+                    sub_result.append(class_pair) 
+                    
             result_list[i_ys] = sub_result       
       #  print('sub ', ci, ' r:', sub_result)
     
     pre_list = []    
-    print('class_pair_reference ', class_pair_reference)
     for this_sub_i, sub_result in enumerate( result_list):
         print('this_sub_i ', this_sub_i, ' sub_result ', sub_result)
         result_i = np.zeros(28)
@@ -310,9 +302,8 @@ def start_pre(val_img_list, val_tar_list):
         print('result_i ', result_i)
         result = []
         for i, r_i in enumerate(result_i):
-            t_ref = class_pair_reference[i] / 2
-            if r_i > t_ref and (i in minor_type_class):
-                print('i ', i, ' t_ref ', t_ref, ' r_i ', r_i)
+            if r_i == 1 and (i in minor_type_class):
+                print('i ', i,  ' r_i ', r_i)
                 result.append(i)
         print('pre ', result , ' t ', val_tar_list[this_sub_i])
         pre_list.append(result)
@@ -684,6 +675,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
-#val_model()
+#xgboost_train()
+val_model()
 #test_xg_model()
