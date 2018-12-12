@@ -279,7 +279,7 @@ def start_pre(val_img_list, val_tar_list):
 
         clr = XGBClassifier()
         clr.load_model(model_path)
-        y_p_x = clr.predict(val_img_list)
+        y_p_x = clr.predict_proba(val_img_list)
 
         
         for i_ys,  ys in enumerate( y_p_x ):
