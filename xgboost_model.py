@@ -347,10 +347,10 @@ def train_one_model(idinfo_list, class_pair):
             break
 
     param = {'max_depth':6,'silent':0,'n_estimators':5
-             ,'learning_rate':0.05, 'objective':'binary:logistic'
+             ,'learning_rate':0.3, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':3}
+             ,'seed':10 ,'max_bin':5}
 
     x = xgb.XGBClassifier(**param)  
     clf = OneVsRestClassifier(x)
