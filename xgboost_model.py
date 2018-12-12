@@ -169,7 +169,8 @@ def start_pre(val_img_list, val_tar_list):
      #   print('y_p ', y_p_x)
         
         for i_ys,  ys in enumerate( y_p_x ):
-            print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
+            if val_tar_list != None:
+                print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
                 if y >= 0.5:
@@ -224,7 +225,7 @@ def test_xg_model():
     img_list = img_list.reshape((nsamples,nx*ny))
   #  print('img shape', img_list.shape)
     
-    pre_list = start_pre(img_list)
+    pre_list = start_pre(img_list, None)
     
     return pre_list
     
