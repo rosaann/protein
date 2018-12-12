@@ -49,7 +49,7 @@ def find_small_num_class_ids():
                 break
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list, type_class
-def xgboost_train(ifTrain = True, train_to = 15):
+def xgboost_train_16seperate_model(ifTrain = True, train_to = 15):
     df = pd.read_csv('../train.csv')
       
     train_data_id_class_list = []
@@ -122,9 +122,7 @@ def xgboost_train(ifTrain = True, train_to = 15):
             continue
         clr, new_c_pair = train_one_model(train_data_id_class, c_pair)
         model_path = model_base_path + 'xgboost_' + str(train_i) + '.pkl'
-      #  clr_list.append(clr)
-     #   with open(model_path, 'wb') as f:
-     #       pickle.dump(clr, f)
+      
         joblib.dump(clr, model_path)
         real_class_pair_list.append(new_c_pair)
     
@@ -133,7 +131,117 @@ def xgboost_train(ifTrain = True, train_to = 15):
         file.close()
         
     val_model()
+def xgboost_train(ifTrain = True, train_to = 16):
+    df = pd.read_csv('../train.csv')
+      
+    train_data_id_class_list = []
     
+    #先从type_class中，选含有其中一种的，剩下的
+    
+    train_once_num = 80
+    for ti, type_class in enumerate( minor_type_class) :
+        idinfo_list = get_type_class(type_class, df)
+        if len(idinfo_list[0]) < train_once_num:
+            class_pair = class_pair_list[ti]
+            hav_gotten_id_list = idinfo_list[ 0]
+           # print('hav_gotten_id_list ', hav_gotten_id_list)
+            idinfo_list = get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list, train_once_num) 
+            print('len ', len(idinfo_list[0]), ' ')
+            train_data_id_class_list.append((idinfo_list, class_pair))
+        else: 
+             train_once_per = int( train_once_num * 0.9)
+             full_timie = int(len(idinfo_list[0]) / train_once_per)
+             for i in range(full_timie):
+                 start = i * train_once_per
+                 end = start + train_once_per
+                 cut = [idinfo_list[0][start : end], idinfo_list[1][start : end], idinfo_list[2][start : end]]
+                 idinfo_list_sub = get_rest_id_info(df, cut[0], train_data_id_class_list, class_pair,cut, train_once_num) 
+
+                 train_data_id_class_list.append((idinfo_list_sub, class_pair))
+                 print('cut len ', len(cut[0]))
+             rest = [idinfo_list[0][full_timie * train_once_per : ], idinfo_list[1][full_timie * train_once_per : ], idinfo_list[2][full_timie * train_once_per : ]]
+             idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
+             train_data_id_class_list.append((idinfo_list, class_pair))
+             print('with rest len ', len(idinfo_list[0]), ' ')
+    min_group_len = len(train_data_id_class_list)
+    print('min_group_len ', min_group_len)
+    idx_list = []
+    id_list = []
+    tar_list = []
+    for i, row in df.iterrows(): 
+          if_in_saved_list = False
+          for saved_train_list in train_data_id_class_list:
+              if i in saved_train_list[0]:
+                  if_in_saved_list = True
+                  break
+              if if_in_saved_list == True:
+                  continue
+          targets = row['Target'].split(' ')
+          targets_t = [int (tthis) for tthis in targets]  
+          idx_list.append(i)
+          id_list.append(row['Id'])
+          tar_list.append(targets_t)
+          if len(idx_list) >= train_once_num:
+              train_data_id_class_list.append(([idx_list, id_list, tar_list], class_pair))
+             # print('jkj len ', len(idx_list))
+              idx_list = []
+              id_list = []
+              tar_list = []
+    train_data_id_class_list.append(([idx_list, id_list, tar_list], class_pair))
+    print('last len ', len(idx_list))
+    print('train_group ', len(train_data_id_class_list))
+    
+    if ifTrain == False:
+        return train_data_id_class_list;
+    
+    clr_list = []
+    real_class_pair_list = []
+    model_base_path = 'outs/'
+    start_from = 0
+    
+    for i_c, c in enumerate( minor_type_class):
+        param = {'max_depth':6,'silent':0,'n_estimators':5
+             ,'learning_rate':0.3, 'objective':'binary:logistic'
+             ,'nthread':8, 'scale_pos_weight':1
+             ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
+             ,'seed':10 ,'max_bin':5}
+
+        x = xgb.XGBClassifier(**param) 
+        
+        
+        data_img_list = []
+        tar_list = []
+        base_path = '../train/'
+        for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list[:train_to]):
+            for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
+                trans_t = 0
+                for t in targets:
+                    if t == c:
+                        trans_t = 1
+                        break
+                id_list.append(img_id)
+                tar_list.append(trans_t)
+                
+                img_path = base_path + img_id + '_' + 'green' + '.png'
+                img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+                img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
+                data_img_list.append(img)
+                
+        train_once_num = 80
+        train_time = int(len(id_list) / train_once_num)
+        
+        for trani_i in range(train_time):
+            start = train_i * train_once_num
+            end = start + train_once_num
+            if end >= len(id_list):
+                end = len(id_list) - 1
+            x.fit(data_img_list[ start : end], tar_list[start : end])
+        model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
+        x.save_model(model_path)     
+        
+        
+        
+ #   val_model()    
 def val_model():
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
@@ -525,5 +633,5 @@ def xgboost_train_old():
         index += 1
         
 xgboost_train()
-val_model()
+#val_model()
 #test_xg_model()
