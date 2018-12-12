@@ -42,6 +42,7 @@ def find_small_num_class_ids():
     for i, row in df.iterrows():
         if row['Id'] not in id_list:
             targets = row['Target'].split(' ')
+            print('add ',i, ' ', row['Id'], ' ', targets)
             id_list.append((row['Id'], targets))
             add_idx += 1
             if add_idx >= 500:
