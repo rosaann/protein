@@ -211,6 +211,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
         
         data_img_list = []
         tar_list = []
+        tar_src = []
         base_path = '../train/'
         for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list[:train_to]):
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
@@ -221,6 +222,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
                         break
               #  id_list.append(img_id)
                 tar_list.append(trans_t)
+                tar_src.append(targets)
                 
                 img_path = base_path + img_id + '_' + 'green' + '.png'
                 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
@@ -241,13 +243,14 @@ def xgboost_train(ifTrain = True, train_to = 16):
             if end >= len(tar_list):
                 end = len(tar_list) - 1
             print('start fit ', c, ' part ', train_i, 'of ', train_time)
+            print('tar ', tar_list[start : end])
             x.fit(data_img_list[ start : end], tar_list[start : end])
         model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
         x.save_model(model_path)     
         
         
         
- #   val_model()    
+    val_model()    
 def val_model():
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
