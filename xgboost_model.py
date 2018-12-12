@@ -345,11 +345,7 @@ def train_one_model(idinfo_list, class_pair):
             print(y_en)
         else :
             break
-  #  param = {'max_depth':20,'eta':1, 'silent':0,'n_estimators':10
-  #           ,'learning_rate':0.05, 'objective':'binary:logistic'
-  #           ,'nthread':8, 'scale_pos_weight':1
-  #           ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-  #           ,'max_bin':16, 'seed':10,'scale_pos_weight':1 }
+
     param = {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.05, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':1
@@ -528,6 +524,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
-val_model()
+xgboost_train()
+#val_model()
 #test_xg_model()
