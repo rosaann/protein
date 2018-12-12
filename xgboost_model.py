@@ -132,7 +132,7 @@ def val_model():
     val_img_list, val_tar_list,  c_list= get_val_data_from_idinfolist(id_list, c_list)
     
     
-    pre_list = start_pre(val_img_list)
+    pre_list = start_pre(val_img_list, val_tar_list)
   #  pair = [n for n in range(28)]
     y_p_factory = MultiLabelBinarizer()
     y_p_en = y_p_factory.fit_transform(pre_list)
@@ -143,7 +143,7 @@ def val_model():
 
     print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
     
-def start_pre(val_img_list):
+def start_pre(val_img_list, val_tar_list):
     real_class_pair_list = cut_class_pair
     
     model_base_path = 'outs/'
@@ -168,6 +168,7 @@ def start_pre(val_img_list):
      #   print('y_p ', y_p_x)
         
         for i_ys,  ys in enumerate( y_p_x ):
+            print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
             for iy, y in enumerate(ys):
                 if y >= 0.5:
@@ -516,5 +517,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-#val_model()
+val_model()
 #test_xg_model()
