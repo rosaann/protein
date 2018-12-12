@@ -38,7 +38,14 @@ def find_small_num_class_ids():
             if t in type_class:
                 id_list.append((row['Id'], targets))
                 break
-            
+    add_idx = 0
+    for i, row in df.iterrows():
+        if row['Id'] not in id_list:
+            targets = row['Target'].split(' ')
+            id_list.append((row['Id'], targets))
+            add_idx += 1
+            if add_idx >= 500:
+                break
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list, type_class
 def xgboost_train(ifTrain = True, train_to = 15):
