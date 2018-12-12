@@ -42,7 +42,7 @@ def find_small_num_class_ids():
     for i, row in df.iterrows():
         if row['Id'] not in id_list:
             targets = row['Target'].split(' ')
-            print('add ',i, ' ', row['Id'], ' ', targets)
+          #  print('add ',i, ' ', row['Id'], ' ', targets)
             id_list.append((row['Id'], targets))
             add_idx += 1
             if add_idx >= 500:
@@ -390,7 +390,7 @@ def get_val_data_from_idinfolist(id_list,class_pair):
         data_img_list.append(img)
         targets_t = []
         for tthis in targets:
-            if int(tthis) in minor_type_class:
+           # if int(tthis) in minor_type_class:
                 targets_t.append(int(tthis))
         data_tar_list.append(targets_t)
 
