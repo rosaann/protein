@@ -19,7 +19,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
-from class_pair import cut_class_pair, minor_type_class, class_pair_list
+from class_pair import cut_class_pair, minor_type_class, class_pair_list, param_list
 import os
 from config import Config
 
@@ -198,13 +198,9 @@ def xgboost_train(ifTrain = True, train_to = 16):
     real_class_pair_list = []
     model_base_path = 'outs/'
     start_from = 0
-    
+
     for i_c, c in enumerate( minor_type_class):
-        param = {'max_depth':6,'silent':0,'n_estimators':5
-             ,'learning_rate':0.3, 'objective':'binary:logistic'
-             ,'nthread':8, 'scale_pos_weight':1
-             ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':5}
+        param = param_list[i_c]
 
         x = xgb.XGBClassifier(**param) 
         
