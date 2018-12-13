@@ -268,8 +268,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
       #########
  '''   
       
-    down_sample_list = [0, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 150000, 15000, 15000, 15000, 15000, 0]
-    train_start_list = [train_to+ 200 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 200]
+    down_sample_list = [0, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 0]
+    train_start_list = [train_to+ 250 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 250]
     for i_c, c in enumerate( major_type_class):
         param = param_list[i_c]
        # if i_c != 7:
