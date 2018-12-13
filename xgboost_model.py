@@ -199,6 +199,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
     model_base_path = 'outs/'
     start_from = 0
 
+    down_sample_list = [0, 0, 0, 0, 0, 0, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
         if i_c != 7:
@@ -210,14 +211,22 @@ def xgboost_train(ifTrain = True, train_to = 16):
         tar_list = []
         tar_src = []
         base_path = '../train/'
+        down_sample_num = down_sample_list[i_c] 
+        
+        down_num = 0
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
+            
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
                 trans_t = 0
+                
                 for t in targets:
                     if t == c:
                         trans_t = 1
                         break
-              #  id_list.append(img_id)
+                if trans_t == 0:
+                    if down_num < down_sample_num:
+                        down_num += 1
+                        continue
                 tar_list.append(trans_t)
                 tar_src.append(targets)
                 
