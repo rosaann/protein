@@ -212,7 +212,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
     model_base_path = 'outs/'
     start_from = 0
 
-    down_sample_list = [0, 0, 0, 0, 0, 0, 0, 500, 0, 0]
+    down_sample_list = [0, 0, 0, 0, 0, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
        # if i_c != 7:
@@ -225,7 +225,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         tar_src = []
         base_path = '../train/'
         down_sample_num = down_sample_list[i_c] 
-    '''       
+           
         down_num = 0
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
             
@@ -267,9 +267,9 @@ def xgboost_train(ifTrain = True, train_to = 29):
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)     
       #########
- '''   
+    
       
-    down_sample_list = [0, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 0]
+    down_sample_list = [0, 25000, 25000, 25000, 25000, 25000, 25000, 25000,  25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 0]
     train_start_list = [train_to+ 320 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 320]
     for i_c, c in enumerate( major_type_class):
         param = major_param_list[i_c]
@@ -774,6 +774,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
-val_model()
+xgboost_train()
+#val_model()
 #test_xg_model()
