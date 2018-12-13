@@ -142,13 +142,14 @@ def xgboost_train(ifTrain = True, train_to = 16):
     for ti, type_class in enumerate( minor_type_class) :
         idinfo_list = get_type_class(type_class, df)
         if len(idinfo_list[0]) < train_once_num:
-           
+            print('find c ', type_class, ' len ', len(idinfo_list[0]))
             hav_gotten_id_list = idinfo_list[ 0]
            # print('hav_gotten_id_list ', hav_gotten_id_list)
             idinfo_list = get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, idinfo_list, train_once_num) 
             print('len ', len(idinfo_list[0]), ' ')
             train_data_id_class_list.append(idinfo_list)
         else: 
+             print('find c- ', type_class, ' len ', len(idinfo_list[0]))
              train_once_per = int( train_once_num * 0.9)
              full_timie = int(len(idinfo_list[0]) / train_once_per)
              for i in range(full_timie):
