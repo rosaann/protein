@@ -131,7 +131,7 @@ def xgboost_train_16seperate_model(ifTrain = True, train_to = 15):
         file.close()
         
     val_model()
-def xgboost_train(ifTrain = True, train_to = 16):
+def xgboost_train(ifTrain = True, train_to = 29):
     df = pd.read_csv('../train.csv')
       
     train_data_id_class_list = []

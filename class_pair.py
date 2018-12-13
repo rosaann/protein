@@ -53,11 +53,11 @@ param_list = [{'max_depth':6,'silent':0,'n_estimators':5
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'seed':10 ,'max_bin':5},
                 
-                {'max_depth':6,'silent':0,'n_estimators':3
+                {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.1, 'objective':'binary:logistic'
-             ,'nthread':8, 'scale_pos_weight':40
+             ,'nthread':8, 'scale_pos_weight':10
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':7},
+             ,'seed':10 ,'max_bin':5},
                 
                  {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.3, 'objective':'binary:logistic'
