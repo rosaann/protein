@@ -293,8 +293,8 @@ def start_pre(val_img_list, val_tar_list):
 
         
         for i_ys,  ys in enumerate( y_p_x ):
-          #  if val_tar_list != None:
-            print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
+            if len(val_tar_list) > 0:
+                print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
             if ys[1] >= 0.5:   
                 sub_result.append(class_pair) 
@@ -315,7 +315,8 @@ def start_pre(val_img_list, val_tar_list):
             if r_i == 1 and (i in minor_type_class):
            #     print('i ', i,  ' r_i ', r_i)
                 result.append(i)
-        print('pre ', result , ' t ', val_tar_list[this_sub_i])
+        if len(val_tar_list) > 0:
+            print('pre ', result , ' t ', val_tar_list[this_sub_i])
         pre_list.append(result)
     return pre_list
 def start_pre_16seperate_model(val_img_list, val_tar_list):
@@ -394,7 +395,7 @@ def test_xg_model():
     img_list = img_list.reshape((nsamples,nx*ny))
   #  print('img shape', img_list.shape)
     
-    pre_list = start_pre(img_list, None)
+    pre_list = start_pre(img_list, [])
     
     return pre_list
     
@@ -682,5 +683,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-val_model()
+#val_model()
 #test_xg_model()

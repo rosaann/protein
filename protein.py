@@ -29,6 +29,8 @@ import visdom
 from xgboost_model import xgboost_train, test_xg_model
 from torchvision import transforms
 from tools.protein_test_dataset import ProteinTestDataSet
+from class_pair import minor_type_class
+
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
@@ -175,7 +177,7 @@ class Protein(object):
                  print(' pre ', data)
                  for t_i, tar_rat in enumerate( data):
                     
-                     if tar_rat >=0.3:
+                     if tar_rat >=0.3 and self.config.v('check_id_list')[t_i] not in minor_type_class:
                          if self.config.v('check_id_list')[t_i] == 0:
                              if tar_rat >=0.4: 
                                  result_all.append(self.config.v('check_id_list')[t_i])
