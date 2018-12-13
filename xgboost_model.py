@@ -49,6 +49,17 @@ def find_small_num_class_ids():
                 break
     print('total ', df.shape[0], 'small ', len(id_list))
     return id_list, type_class
+
+def find_random_ids_for_val():
+    df = pd.read_csv('../train.csv')
+    id_list = []
+    for i, row in df.iterrows():
+        targets = row['Target'].split(' ')
+        targets_t = [int (tthis) for tthis in targets]
+      
+        id_list.append((row['Id'], targets))
+        
+    return random.sample(id_list, 3000)
 def xgboost_train_16seperate_model(ifTrain = True, train_to = 15):
     df = pd.read_csv('../train.csv')
       
@@ -216,7 +227,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         
         down_num = 0
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
-            
+            continue
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
                 trans_t = 0
                 
@@ -257,8 +268,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
       #########
       
       
-    down_sample_list = [15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 150000, 15000, 15000, 15000, 15000, 0, 0]
-    train_start_list = [train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 200 ,train_to+ 200]
+    down_sample_list = [0, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 150000, 15000, 15000, 15000, 15000, 0]
+    train_start_list = [train_to+ 200 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 200]
     for i_c, c in enumerate( major_type_class):
         param = param_list[i_c]
        # if i_c != 7:
@@ -330,6 +341,16 @@ def val_model():
   #  print('c_t ', c_list)
 
 
+    id_list, c_list = find_random_ids_for_val()
+    #验证集，都从id_list中取     
+    val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
+    
+    
+    pre_list = start_pre(val_img_list, data_tar_list)
+  #  pair = [n for n in range(28)]
+    y_p_factory = MultiLabelBinarizer()
+    y_p_en = y_p_factory.fit_transform(pre_list)
+    print('c_p major', y_p_factory.classes_)
     print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
     
 def start_pre(val_img_list, val_tar_list):
@@ -341,7 +362,7 @@ def start_pre(val_img_list, val_tar_list):
     
     
     for ci, class_pair in enumerate( minor_type_class):    
-        model_path = model_base_path + 'xgboost_model_per_class' + str(ci) + '.pkl'
+        model_path = model_base_path + 'xgboost_model_per_class' + str(class_pair) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
         clr = XGBClassifier()
