@@ -19,7 +19,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.externals import joblib
-from class_pair import cut_class_pair, minor_type_class, class_pair_list, param_list
+from class_pair import cut_class_pair, minor_type_class, class_pair_list, param_list, major_param_list, major_type_class
 import os
 from config import Config
 
@@ -254,7 +254,63 @@ def xgboost_train(ifTrain = True, train_to = 29):
             x.fit(data_img_list[ start : end], tar_list[start : end])
         model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
         x.save_model(model_path)     
+      #########
+      
+      
+    down_sample_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i_c, c in enumerate( major_type_class):
+        param = param_list[i_c]
+       # if i_c != 7:
+       #     continue
+        x = xgb.XGBClassifier(**param) 
         
+        
+        data_img_list = []
+        tar_list = []
+        tar_src = []
+        base_path = '../train/'
+        down_sample_num = down_sample_list[i_c] 
+        
+        down_num = 0
+        for train_i, train_data_id_class in enumerate( train_data_id_class_list[train_to : ]):
+            
+            for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
+                trans_t = 0
+                
+                for t in targets:
+                    if t == c:
+                        trans_t = 1
+                        break
+                if trans_t == 0:
+                    if down_num < down_sample_num:
+                        down_num += 1
+                        continue
+                tar_list.append(trans_t)
+                tar_src.append(targets)
+                
+                img_path = base_path + img_id + '_' + 'green' + '.png'
+                img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+                img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
+                data_img_list.append(img)
+                
+        train_once_num = len(tar_list)
+        train_time = int(len(tar_list) / train_once_num)
+        data_img_list = np.array(data_img_list)
+        tar_list = np.array(tar_list)
+
+        nsamples, nx, ny = data_img_list.shape
+        data_img_list = data_img_list.reshape((nsamples,nx*ny))
+        print('img shape', data_img_list.shape)  
+        for train_i in range(train_time):
+            start = train_i * train_once_num
+            end = start + train_once_num
+            if end >= len(tar_list):
+                end = len(tar_list) - 1
+            print('start fit ', c, ' part ', train_i, 'of ', train_time)
+            print('tar ', tar_list[start : end])
+            x.fit(data_img_list[ start : end], tar_list[start : end])
+        model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
+        x.save_model(model_path)     
         
         
     val_model()    
@@ -682,6 +738,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
+xgboost_train()
 #val_model()
 #test_xg_model()
