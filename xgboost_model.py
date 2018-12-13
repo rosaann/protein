@@ -225,7 +225,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         tar_src = []
         base_path = '../train/'
         down_sample_num = down_sample_list[i_c] 
-           
+    '''       
         down_num = 0
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
             
@@ -267,14 +267,14 @@ def xgboost_train(ifTrain = True, train_to = 29):
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)     
       #########
-    
+    '''
       
     down_sample_list = [0, 25000, 25000, 25000, 25000, 25000, 25000, 25000,  25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 0]
     train_start_list = [train_to+ 320 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 320]
     for i_c, c in enumerate( major_type_class):
         param = major_param_list[i_c]
-       # if i_c != 7:
-       #     continue
+        if i_c != 2:
+            continue
         x = xgb.XGBClassifier(**param) 
         
         
@@ -330,21 +330,17 @@ def xgboost_train(ifTrain = True, train_to = 29):
     val_model()    
 def val_model():
     id_list, c_list = find_small_num_class_ids()
-    #验证集，都从id_list中取     
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
     
-    pre_list = start_pre(val_img_list, data_tar_list)
-  #  pair = [n for n in range(28)]
+   # pre_list = start_pre(val_img_list, data_tar_list)
     y_p_factory = MultiLabelBinarizer()
     y_p_en = y_p_factory.fit_transform(pre_list)
     print('c_p ', y_p_factory.classes_)
-   # y_t_en = y_p_factory.fit_transform(val_tar_list)
   #  print('c_t ', c_list)
 
 
     id_list = find_random_ids_for_val()
-    #验证集，都从id_list中取     
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
     
