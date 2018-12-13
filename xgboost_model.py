@@ -224,10 +224,10 @@ def xgboost_train(ifTrain = True, train_to = 29):
         tar_src = []
         base_path = '../train/'
         down_sample_num = down_sample_list[i_c] 
-        
+    '''       
         down_num = 0
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
-            continue
+            
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
                 trans_t = 0
                 
@@ -266,7 +266,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)     
       #########
-      
+ '''   
       
     down_sample_list = [0, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 150000, 15000, 15000, 15000, 15000, 0]
     train_start_list = [train_to+ 200 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 200]
@@ -284,6 +284,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         down_sample_num = down_sample_list[i_c] 
         
         down_num = 0
+        
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[train_start_list[i_c] : ]):
             
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
