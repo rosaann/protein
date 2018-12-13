@@ -22,6 +22,7 @@ from sklearn.externals import joblib
 from class_pair import cut_class_pair, minor_type_class, class_pair_list, param_list, major_param_list, major_type_class
 import os
 from config import Config
+import random
 
 from sklearn.model_selection import GridSearchCV
 
@@ -269,9 +270,9 @@ def xgboost_train(ifTrain = True, train_to = 29):
  '''   
       
     down_sample_list = [0, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 0]
-    train_start_list = [train_to+ 250 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 250]
+    train_start_list = [train_to+ 320 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 320]
     for i_c, c in enumerate( major_type_class):
-        param = param_list[i_c]
+        param = major_param_list[i_c]
        # if i_c != 7:
        #     continue
         x = xgb.XGBClassifier(**param) 
@@ -370,15 +371,27 @@ def start_pre(val_img_list, val_tar_list):
         clr.load_model(model_path)
         y_p_x = clr.predict_proba(val_img_list)
 
-        
+        pre_for_f1 = []
+        t_for_f1 = []
         for i_ys,  ys in enumerate( y_p_x ):
             if len(val_tar_list) > 0:
                 print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
             if ys[1] >= 0.5:   
                 sub_result.append(class_pair) 
+                pre_for_f1.append(1)
+            else:
+                pre_for_f1.append(0)
                     
-            result_list[i_ys] = sub_result       
+            result_list[i_ys] = sub_result    
+            
+        if len(val_tar_list) > 0:
+            for tar in val_tar_list:
+                if class_pair in tar:
+                    t_for_f1.append(1)
+                else:
+                    t_for_f1.append(0)
+            print('c ',class_pair, '---------f1 ',f1_score(t_for_f1, pre_for_f1, average = "macro"))
       #  print('sub ', ci, ' r:', sub_result)
     
     pre_list = []    
@@ -761,6 +774,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
-#val_model()
+#xgboost_train()
+val_model()
 #test_xg_model()
