@@ -348,14 +348,14 @@ def val_model():
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
     
-    pre_list = start_pre(val_img_list, data_tar_list)
+    pre_list = start_pre(val_img_list, data_tar_list, major_type_class)
   #  pair = [n for n in range(28)]
     y_p_factory = MultiLabelBinarizer()
     y_p_en = y_p_factory.fit_transform(pre_list)
     print('c_p major', y_p_factory.classes_)
-    print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
+  #  print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
     
-def start_pre(val_img_list, val_tar_list):
+def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
     real_class_pair_list = cut_class_pair
     
     model_base_path = 'outs/'
@@ -363,7 +363,7 @@ def start_pre(val_img_list, val_tar_list):
     config = Config()
     
     
-    for ci, class_pair in enumerate( minor_type_class):    
+    for ci, class_pair in enumerate( type_class):    
         model_path = model_base_path + 'xgboost_model_per_class' + str(class_pair) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
 
@@ -404,7 +404,7 @@ def start_pre(val_img_list, val_tar_list):
       #  print('result_i ', result_i)
         result = []
         for i, r_i in enumerate(result_i):
-            if r_i == 1 and (i in minor_type_class):
+            if r_i == 1 and (i in type_class):
            #     print('i ', i,  ' r_i ', r_i)
                 result.append(i)
         if len(val_tar_list) > 0:
