@@ -229,7 +229,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
                 img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
                 data_img_list.append(img)
                 
-        train_once_num = 80 * 16
+        train_once_num = len(tar_list)
         train_time = int(len(tar_list) / train_once_num)
         data_img_list = np.array(data_img_list)
         tar_list = np.array(tar_list)
