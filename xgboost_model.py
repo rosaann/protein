@@ -252,12 +252,13 @@ def xgboost_train(ifTrain = True, train_to = 29):
             print('start fit ', c, ' part ', train_i, 'of ', train_time)
             print('tar ', tar_list[start : end])
             x.fit(data_img_list[ start : end], tar_list[start : end])
-        model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
+        model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)     
       #########
       
       
-    down_sample_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    down_sample_list = [15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 150000, 15000, 15000, 15000, 15000, 0, 0]
+    train_start_list = [train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 200 ,train_to+ 200]
     for i_c, c in enumerate( major_type_class):
         param = param_list[i_c]
        # if i_c != 7:
@@ -272,7 +273,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         down_sample_num = down_sample_list[i_c] 
         
         down_num = 0
-        for train_i, train_data_id_class in enumerate( train_data_id_class_list[train_to : ]):
+        for train_i, train_data_id_class in enumerate( train_data_id_class_list[train_start_list[i_c] : ]):
             
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
                 trans_t = 0
@@ -309,7 +310,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
             print('start fit ', c, ' part ', train_i, 'of ', train_time)
             print('tar ', tar_list[start : end])
             x.fit(data_img_list[ start : end], tar_list[start : end])
-        model_path = model_base_path + 'xgboost_model_per_class' + str(i_c) + '.pkl'        
+        model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)     
         
         
@@ -317,7 +318,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
 def val_model():
     id_list, c_list = find_small_num_class_ids()
     #验证集，都从id_list中取     
-    val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list, c_list)
+    val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
     
     pre_list = start_pre(val_img_list, data_tar_list)
@@ -326,7 +327,7 @@ def val_model():
     y_p_en = y_p_factory.fit_transform(pre_list)
     print('c_p ', y_p_factory.classes_)
    # y_t_en = y_p_factory.fit_transform(val_tar_list)
-    print('c_t ', c_list)
+  #  print('c_t ', c_list)
 
 
     print('---------f1 ',f1_score(y_p_en, val_tar_list, average = "macro"))
@@ -585,7 +586,7 @@ def train_one_model(idinfo_list, class_pair):
   #  print (model_tunning.best_params_)
   #  return model_tunning.best_estimator_
 
-def get_val_data_from_idinfolist(id_list,class_pair):
+def get_val_data_from_idinfolist(id_list):
     base_path = '../train/'
     data_img_list = []
     data_tar_list = []
