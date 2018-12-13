@@ -142,12 +142,12 @@ def xgboost_train(ifTrain = True, train_to = 16):
     for ti, type_class in enumerate( minor_type_class) :
         idinfo_list = get_type_class(type_class, df)
         if len(idinfo_list[0]) < train_once_num:
-            class_pair = class_pair_list[ti]
+           
             hav_gotten_id_list = idinfo_list[ 0]
            # print('hav_gotten_id_list ', hav_gotten_id_list)
-            idinfo_list = get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list, train_once_num) 
+            idinfo_list = get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, idinfo_list, train_once_num) 
             print('len ', len(idinfo_list[0]), ' ')
-            train_data_id_class_list.append((idinfo_list, class_pair))
+            train_data_id_class_list.append(idinfo_list)
         else: 
              train_once_per = int( train_once_num * 0.9)
              full_timie = int(len(idinfo_list[0]) / train_once_per)
@@ -155,13 +155,13 @@ def xgboost_train(ifTrain = True, train_to = 16):
                  start = i * train_once_per
                  end = start + train_once_per
                  cut = [idinfo_list[0][start : end], idinfo_list[1][start : end], idinfo_list[2][start : end]]
-                 idinfo_list_sub = get_rest_id_info(df, cut[0], train_data_id_class_list, class_pair,cut, train_once_num) 
+                 idinfo_list_sub = get_rest_id_info(df, cut[0], train_data_id_class_list, cut, train_once_num) 
 
-                 train_data_id_class_list.append((idinfo_list_sub, class_pair))
+                 train_data_id_class_list.append((idinfo_list_sub))
                  print('cut len ', len(cut[0]))
              rest = [idinfo_list[0][full_timie * train_once_per : ], idinfo_list[1][full_timie * train_once_per : ], idinfo_list[2][full_timie * train_once_per : ]]
-             idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, class_pair,rest, train_once_num)
-             train_data_id_class_list.append((idinfo_list, class_pair))
+             idinfo_list = get_rest_id_info(df, rest[0], train_data_id_class_list, rest, train_once_num)
+             train_data_id_class_list.append(idinfo_list)
              print('with rest len ', len(idinfo_list[0]), ' ')
     min_group_len = len(train_data_id_class_list)
     print('min_group_len ', min_group_len)
@@ -182,12 +182,12 @@ def xgboost_train(ifTrain = True, train_to = 16):
           id_list.append(row['Id'])
           tar_list.append(targets_t)
           if len(idx_list) >= train_once_num:
-              train_data_id_class_list.append(([idx_list, id_list, tar_list], class_pair))
+              train_data_id_class_list.append([idx_list, id_list, tar_list])
              # print('jkj len ', len(idx_list))
               idx_list = []
               id_list = []
               tar_list = []
-    train_data_id_class_list.append(([idx_list, id_list, tar_list], class_pair))
+    train_data_id_class_list.append([idx_list, id_list, tar_list])
     print('last len ', len(idx_list))
     print('train_group ', len(train_data_id_class_list))
     
@@ -213,7 +213,7 @@ def xgboost_train(ifTrain = True, train_to = 16):
         tar_list = []
         tar_src = []
         base_path = '../train/'
-        for train_i, (train_data_id_class, c_pair ) in enumerate( train_data_id_class_list[:train_to]):
+        for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
                 trans_t = 0
                 for t in targets:
@@ -409,7 +409,7 @@ def test_xg_model():
     print('Evaluating detections')
     return pre_list
     
-def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pair,idinfo_list_toadd, train_once_num):           
+def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list,idinfo_list_toadd, train_once_num):           
     for i, row in df.iterrows():
                 if i not in hav_gotten_id_list:
                     if_in_saved_list = False
@@ -421,17 +421,13 @@ def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list, class_pai
                         continue
                     targets = row['Target'].split(' ')
                     targets_t = [int (tthis) for tthis in targets]
-                    if_vali = False
-                    for t in targets_t:
-                        if t not in class_pair:
-                            if_vali = True
-                            break
-                    if if_vali == False:
-                        idinfo_list_toadd[0].append(i)
-                        idinfo_list_toadd[1].append(row['Id'])
-                        idinfo_list_toadd[2].append(targets_t)
-                        if len(idinfo_list_toadd[0]) >= train_once_num:
-                            return idinfo_list_toadd        
+                    
+                    
+                    idinfo_list_toadd[0].append(i)
+                    idinfo_list_toadd[1].append(row['Id'])
+                    idinfo_list_toadd[2].append(targets_t)
+                    if len(idinfo_list_toadd[0]) >= train_once_num:
+                        return idinfo_list_toadd        
 def get_type_class(type_check, df)  :     
     idx_list =[]
     id_list = []
