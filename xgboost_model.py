@@ -343,7 +343,7 @@ def val_model():
   #  print('c_t ', c_list)
 
 
-    id_list, c_list = find_random_ids_for_val()
+    id_list = find_random_ids_for_val()
     #验证集，都从id_list中取     
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
@@ -774,6 +774,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
-val_model()
+xgboost_train()
+#val_model()
 #test_xg_model()
