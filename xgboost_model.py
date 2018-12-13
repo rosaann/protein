@@ -269,12 +269,12 @@ def xgboost_train(ifTrain = True, train_to = 29):
       #########
     '''
       
-    down_sample_list = [0, 25000, 25000, 25000, 25000, 25000, 25000, 25000,  25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 25000, 0]
-    train_start_list = [train_to+ 320 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 320]
+    down_sample_list = [0, 5000, 5000, 5000, 5000, 5000, 5000, 5000,  5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 0]
+    train_start_list = [train_to+ 20 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 32]
     for i_c, c in enumerate( major_type_class):
         param = major_param_list[i_c]
-        if i_c != 2:
-            continue
+      #  if i_c != 2:
+      #      continue
         x = xgb.XGBClassifier(**param) 
         
         
