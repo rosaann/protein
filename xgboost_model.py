@@ -296,9 +296,8 @@ def start_pre(val_img_list, val_tar_list):
           #  if val_tar_list != None:
             print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
             sub_result = result_list[i_ys]
-            for iy, y in enumerate(ys):
-                if y >= 0.5:   
-                    sub_result.append(class_pair) 
+            if ys[1] >= 0.5:   
+                sub_result.append(class_pair) 
                     
             result_list[i_ys] = sub_result       
       #  print('sub ', ci, ' r:', sub_result)
@@ -682,6 +681,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
-#val_model()
+#xgboost_train()
+val_model()
 #test_xg_model()
