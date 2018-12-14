@@ -13,11 +13,11 @@ cut_class_pair = [[ 0,  2,  3,  7,  8, 21, 25],[ 6,  9, 10],[ 6,  9, 10],[ 0,  2
        24, 25],[ 0,  2,  3,  4,  5,  6,  7, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25],[ 0,  2,  4,  5,  7, 11, 12, 14, 16, 17, 18, 19, 21, 23, 25],[ 0,  2,  4,  5,  7, 11, 14, 16, 17, 18, 19, 24, 25],[ 0,  2,  5,  7, 14, 16, 17, 18, 19, 21, 23, 25],[ 0,  2,  5,  7, 14, 16, 17, 18, 19, 21, 22, 23, 25],[ 0,  2,  5,  7, 14, 16, 17, 18, 19, 21, 23, 25]]
 
 param_list = [
-                {'max_depth':8,'silent':0,'n_estimators':8
+                {'max_depth':10,'silent':0,'n_estimators':8
              ,'learning_rate':0.3, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':2
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':8, 'random_state':10, 'colsample_bytree' : 0.8, 'colsample_bylevel':0.8},
+             ,'seed':10 ,'max_bin':8, 'random_state':10, 'colsample_bytree' : 0.6, 'colsample_bylevel':0.6},
                
                 {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.3, 'objective':'binary:logistic'
