@@ -273,8 +273,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
     train_start_list = [train_to+ 20 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 32]
     for i_c, c in enumerate( major_type_class):
         param = major_param_list[i_c]
-      #  if i_c != 2:
-      #      continue
+        if i_c != 0 and i_c != 18:
+            continue
         x = xgb.XGBClassifier(**param) 
         
         
@@ -779,6 +779,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
+xgboost_train()
 #val_model()
 test_xg_model()
