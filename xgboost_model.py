@@ -333,13 +333,13 @@ def val_model():
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
     
-   # pre_list = start_pre(val_img_list, data_tar_list)
-   # y_p_factory = MultiLabelBinarizer()
-   # y_p_en = y_p_factory.fit_transform(pre_list)
-   # print('c_p ', y_p_factory.classes_)
-  #  print('c_t ', c_list)
+    pre_list = start_pre(val_img_list, data_tar_list)
+    y_p_factory = MultiLabelBinarizer()
+    y_p_en = y_p_factory.fit_transform(pre_list)
+    print('c_p ', y_p_factory.classes_)
+    print('c_t ', c_list)
 
-
+    return
     id_list = find_random_ids_for_val()
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
@@ -788,5 +788,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-#val_model()
-test_xg_model()
+val_model()
+#test_xg_model()
