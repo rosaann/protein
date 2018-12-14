@@ -344,7 +344,7 @@ def val_model():
     val_img_list, val_tar_list,  c_list, data_tar_list= get_val_data_from_idinfolist(id_list)
     
     
-    pre_list = start_pre(val_img_list, data_tar_list, major_type_class)
+    pre_list, result_max_item_list = start_pre(val_img_list, data_tar_list, major_type_class)
   #  pair = [n for n in range(28)]
     y_p_factory = MultiLabelBinarizer()
     y_p_en = y_p_factory.fit_transform(pre_list)
@@ -358,7 +358,7 @@ def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
     result_list = [list() for i in range(len(val_img_list))]
     config = Config()
     
-    
+    result_max_item_list = [(0, 0) for i in range(len(val_img_list))]
     for ci, class_pair in enumerate( type_class):    
         model_path = model_base_path + 'xgboost_model_per_class' + str(class_pair) + '.pkl'
         print('part ', ci , ' of ', len(real_class_pair_list))
@@ -383,7 +383,9 @@ def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
                 pre_for_f1.append(0)
                     
             result_list[i_ys] = sub_result    
-            
+            max_item_idx, max_item_f = result_max_item_list[i_ys]
+            if ys[1] > max_item_f:
+                result_max_item_list[i_ys] = (class_pair, ys[1])
         if len(val_tar_list) > 0:
             for tar in val_tar_list:
                 if class_pair in tar:
@@ -409,7 +411,7 @@ def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
         if len(val_tar_list) > 0:
             print('pre ', result , ' t ', val_tar_list[this_sub_i])
         pre_list.append(result)
-    return pre_list
+    return pre_list, result_max_item_list
 def start_pre_16seperate_model(val_img_list, val_tar_list):
     real_class_pair_list = cut_class_pair
     
@@ -487,8 +489,8 @@ def test_xg_model():
     img_list = img_list.reshape((nsamples,nx*ny))
   #  print('img shape', img_list.shape)
     
-    pre_list = start_pre(img_list, [], minor_type_class)
-    pre_list_major = start_pre(img_list, [], major_type_class)
+    pre_list, result_max_item_list = start_pre(img_list, [], minor_type_class)
+    pre_list_major, major_result_max_item_list = start_pre(img_list, [], major_type_class)
     
     
     for i, row in df.iterrows():
@@ -497,8 +499,14 @@ def test_xg_model():
         r += pre_list_major[i]
         print('i ', i, 'all  ', r)
         if len(r) == 0:
-            result = '0'
-            print('-------------------pre none-----')
+            c_min, c_min_f = result_max_item_list[i]
+            c_major, c_major_f = major_result_max_item_list[i]
+            result = str(c_major)
+            f = c_major_f
+            if c_min_f > c_major_f:
+                result = str(c_min)
+                f = c_min_f
+            print('-------------------pre none--chose---', result, '  float ', f)
         else:
           result = str( r[0])
           if len(r) > 1:
@@ -779,6 +787,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
+#xgboost_train()
 #val_model()
 test_xg_model()
