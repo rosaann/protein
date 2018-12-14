@@ -238,7 +238,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
     down_sample_list = [0, 0, 0, 0, 0, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
-        if i_c != 1:
+        if i_c != 2:
             continue
         x = xgb.XGBClassifier(**param) 
         
