@@ -17,7 +17,7 @@ param_list = [
              ,'learning_rate':0.3, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':2
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':5, 'gamma' : 0.2},
+             ,'seed':10 ,'max_bin':5, 'min_child_weight' : 3},
                
                 {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.3, 'objective':'binary:logistic'
