@@ -1,0 +1,52 @@
+[(27, 11), (15, 21), (10, 28), (9, 45),
+
+ (8, 53), (20, 172), (17, 210), (24, 322), 
+
+(26, 328), (16, 530), (13, 537), (12, 688), 
+
+(22, 802), (18, 902), (6, 1008), (14, 1066), 
+
+(11, 1093), (1, 1254), (19, 1482), (3, 1561), 
+
+(4, 1858), (5, 2513), (7, 2822), (23, 2965), 
+
+(2, 3621), (21, 3777), (25, 8228), (0, 12885)]
+
+单独
+class  0  total  2414
+class  1  total  271
+class  2  total  808
+class  3  total  654
+class  4  total  1077
+class  5  total  983
+class  6  total  622
+class  7  total  1163
+class  8  total  31
+class  9  total  17
+class  10  total  0
+class  11  total  601
+class  12  total  232
+class  13  total  157
+class  14  total  484
+class  15  total  0
+class  16  total  27
+class  17  total  0
+class  18  total  314
+class  19  total  522
+class  20  total  98
+class  21  total  1058
+class  22  total  213
+class  23  total  1653
+class  24  total  122
+class  25  total  1470
+class  26  total  134
+class  27  total  1
+
+
+type  8  total  53  with  [0, 8, 2, 3, 25, 21, 7]
+type  9  total  45  with  [6, 9, 10]
+type  10  total  28  with  [6, 9, 10]
+type  15  total  21  with  [15, 5, 0, 16, 2]
+type  16  total  530  with  [16, 0, 6, 14, 17, 18, 25, 11, 21, 7, 3, 5, 2, 22, 23, 4, 26, 19, 12, 15, 24]
+type  17  total  210  with  [16, 14, 17, 18, 25, 0, 21, 19, 7, 5, 2, 23, 22]
+type  27  total  11  with  [2, 0, 27, 5, 19, 4, 23]
