@@ -238,8 +238,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
     down_sample_list = [0, 0, 0, 0, 0, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
-       # if i_c != 7:
-       #     continue
+        if i_c != 0:
+            continue
         x = xgb.XGBClassifier(**param) 
         
         
@@ -301,7 +301,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)  
         
-        pre_list = start_pre(val_img_list, val_tar_src_list)
+        pre_list = start_pre(val_img_list, val_tar_src_list, [c])
       #########
     return
   #  '''
@@ -344,17 +344,33 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
                 data_img_list.append(img)
                 
-        data_img_list = np.array(data_img_list)
-        tar_list = np.array(tar_list)
-
-        nsamples, nx, ny = data_img_list.shape
-        data_img_list = data_img_list.reshape((nsamples,nx*ny))
-        print('img shape', data_img_list.shape)  
+        train_out, val_out = radom_sep_train_val([data_img_list, tar_list, tar_src] ,0.75)
+        
+        train_img_list = train_out[0]
+        train_tar_list = train_out[1]
+        val_img_list = val_out[0]
+        val_tar_list = val_out[1]
+        val_tar_src_list = val_out[2]
+        
+        train_tar_list = np.array(train_tar_list)
+        val_tar_list = np.array(val_tar_list)
+        
+        train_img_list = np.array(train_img_list)
+        nsamples, nx, ny = train_img_list.shape
+        train_img_list = train_img_list.reshape((nsamples,nx*ny))
+        
+        val_img_list = np.array(val_img_list)
+        nsamples, nx, ny = val_img_list.shape
+        val_img_list = val_img_list.reshape((nsamples,nx*ny))
+        
+        print('img shape', train_img_list.shape)  
         print('start fit ', c)
-        print('tar ', tar_list)
-        x.fit(data_img_list, tar_list)
+        print('tar ', train_tar_list)
+        x.fit(train_img_list, train_tar_list)
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
-        x.save_model(model_path) 
+        x.save_model(model_path)  
+        
+        pre_list = start_pre(val_img_list, val_tar_src_list, [c])
         
         
     val_model()    
