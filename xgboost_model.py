@@ -238,8 +238,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
     down_sample_list = [0, 0, 0, 0, 0, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
-        if i_c != 0:
-            continue
+     #   if i_c != 0:
+     #       continue
         x = xgb.XGBClassifier(**param) 
         
         
@@ -271,8 +271,6 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
                 data_img_list.append(img)
                 
-      #  train_once_num = len(tar_list)
-      #  train_time = int(len(tar_list) / train_once_num)
         
         
         train_out, val_out = radom_sep_train_val([data_img_list, tar_list, tar_src] ,0.75)
@@ -297,9 +295,9 @@ def xgboost_train(ifTrain = True, train_to = 29):
         print('img shape', train_img_list.shape)  
         print('start fit ', c)
         print('tar ', train_tar_list)
-        x.fit(train_img_list, train_tar_list)
-        model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
-        x.save_model(model_path)  
+     #   x.fit(train_img_list, train_tar_list)
+     #   model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
+     #   x.save_model(model_path)  
         
         pre_list = start_pre(val_img_list, val_tar_src_list, [c])
       #########
