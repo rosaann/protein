@@ -466,6 +466,7 @@ def test_xg_model():
     pre_dir = '../test/'
     
     df=pd.read_csv('../sample_submission_1.csv')
+    df = df.astype({"Predicted": str})
    # df = pd.DataFrame(columns = ["Id", "Predicted"])
     file_list = []
     for i, row in df.iterrows():
