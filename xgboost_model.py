@@ -372,6 +372,9 @@ def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
         for i_ys,  ys in enumerate( y_p_x ):
             if len(val_tar_list) > 0:
                 print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys])
+            else:
+                print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair)
+
             sub_result = result_list[i_ys]
             if ys[1] >= 0.5:   
                 sub_result.append(class_pair) 
@@ -500,7 +503,7 @@ def test_xg_model():
           if len(r) > 1:
              for r_sub in r[1:]:
                 result += ' '
-                result += r_sub
+                result += str( r_sub)
         df.set_value(i, 'Predicted', result)
     #    print('idx ', i)
 
