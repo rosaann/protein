@@ -334,9 +334,9 @@ def val_model():
     
     
    # pre_list = start_pre(val_img_list, data_tar_list)
-    y_p_factory = MultiLabelBinarizer()
-    y_p_en = y_p_factory.fit_transform(pre_list)
-    print('c_p ', y_p_factory.classes_)
+   # y_p_factory = MultiLabelBinarizer()
+   # y_p_en = y_p_factory.fit_transform(pre_list)
+   # print('c_p ', y_p_factory.classes_)
   #  print('c_t ', c_list)
 
 
