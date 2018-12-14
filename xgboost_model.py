@@ -273,11 +273,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 
       #  train_once_num = len(tar_list)
       #  train_time = int(len(tar_list) / train_once_num)
-        data_img_list = np.array(data_img_list)
-        tar_list = np.array(tar_list)
-
-        nsamples, nx, ny = data_img_list.shape
-        data_img_list = data_img_list.reshape((nsamples,nx*ny))
+        
         
         train_out, val_out = radom_sep_train_val([data_img_list, tar_list] ,0.75)
         
@@ -285,6 +281,18 @@ def xgboost_train(ifTrain = True, train_to = 29):
         train_tar_list = train_out[1]
         val_img_list = val_out[0]
         val_tar_list = val_out[1]
+        
+        train_tar_list = np.array(train_tar_list)
+        val_tar_list = np.array(val_tar_list)
+        
+        train_img_list = np.array(train_img_list)
+        nsamples, nx, ny = train_img_list.shape
+        train_img_list = train_img_list.reshape((nsamples,nx*ny))
+        
+        val_img_list = np.array(val_img_list)
+        nsamples, nx, ny = val_img_list.shape
+        val_img_list = val_img_list.reshape((nsamples,nx*ny))
+        
         print('img shape', train_img_list.shape)  
         print('start fit ', c)
         print('tar ', train_tar_list)
