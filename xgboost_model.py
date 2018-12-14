@@ -416,9 +416,12 @@ def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
         for i_ys,  ys in enumerate( y_p_x ):
             if len(val_tar_list) > 0:
                 tail = ''
+                mid = ''
                 if class_pair in val_tar_list[i_ys]:
                     tail = '-----------'
-                print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair, ' t ', val_tar_list[i_ys], tail)
+                if ys[1] >= 0.5:
+                    mid = '||||||||'
+                print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, mid, ' c ', class_pair, ' t ', val_tar_list[i_ys], tail)
             else:
                 print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair)
 
