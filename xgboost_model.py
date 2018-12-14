@@ -499,7 +499,7 @@ def test_xg_model():
             result = '0'
             print('-------------------pre none-----')
         else:
-          result = r[0]
+          result = str( r[0])
           if len(r) > 1:
              for r_sub in r[1:]:
                 result += ' '
