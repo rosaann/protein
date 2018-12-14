@@ -143,6 +143,29 @@ def xgboost_train_16seperate_model(ifTrain = True, train_to = 15):
         file.close()
         
     val_model()
+def radom_sep_train_val(datalist, rate):
+    random.seed(900)
+    total = len(datalist[0])
+    idx_list = range(total)
+    idx_list = random.sample(idx_list, len(total))
+    
+    train_persent = int(rate * total)
+    
+    out_train = []
+    out_val = []
+    for sub_list in datalist:
+        train_list = []
+        val_list = []
+        for i, idx_random in enumerate( idx_list ):
+            if i <= train_persent:
+                train_list.append(sub_list[idx_random])
+            else:
+                val_list.append(sub_list[idx_random])
+        out_train.append(train_list)
+        out_val.append(val_list)
+        
+    return out_train, out_val
+    
 def xgboost_train(ifTrain = True, train_to = 29):
     df = pd.read_csv('../train.csv')
       
@@ -225,7 +248,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         tar_src = []
         base_path = '../train/'
         down_sample_num = down_sample_list[i_c] 
-    '''       
+   # '''       
         down_num = 0
         for train_i, train_data_id_class in enumerate( train_data_id_class_list[:train_to]):
             
@@ -248,26 +271,31 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
                 data_img_list.append(img)
                 
-        train_once_num = len(tar_list)
-        train_time = int(len(tar_list) / train_once_num)
+      #  train_once_num = len(tar_list)
+      #  train_time = int(len(tar_list) / train_once_num)
         data_img_list = np.array(data_img_list)
         tar_list = np.array(tar_list)
 
         nsamples, nx, ny = data_img_list.shape
         data_img_list = data_img_list.reshape((nsamples,nx*ny))
-        print('img shape', data_img_list.shape)  
-        for train_i in range(train_time):
-            start = train_i * train_once_num
-            end = start + train_once_num
-            if end >= len(tar_list):
-                end = len(tar_list) - 1
-            print('start fit ', c, ' part ', train_i, 'of ', train_time)
-            print('tar ', tar_list[start : end])
-            x.fit(data_img_list[ start : end], tar_list[start : end])
+        
+        train_out, val_out = radom_sep_train_val([data_img_list, tar_list] ,0.75)
+        
+        train_img_list = train_out[0]
+        train_tar_list = train_out[1]
+        val_img_list = val_out[0]
+        val_tar_list = val_out[1]
+        print('img shape', train_img_list.shape)  
+        print('start fit ', c)
+        print('tar ', train_tar_list)
+        x.fit(train_img_list, train_tar_list)
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
-        x.save_model(model_path)     
+        x.save_model(model_path)  
+        
+        pre_list = start_pre(val_img_list, val_tar_list)
       #########
-    '''
+    return
+  #  '''
       
     down_sample_list = [0, 5000, 5000, 5000, 5000, 5000, 5000, 5000,  5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 0]
     train_start_list = [train_to+ 20 ,train_to, train_to, train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to,train_to+ 32]
@@ -307,24 +335,17 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
                 data_img_list.append(img)
                 
-        train_once_num = len(tar_list)
-        train_time = int(len(tar_list) / train_once_num)
         data_img_list = np.array(data_img_list)
         tar_list = np.array(tar_list)
 
         nsamples, nx, ny = data_img_list.shape
         data_img_list = data_img_list.reshape((nsamples,nx*ny))
         print('img shape', data_img_list.shape)  
-        for train_i in range(train_time):
-            start = train_i * train_once_num
-            end = start + train_once_num
-            if end >= len(tar_list):
-                end = len(tar_list) - 1
-            print('start fit ', c, ' part ', train_i, 'of ', train_time)
-            print('tar ', tar_list[start : end])
-            x.fit(data_img_list[ start : end], tar_list[start : end])
+        print('start fit ', c)
+        print('tar ', tar_list)
+        x.fit(data_img_list, tar_list)
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
-        x.save_model(model_path)     
+        x.save_model(model_path) 
         
         
     val_model()    
@@ -787,6 +808,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-#xgboost_train()
-val_model()
+xgboost_train()
+#val_model()
 #test_xg_model()
