@@ -602,10 +602,7 @@ def get_type_class(type_check, df)  :
                idx_list.append(i)
                id_list.append(row['Id'])
                tar_list.append(targets_t) 
-            if type_check == 15:
-               idx_list.append(i)
-               id_list.append(row['Id'])
-               tar_list.append(targets_t) 
+            
     return [idx_list, id_list, tar_list]
 def get_type_class_num_info(type_check, df):
     id_list = []
