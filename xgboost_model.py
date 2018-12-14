@@ -147,7 +147,7 @@ def radom_sep_train_val(datalist, rate):
     random.seed(900)
     total = len(datalist[0])
     idx_list = range(total)
-    idx_list = random.sample(idx_list, len(total))
+    idx_list = random.sample(idx_list, total)
     
     train_persent = int(rate * total)
     
