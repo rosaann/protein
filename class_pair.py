@@ -41,7 +41,7 @@ param_list = [
              ,'learning_rate':0.6, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':50
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':5},#15
+             ,'seed':10 ,'max_bin':15},#15
                 
                  {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.3, 'objective':'binary:logistic'
