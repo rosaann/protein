@@ -483,17 +483,22 @@ def test_xg_model():
     img_list = img_list.reshape((nsamples,nx*ny))
   #  print('img shape', img_list.shape)
     
-    pre_list = start_pre(img_list, [])
+    pre_list = start_pre(img_list, [], minor_type_class)
+    pre_list_major = start_pre(img_list, [], major_type_class)
     
-    return pre_list
     
     for i, row in df.iterrows():
         r = pre_list[i]
+        print('i ', i, 'minor ', r)
+        r += pre_list_major[i]
+        print('i ', i, 'all  ', r)
         if len(r) == 0:
-            continue
-        result = r[0]
-        if len(r) > 1:
-            for r_sub in r[1:]:
+            result = '0'
+            print('-------------------pre none-----')
+        else:
+          result = r[0]
+          if len(r) > 1:
+             for r_sub in r[1:]:
                 result += ' '
                 result += r_sub
         df.set_value(i, 'Predicted', result)
@@ -771,5 +776,5 @@ def xgboost_train_old():
         index += 1
         
 #xgboost_train()
-val_model()
-#test_xg_model()
+#val_model()
+test_xg_model()
