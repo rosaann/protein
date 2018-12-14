@@ -275,12 +275,13 @@ def xgboost_train(ifTrain = True, train_to = 29):
       #  train_time = int(len(tar_list) / train_once_num)
         
         
-        train_out, val_out = radom_sep_train_val([data_img_list, tar_list] ,0.75)
+        train_out, val_out = radom_sep_train_val([data_img_list, tar_list, tar_src] ,0.75)
         
         train_img_list = train_out[0]
         train_tar_list = train_out[1]
         val_img_list = val_out[0]
         val_tar_list = val_out[1]
+        val_tar_src_list = val_out[2]
         
         train_tar_list = np.array(train_tar_list)
         val_tar_list = np.array(val_tar_list)
@@ -300,7 +301,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)  
         
-        pre_list = start_pre(val_img_list, val_tar_list)
+        pre_list = start_pre(val_img_list, val_tar_src_list)
       #########
     return
   #  '''
