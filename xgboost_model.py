@@ -606,8 +606,8 @@ def get_type_class(type_check, df, train_data_id_class_list)  :
                    if i in saved_train_list[0]:
                        if_in_saved_list = True
                        break
-                   if if_in_saved_list == True:
-                        continue
+               if if_in_saved_list == True:
+                   continue
                idx_list.append(i)
                id_list.append(row['Id'])
                tar_list.append(targets_t) 
