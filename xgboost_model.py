@@ -599,6 +599,7 @@ def get_type_class(type_check, df, train_data_id_class_list)  :
         targets_t = [int (tthis) for tthis in targets]
         for t in targets_t:
             if t == type_check:
+               if_in_saved_list = False
                for saved_train_list in train_data_id_class_list:
                    if i in saved_train_list[0]:
                        if_in_saved_list = True
