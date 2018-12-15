@@ -144,7 +144,7 @@ def xgboost_train_16seperate_model(ifTrain = True, train_to = 15):
         
     val_model()
 def radom_sep_train_val(datalist, rate):
-    random.seed(900)
+    random.seed(90)
     total = len(datalist[0])
     idx_list = range(total)
     idx_list = random.sample(idx_list, total)
