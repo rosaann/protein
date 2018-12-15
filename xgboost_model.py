@@ -300,7 +300,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
         print('var tar', val_tar_list)
         
        # val_pair = [(img, tar) for img, tar in zip(val_img_list, val_tar_list)]
-        x.fit(train_img_list, train_tar_list, eval_set=[val_img_list, val_tar_list],eval_metric='auc', early_stopping_rounds=3)
+        x.fit(train_img_list, train_tar_list)
         model_path = model_base_path + 'xgboost_model_per_class' + str(c) + '.pkl'        
         x.save_model(model_path)  
         
