@@ -226,6 +226,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
     train_data_id_class_list.append([idx_list, id_list, tar_list])
     print('last len ', len(idx_list))
     print('train_group ', len(train_data_id_class_list))
+    print('original total ', df.shape[0])
+    return
     
     if ifTrain == False:
         return train_data_id_class_list;
