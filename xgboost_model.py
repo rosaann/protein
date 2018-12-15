@@ -238,8 +238,8 @@ def xgboost_train(ifTrain = True, train_to = 29):
     down_sample_list = [0, 0, 0, 0, 500, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
-        if i_c != 4:
-            continue
+       # if i_c != 4:
+       #     continue
         x = xgb.XGBClassifier(**param) 
         
         
@@ -590,7 +590,7 @@ def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list,idinfo_lis
                     idinfo_list_toadd[2].append(targets_t)
                     if len(idinfo_list_toadd[0]) >= train_once_num:
                         return idinfo_list_toadd        
-def get_type_class(type_check, df)  :     
+def get_type_class(type_check, df, train_data_id_class_list)  :     
     idx_list =[]
     id_list = []
     tar_list = []
@@ -599,6 +599,12 @@ def get_type_class(type_check, df)  :
         targets_t = [int (tthis) for tthis in targets]
         for t in targets_t:
             if t == type_check:
+               for saved_train_list in train_data_id_class_list:
+                   if i in saved_train_list[0]:
+                       if_in_saved_list = True
+                       break
+                   if if_in_saved_list == True:
+                        continue
                idx_list.append(i)
                id_list.append(row['Id'])
                tar_list.append(targets_t) 
