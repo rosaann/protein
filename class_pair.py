@@ -19,8 +19,8 @@ param_list = [
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'seed':10 ,'max_bin':5, 'random_state':10},
                
-                {'max_depth':60,'silent':0,'n_estimators':15
-             ,'learning_rate':0.2, 'objective':'binary:logistic'
+                {'max_depth':60,'silent':0,'n_estimators':8
+             ,'learning_rate':0.6, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':24
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'seed':10 ,'max_bin':100},#8
