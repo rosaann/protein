@@ -23,6 +23,7 @@ from class_pair import cut_class_pair, minor_type_class, class_pair_list, param_
 import os
 from config import Config
 import random
+from torchvision import transforms
 
 from sklearn.model_selection import GridSearchCV
 
@@ -271,7 +272,12 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 img_path = base_path + img_id + '_' + 'green' + '.png'
                 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
                 img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
-                img /= 255
+                transform = transforms.Compose([
+                
+               transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
+                ])
+    
+                img = transform(img)
                 data_img_list.append(img)
                 
         
