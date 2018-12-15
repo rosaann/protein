@@ -421,14 +421,14 @@ def start_pre(val_img_list, val_tar_list, type_class=minor_type_class):
                 mid = ''
                 if class_pair in val_tar_list[i_ys]:
                     tail = '-----------'
-                if ys[1] >= 0.6:
+                if ys[1] >= 0.5:
                     mid = '||||||||'
                 print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, mid, ' c ', class_pair, ' t ', val_tar_list[i_ys], tail)
             else:
                 print('ci ', ci, ' i_ys ', i_ys, ' pre ' , ys, ' c ', class_pair)
 
             sub_result = result_list[i_ys]
-            if ys[1] >= 0.6:   
+            if ys[1] >= 0.5:   
                 sub_result.append(class_pair) 
                 pre_for_f1.append(1)
             else:
