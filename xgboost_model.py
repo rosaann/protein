@@ -237,7 +237,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
     model_base_path = 'outs/'
     start_from = 0
 
-    down_sample_list = [0, 1200, 0, 0, 500, 0, 500, 0, 0]
+    down_sample_list = [0, 1100, 0, 0, 500, 0, 500, 0, 0]
     for i_c, c in enumerate( minor_type_class):
         param = param_list[i_c]
         if i_c != 1:
