@@ -175,7 +175,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
     
     train_once_num = 80
     for ti, type_class in enumerate( minor_type_class) :
-        idinfo_list = get_type_class(type_class, df)
+        idinfo_list = get_type_class(type_class, df, train_data_id_class_list)
         if len(idinfo_list[0]) < train_once_num:
             print('find c ', type_class, ' len ', len(idinfo_list[0]))
             hav_gotten_id_list = idinfo_list[ 0]
