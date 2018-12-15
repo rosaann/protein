@@ -275,7 +275,7 @@ def xgboost_train(ifTrain = True, train_to = 29):
                 
         
         
-        train_out, val_out = radom_sep_train_val([data_img_list, tar_list, tar_src] ,0.85)
+        train_out, val_out = radom_sep_train_val([data_img_list, tar_list, tar_src] ,0.75)
         
         train_img_list = train_out[0]
         train_tar_list = train_out[1]
