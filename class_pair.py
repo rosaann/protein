@@ -19,11 +19,11 @@ param_list = [
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
              ,'seed':10 ,'max_bin':5, 'random_state':10},
                
-                {'max_depth':10,'silent':0,'n_estimators':15
+                {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.6, 'objective':'binary:logistic'
              ,'nthread':8, 'scale_pos_weight':24
              ,'tree_method':'gpu_hist', 'predictor':'gpu_predictor'
-             ,'seed':10 ,'max_bin':5,'colsample_bytree':0.7, 'colsample_bylevel':0.7},#8
+             ,'seed':10 ,'max_bin':5,'reg_alpha':0.1},#8
                 
                  {'max_depth':6,'silent':0,'n_estimators':5
              ,'learning_rate':0.3, 'objective':'binary:logistic'
