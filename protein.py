@@ -42,7 +42,7 @@ class Protein(object):
         self.ifTrain = ifTrain
         self.preproc = Data_Preproc()
         self.train_class = 0
-        self.xgb_test_result = xgb_test_result
+      #  self.xgb_test_result = xgb_test_result
         
         train_data = xgboost_train(False)
         if self.ifTrain:
