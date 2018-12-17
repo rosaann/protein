@@ -16,7 +16,7 @@ from class_pair import get_train_group
 import numpy as np
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self, preproc=None, img_id_list, tar_list, tar_src_list = None):
+    def __init__(self, preproc, img_id_list, tar_list, tar_src_list = None):
         self.train_data_id_class = get_train_group()
         self.preproc = preproc
         self.id_list = img_id_list
