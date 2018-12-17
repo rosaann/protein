@@ -233,7 +233,7 @@ def get_train_group():
           targets_t = [int (tthis) for tthis in targets]  
           idx_list.append(i)
           id_list.append(row['Id'])
-          tar_list.append(targets_t)
+          tar_list.append(row['Target'])
           if len(idx_list) >= train_once_num:
               train_data_id_class_list.append([idx_list, id_list, tar_list])
              # print('jkj len ', len(idx_list))

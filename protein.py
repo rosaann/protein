@@ -97,7 +97,8 @@ class Protein(object):
         base_path = '../train/'
         for train_i, train_data_id_class in enumerate( train_data_id_class_list):
             
-            for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
+            for img_idx, img_id, targets_t in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
+                targets = [int (tthis) for tthis in targets_t]  
                 trans_t = 0.0
                 
                 for t in targets:
