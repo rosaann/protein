@@ -24,7 +24,7 @@ class MultiClassLoss(nn.Module):
         self.threshold = 0.5
         self.unmatched_threshold = 0.5
         self.variance = [0.1, 0.2]
-        self.cri = nn.CrossEntroyLoss()
+        self.cri = nn.CrossEntropyLoss()
     
     def forward(self, predictions, targets):
         conf_data = predictions
