@@ -97,11 +97,11 @@ class Protein(object):
         for train_i, train_data_id_class in enumerate( train_data_id_class_list):
             
             for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
-                trans_t = 0.0
+                trans_t = 0
                 
                 for t in targets:
                     if t == c:
-                        trans_t = 1.0
+                        trans_t = 1
                         break
                 if trans_t == 0:
                     if down_num < down_sample_num:
