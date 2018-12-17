@@ -23,7 +23,28 @@ class ProteinDataSet(data.Dataset):
         self.tar_list = tar_list
         self.tar_src_list = tar_src_list
         self.base_path='../train/'
-    
+    def add_minor_class_sample(self, c_class, times = 10):
+        if times == 0:
+            return
+        idx_list = []
+        for i, tar_src in enumerate( self.tar_src_list ):
+            tar_src_ints = tar_src.split(' ')
+            if c_class in tar_src_ints:
+               idx_list.append(i) 
+               
+        id_list_sub = []
+        tar_list_sub = []
+        tar_src_list_sub = []
+        for idx in idx_list:
+            id_list_sub.append(self.id_list[idx])
+            tar_list_sub.append(self.tar_list[idx])
+            tar_src_list_sub.append(self.tar_src_list[idx])
+            
+        for time in times:
+            self.id_list += id_list_sub
+            self.tar_list += tar_list_sub
+            self.tar_src_list += tar_src_list_sub
+            
     def __init__old(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
