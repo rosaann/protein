@@ -100,11 +100,11 @@ class Protein(object):
             
             for img_idx, img_id, targets_t in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
                 targets = [int (tthis) for tthis in targets_t.split(' ')]  
-                trans_t = 0.0
+                trans_t = 0
                 
                 for t in targets:
                     if t == c:
-                        trans_t = 1.0
+                        trans_t = 1
                         break
                 if trans_t == 0:
                     if down_num < down_sample_num:
