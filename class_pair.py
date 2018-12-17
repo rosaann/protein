@@ -272,7 +272,7 @@ def get_type_class(type_check, df, train_data_id_class_list)  :
     id_list = []
     tar_list = []
     for i, row in df.iterrows():
-        targets = row['Target']
+        targets = row['Target'].split(' ')
         targets_t = [int (tthis) for tthis in targets]
         for t in targets_t:
             if t == type_check:
@@ -285,6 +285,6 @@ def get_type_class(type_check, df, train_data_id_class_list)  :
                    continue
                idx_list.append(i)
                id_list.append(row['Id'])
-               tar_list.append(targets) 
+               tar_list.append(row['Target']) 
             
     return [idx_list, id_list, tar_list]
