@@ -29,7 +29,8 @@ import visdom
 from xgboost_model import xgboost_train, test_xg_model
 from torchvision import transforms
 from tools.protein_test_dataset import ProteinTestDataSet
-from class_pair import minor_type_class
+from class_pair import minor_type_class, get_train_group
+from tools.commen_tool import radom_sep_train_val
 
 #from torchsample.regularizers import L1Regularizer
 
@@ -43,11 +44,14 @@ class Protein(object):
         self.preproc = Data_Preproc()
         self.train_class = 0
       #  self.xgb_test_result = xgb_test_result
-        
-        train_data = xgboost_train(False)
+        self.train_data_id_class = get_train_group()
+       # train_data = xgboost_train(False)
+        self.train_class = '20'
         if self.ifTrain:
-            dataset = ProteinDataSet(self.preproc,csv_path='../sample_arg.csv', src_data_list = train_data, start_idx=config.v('xgb_len'))
-            self.train_loader = data.DataLoader(dataset, self.config.v('batch_size'), num_workers= 8,
+            train_set, val_set = self.get_train_val_data_set(self.train_class )
+            self.train_loader = data.DataLoader(train_set, self.config.v('batch_size'), num_workers= 8,
+                                               shuffle=True, pin_memory=True)
+            self.val_loader = data.DataLoader(val_set, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
             
         else:
@@ -79,6 +83,68 @@ class Protein(object):
         
         self.criterion = MultiClassLoss( self.use_gpu)
         self.writer = SummaryWriter(self.config.v('out_dir'))
+    
+    def get_train_val_data_set(self, c, c_type='minor', down_sample_num = 0, train_to = 29):
+        if c_type == 'minor':
+            train_data_id_class_list = self.train_data_id_class_list[:train_to]
+        else:
+            train_data_id_class_list = self.train_data_id_class_list[train_to:]
+        down_num = 0
+        id_img_list = []
+        tar_list = []
+        tar_src = []
+        base_path = '../train/'
+        for train_i, train_data_id_class in enumerate( train_data_id_class_list):
+            
+            for img_idx, img_id, targets in zip(train_data_id_class[0], train_data_id_class[1],train_data_id_class[2]):
+                trans_t = 0
+                
+                for t in targets:
+                    if t == c:
+                        trans_t = 1
+                        break
+                if trans_t == 0:
+                    if down_num < down_sample_num:
+                        down_num += 1
+                        continue
+                tar_list.append(trans_t)
+                tar_src.append(targets)
+                
+                img_path = base_path + img_id + '_' + 'green' + '.png'
+                img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
+                img = cv2.resize(img, (300, 300),interpolation=cv2.INTER_LINEAR)    
+                
+                id_img_list.append(img)
+                
+        
+        
+        train_out, val_out = radom_sep_train_val([id_img_list, tar_list, tar_src] ,0.75)
+        
+        train_img_list = train_out[0]
+        train_tar_list = train_out[1]
+        val_img_list = val_out[0]
+        val_tar_list = val_out[1]
+        val_tar_src_list = val_out[2]
+        
+    #    train_tar_list = np.array(train_tar_list)
+    #    val_tar_list = np.array(val_tar_list)
+        
+    #    train_img_list = np.array(train_img_list)
+    #    nsamples, nx, ny = train_img_list.shape
+    #    train_img_list = train_img_list.reshape((nsamples,nx*ny))
+        
+    #    val_img_list = np.array(val_img_list)
+    #    nsamples, nx, ny = val_img_list.shape
+    #    val_img_list = val_img_list.reshape((nsamples,nx*ny))
+        
+        print('img shape',len( train_img_list))  
+        print('start fit ', c)
+        print('tar ', train_tar_list)
+        print('var tar', val_tar_list)    
+        train_dataset = ProteinDataSet(self.preproc,train_img_list, train_tar_list )
+        val_dataset = ProteinDataSet(self.preproc,val_img_list, val_tar_list, val_tar_src_list )
+        
+        return train_dataset, val_dataset
         
     def train_model(self):
         for epoch in range( self.max_epochs):
@@ -457,10 +523,10 @@ class Protein(object):
         return scheduler
         
 def train_model():
-    xgboost_train()
-    print('start ')
-  #  s = Protein(ifTrain = True)
-  #  s.train_model()
+   # xgboost_train()
+  #  print('start ')
+    s = Protein(ifTrain = True)
+    s.train_model()
     return True
 
 def test_model():

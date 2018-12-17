@@ -12,9 +12,19 @@ import cv2
 import os
 import random 
 from config import Config
+from class_pair import get_train_group
+import numpy as np
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
+    def __init__(self, preproc=None, img_id_list, tar_list, tar_src_list = None):
+        self.train_data_id_class = get_train_group()
+        self.preproc = preproc
+        self.id_list = img_id_list
+        self.tar_list = tar_list
+        self.tar_src_list = tar_src_list
+        base_path='../train/'
+    
+    def __init__old(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
         self.df = pd.read_csv(csv_path)
         self.preproc = preproc
         self.base_path = base_path
