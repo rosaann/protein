@@ -44,7 +44,7 @@ class MultiClassLoss(nn.Module):
      #   print('batch_conf ',batch_conf.shape, ' ', batch_conf)
      #   print('conf_t_v', conf_t_v.shape)
      #   loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
-        loss_c =self.cri(conf_data, conf_t, size_average=False)
+        loss_c =self.cri(conf_data, conf_t)
      #   print('loss_c ', loss_c)
         return loss_c
         
