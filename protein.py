@@ -339,7 +339,7 @@ class Protein(object):
         
         train_end = int( epoch_size);
         batch_iterator = iter(self.train_loader)
-        print('epoch_size ', epoch_size, " train_end ", train_end)
+      #  print('epoch_size ', epoch_size, " train_end ", train_end)
         
         
         for iteration  in range(epoch_size):
@@ -420,7 +420,7 @@ class Protein(object):
             if iteration < (val_epoch_size - 1):
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
-                print('tar_srcs ', tar_srcs)
+             #   print('tar_srcs ', tar_srcs)
                 targets = np.array(targets)
                 if self.use_gpu:
                     images = Variable(images.cuda())
@@ -485,7 +485,7 @@ class Protein(object):
                     self.writer.add_scalar(title, conf_loss_v/epoch_size, epoch)
                     
                     f1 = f1_score(t_for_f1, pre_for_f1, average = "macro")
-                    print('c ',self.train_class, '---------f1 ',f1)
+                    print('c--- ',self.train_class, '---------f1 ',f1)
                     title = 'f1_' + str(self.train_class)
                     self.writer.add_scalar(title, f1, epoch)
                   #  writer.add_scalar('Eval/mAP', ap, epoch)
@@ -556,7 +556,7 @@ class Protein(object):
 def train_model():
    # xgboost_train()
   #  print('start ')
-    data_arg_times_list = [20, 30, 40, 20,  35, 10, 50, 2, 2]
+    data_arg_times_list = [30, 30, 40, 20,  35, 10, 50, 2, 2]
     for c_i, c_class in enumerate( minor_type_class):
         s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
         s.train_model()
