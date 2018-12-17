@@ -40,7 +40,7 @@ class ProteinDataSet(data.Dataset):
             tar_list_sub.append(self.tar_list[idx])
             tar_src_list_sub.append(self.tar_src_list[idx])
             
-        for time in times:
+        for time in range(times):
             self.id_list += id_list_sub
             self.tar_list += tar_list_sub
             self.tar_src_list += tar_src_list_sub
