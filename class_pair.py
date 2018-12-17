@@ -259,12 +259,12 @@ def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list,idinfo_lis
                     if if_in_saved_list == True:
                         continue
                     targets = row['Target'].split(' ')
-                    targets_t = [int (tthis) for tthis in targets]
+                   
                     
                     
                     idinfo_list_toadd[0].append(i)
                     idinfo_list_toadd[1].append(row['Id'])
-                    idinfo_list_toadd[2].append(targets_t)
+                    idinfo_list_toadd[2].append(targets)
                     if len(idinfo_list_toadd[0]) >= train_once_num:
                         return idinfo_list_toadd        
 def get_type_class(type_check, df, train_data_id_class_list)  :     
@@ -285,6 +285,6 @@ def get_type_class(type_check, df, train_data_id_class_list)  :
                    continue
                idx_list.append(i)
                id_list.append(row['Id'])
-               tar_list.append(targets_t) 
+               tar_list.append(targets) 
             
     return [idx_list, id_list, tar_list]

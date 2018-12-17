@@ -440,11 +440,12 @@ class Protein(object):
                     tail = ''
                     mid = ''
                     t_val = 0
-                    if self.train_class in tar_srcs[i_ys]:
+                    targets_t = [int (tthis) for tthis in tar_srcs[i_ys]]
+                    if self.train_class in targets_t:
                         tail = '-----------'
                         t_val = 1
                     t_for_f1.append(t_val)
-                    if ys >= 0.5:
+                    if ys[0] >= 0.5:
                         mid = '||||||||'
                         pre_for_f1.append(1)
                         print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys, mid, ' c ', self.train_class, ' t ', tar_srcs[i_ys], tail)
