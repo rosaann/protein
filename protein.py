@@ -44,7 +44,7 @@ class Protein(object):
         self.preproc = Data_Preproc()
         self.train_class = 0
       #  self.xgb_test_result = xgb_test_result
-        self.train_data_id_class = get_train_group()
+        self.train_data_id_class_list = get_train_group()
        # train_data = xgboost_train(False)
         self.train_class = '20'
         if self.ifTrain:
