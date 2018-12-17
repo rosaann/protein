@@ -29,14 +29,14 @@ import visdom
 #from xgboost_model import xgboost_train, test_xg_model
 from torchvision import transforms
 from tools.protein_test_dataset import ProteinTestDataSet
-from class_pair import minor_type_class, get_train_group
+from class_pair import minor_type_class, get_train_group, major_type_class
 from tools.commen_tool import radom_sep_train_val
 from sklearn.metrics import f1_score
 
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
-    def __init__(self, ifTrain = True, xgb_test_result = None):
+    def __init__(self, ifTrain = True,c_type='minor', train_class = 20, data_arg_times = 10):
         seed = 10
         torch.manual_seed(seed)#为CPU设置随机种子
     
@@ -47,9 +47,10 @@ class Protein(object):
       #  self.xgb_test_result = xgb_test_result
         self.train_data_id_class_list = get_train_group()
        # train_data = xgboost_train(False)
-        self.train_class = 20
+        self.train_class = train_class
         if self.ifTrain:
-            train_set, val_set = self.get_train_val_data_set(self.train_class )
+            train_set, val_set = self.get_train_val_data_set(self.train_class ,c_type)
+            train_set.add_minor_class_sample(self.train_class, times = data_arg_times)
             self.train_loader = data.DataLoader(train_set, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
             self.val_loader = data.DataLoader(val_set, self.config.v('batch_size'), num_workers= 8,
@@ -385,7 +386,7 @@ class Protein(object):
                 conf_loss += loss_c.data[0]
 
                 # log per iter
-                log = '\r==>Train: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
+                log = '\r==>Train_class{}: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(self.train_class,
                     prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
                     time=time, cls_loss=loss_c.data[0])
 
@@ -403,8 +404,10 @@ class Protein(object):
                     sys.stdout.flush()
                  #   print(log)
                     # log for tensorboard
-                    self.writer.add_scalar('Train/conf_loss', conf_loss/epoch_size, epoch)
-                    self.writer.add_scalar('Train/lr', lr, epoch)
+                    title = 'Train/conf_loss'+ str(self.train_class)
+                    self.writer.add_scalar(title, conf_loss/epoch_size, epoch)
+                    title = 'Train/lr'+ str(self.train_class)
+                    self.writer.add_scalar(title, lr, epoch)
                     
                     conf_loss = 0
        
@@ -452,13 +455,13 @@ class Protein(object):
                         print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[0], mid,  ' t ', tar_srcs[i_ys], tail)
                     else:
                         pre_for_f1.append(0)
-                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[0], ' t ', tar_srcs[i_ys])
+                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[0], ' t ', tar_srcs[i_ys], tail)
                 time = _t.toc()
 
                 conf_loss_v += loss_c.data[0]
 
                 # log per iter
-                log = '\r==>Eval: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
+                log = '\r==>Eval_class{}: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(self.train_class,
                     prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
                     time=time,  cls_loss=loss_c.data[0])
                 #print(log)
@@ -478,9 +481,13 @@ class Protein(object):
                     sys.stdout.write(log)
                     sys.stdout.flush()
                     # log for tensorboard
-                    self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+                    title = 'Eval/conf_loss' + str(self.train_class)
+                    self.writer.add_scalar(title, conf_loss_v/epoch_size, epoch)
                     
-                    print('c ',self.train_class, '---------f1 ',f1_score(t_for_f1, pre_for_f1, average = "macro"))
+                    f1 = f1_score(t_for_f1, pre_for_f1, average = "macro")
+                    print('c ',self.train_class, '---------f1 ',f1)
+                    title = 'f1_' + str(self.train_class)
+                    self.writer.add_scalar(title, f1, epoch)
                   #  writer.add_scalar('Eval/mAP', ap, epoch)
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)
@@ -492,7 +499,7 @@ class Protein(object):
         if self.use_gpu:
             image = image.cuda()
     #    print('image shpe', image.shape)
-        base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch)
+        base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch,prefix='module_feature_maps' + str(self.train_class))
     #    extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
    #     viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
@@ -549,7 +556,13 @@ class Protein(object):
 def train_model():
    # xgboost_train()
   #  print('start ')
-    s = Protein(ifTrain = True)
+    data_arg_times_list = [20, 30, 40, 20,  35, 10, 50, 2, 2]
+    for c_i, c_class in enumerate( minor_type_class):
+        s = Protein(iifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
+    s.train_model()
+    
+    for c_i, c_class in enumerate( major_type_class):
+        s = Protein(iifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
     s.train_model()
     return True
 
