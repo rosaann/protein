@@ -24,7 +24,7 @@ import os
 from config import Config
 import random
 from torchvision import transforms
-
+from tools.commen_tool import radom_sep_train_val
 from sklearn.model_selection import GridSearchCV
 
 def find_small_num_class_ids():
@@ -144,28 +144,7 @@ def xgboost_train_16seperate_model(ifTrain = True, train_to = 15):
         file.close()
         
     val_model()
-def radom_sep_train_val(datalist, rate):
-    random.seed(90)
-    total = len(datalist[0])
-    idx_list = range(total)
-    idx_list = random.sample(idx_list, total)
-    
-    train_persent = int(rate * total)
-    
-    out_train = []
-    out_val = []
-    for sub_list in datalist:
-        train_list = []
-        val_list = []
-        for i, idx_random in enumerate( idx_list ):
-            if i <= train_persent:
-                train_list.append(sub_list[idx_random])
-            else:
-                val_list.append(sub_list[idx_random])
-        out_train.append(train_list)
-        out_val.append(val_list)
-        
-    return out_train, out_val
+
     
 def xgboost_train(ifTrain = True, train_to = 29):
     train_data_id_class = get_train_group()
@@ -789,6 +768,6 @@ def xgboost_train_old():
         print ("Score (val): " , bst.best_score)
         index += 1
         
-xgboost_train()
+#xgboost_train()
 #val_model()
 #test_xg_model()

@@ -22,7 +22,7 @@ class ProteinDataSet(data.Dataset):
         self.id_list = img_id_list
         self.tar_list = tar_list
         self.tar_src_list = tar_src_list
-        base_path='../train/'
+        self.base_path='../train/'
     
     def __init__old(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
         self.df = pd.read_csv(csv_path)
