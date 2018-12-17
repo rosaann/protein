@@ -558,7 +558,7 @@ def train_model():
   #  print('start ')
     data_arg_times_list = [20, 30, 40, 20,  35, 10, 50, 2, 2]
     for c_i, c_class in enumerate( minor_type_class):
-        s = Protein(iifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
+        s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
     s.train_model()
     
     for c_i, c_class in enumerate( major_type_class):
