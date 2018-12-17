@@ -416,6 +416,7 @@ class Protein(object):
             if iteration < (val_epoch_size - 1):
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
+                targets = np.array(targets)
                 if self.use_gpu:
                     images = Variable(images.cuda())
                 else:
