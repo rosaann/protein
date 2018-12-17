@@ -31,6 +31,7 @@ from torchvision import transforms
 from tools.protein_test_dataset import ProteinTestDataSet
 from class_pair import minor_type_class, get_train_group
 from tools.commen_tool import radom_sep_train_val
+from sklearn.metrics import f1_score
 
 #from torchsample.regularizers import L1Regularizer
 
@@ -42,7 +43,7 @@ class Protein(object):
         self.config = Config()
         self.ifTrain = ifTrain
         self.preproc = Data_Preproc()
-        self.train_class = 0
+    
       #  self.xgb_test_result = xgb_test_result
         self.train_data_id_class_list = get_train_group()
        # train_data = xgboost_train(False)
@@ -408,6 +409,8 @@ class Protein(object):
        
         val_epoch_size = int( len(self.val_loader) )     
         val_batch_iterator = iter(self.val_loader) 
+        pre_for_f1 = []
+        t_for_f1 = []
         for iteration  in range(val_epoch_size):
             images, targets, tar_srcs = next(val_batch_iterator)
             if iteration < (val_epoch_size - 1):
@@ -429,7 +432,21 @@ class Protein(object):
                     continue
               #  if loss_c.data[0] > 100000000:
               #      continue
-
+                for i_ys,  ys in enumerate( out ):
+                    tail = ''
+                    mid = ''
+                    t_val = 0
+                    if self.train_class in tar_srcs[i_ys]:
+                        tail = '-----------'
+                        t_val = 1
+                    t_for_f1.append(t_val)
+                    if ys >= 0.5:
+                        mid = '||||||||'
+                        pre_for_f1.append(1)
+                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys, mid, ' c ', self.train_class, ' t ', tar_srcs[i_ys], tail)
+                    else:
+                        pre_for_f1.append(0)
+                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys, ' c ', self.train_class)
                 time = _t.toc()
 
                 conf_loss_v += loss_c.data[0]
@@ -456,6 +473,8 @@ class Protein(object):
                     sys.stdout.flush()
                     # log for tensorboard
                     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
+                    
+                    print('c ',self.train_class, '---------f1 ',f1_score(t_for_f1, pre_for_f1, average = "macro"))
                   #  writer.add_scalar('Eval/mAP', ap, epoch)
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)
@@ -478,13 +497,11 @@ class Protein(object):
         #base_out = viz_module_grads(writer, model, model.base, images, images, preproc.means, module_name='base', epoch=epoch)
      #   base_out = viz_module_grads(self.writer, self.model, self.model.base, image, image, 0.5, module_name='base', epoch=epoch)
 
-    def save_checkpoints(self, epochs, iters=None):
+    def save_checkpoints(self, epochs):
         if not os.path.exists(self.config.v('out_dir')):
             os.makedirs(self.config.v('out_dir'))
-        if iters:
-            filename = '_epoch_{:d}_iter_{:d}'.format(epochs, iters) + '.pth'
-        else:
-            filename = 'epoch_{:d}'.format(epochs) + '.pth'
+        
+        filename = 'epoch_{:d}'.format(epochs) + '_class_' + str(self.train_class) + '.pth'
         filename = os.path.join(self.config.v('out_dir'), filename)
         torch.save(self.model.state_dict(), filename)
         with open(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt'), 'a') as f:
