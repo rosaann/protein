@@ -404,9 +404,9 @@ class Protein(object):
                     sys.stdout.flush()
                  #   print(log)
                     # log for tensorboard
-                    title = 'Train/conf_loss'+ str(self.train_class)
+                    title = 'Train/'+ str(self.train_class)+'/conf_loss'
                     self.writer.add_scalar(title, conf_loss/epoch_size, epoch)
-                    title = 'Train/lr'+ str(self.train_class)
+                    title = 'Train/'+ str(self.train_class) + '/lr'
                     self.writer.add_scalar(title, lr, epoch)
                     
                     conf_loss = 0
@@ -481,12 +481,12 @@ class Protein(object):
                     sys.stdout.write(log)
                     sys.stdout.flush()
                     # log for tensorboard
-                    title = 'Eval/conf_loss' + str(self.train_class)
+                    title = 'Eval/'+ str(self.train_class) +'/conf_loss' 
                     self.writer.add_scalar(title, conf_loss_v/epoch_size, epoch)
                     
                     f1 = f1_score(t_for_f1, pre_for_f1, average = "macro")
                     print('c--- ',self.train_class, '---------f1 ',f1)
-                    title = 'f1_' + str(self.train_class)
+                    title = 'Eval/' + str(self.train_class) + '/f'
                     self.writer.add_scalar(title, f1, epoch)
                   #  writer.add_scalar('Eval/mAP', ap, epoch)
                  #   viz_pr_curve(writer, prec, rec, epoch)
@@ -499,7 +499,7 @@ class Protein(object):
         if self.use_gpu:
             image = image.cuda()
     #    print('image shpe', image.shape)
-        base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch,prefix='module_feature_maps' + str(self.train_class))
+        base_out = viz_module_feature_maps(self.writer, self.model.base, image, module_name='base', epoch=epoch,prefix='module_feature_maps_' + str(self.train_class))
     #    extras_out = viz_module_feature_maps(self.writer, self.model.extras, base_out, module_name='extras', epoch=epoch)
         # visualize feature map in feature_extractors
    #     viz_feature_maps(self.writer, self.model(image, 'feature'), module_name='feature_extractors', epoch=epoch)
