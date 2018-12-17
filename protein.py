@@ -440,7 +440,7 @@ class Protein(object):
                     tail = ''
                     mid = ''
                     t_val = 0
-                    targets_t = [int (tthis) for tthis in tar_srcs[i_ys]]
+                    targets_t = [int (tthis) for tthis in tar_srcs[i_ys].split(' ')]
                     if self.train_class in targets_t:
                         tail = '-----------'
                         t_val = 1

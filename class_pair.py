@@ -258,7 +258,7 @@ def get_rest_id_info(df, hav_gotten_id_list, train_data_id_class_list,idinfo_lis
                             break
                     if if_in_saved_list == True:
                         continue
-                    targets = row['Target'].split(' ')
+                    targets = row['Target']
                    
                     
                     
@@ -272,7 +272,7 @@ def get_type_class(type_check, df, train_data_id_class_list)  :
     id_list = []
     tar_list = []
     for i, row in df.iterrows():
-        targets = row['Target'].split(' ')
+        targets = row['Target']
         targets_t = [int (tthis) for tthis in targets]
         for t in targets_t:
             if t == type_check:
