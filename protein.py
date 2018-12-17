@@ -470,27 +470,27 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
            #     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                if iteration == (val_epoch_size - 1):
+              #  if iteration == (val_epoch_size - 1):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
 
                     # log per epoch
-                    sys.stdout.write('\r')
-                    sys.stdout.flush()
-                    log = '\r==>Eval: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
-                    prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
+        sys.stdout.write('\r')
+        sys.stdout.flush()
+        log = '\r==>Eval: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(
+        prograss='#'*int(round(10*iteration/epoch_size)) + '-'*int(round(10*(1-iteration/epoch_size))), iters=iteration, epoch_size=epoch_size,
                     time=time,  cls_loss=loss_c.data[0])
-                    sys.stdout.write(log)
-                    sys.stdout.flush()
+        sys.stdout.write(log)
+        sys.stdout.flush()
                     # log for tensorboard
-                    title =  str(self.train_class) +'/e_conf_loss' 
-                    self.writer.add_scalar(title, conf_loss_v/epoch_size, epoch)
+        title =  str(self.train_class) +'/e_conf_loss' 
+        self.writer.add_scalar(title, conf_loss_v/epoch_size, epoch)
                     
-                    f1 = f1_score(t_for_f1, pre_for_f1, average = "macro")
-                    print('c--- ',self.train_class, '---------f1 ',f1)
-                    title = str(self.train_class) + '/f'
+        f1 = f1_score(t_for_f1, pre_for_f1, average = "macro")
+        print('c--- ',self.train_class, '---------f1 ',f1)
+        title = str(self.train_class) + '/f'
                   #  title = str(self.train_class) + '/f'
-                    self.writer.add_scalar(title, f1, epoch)
+        self.writer.add_scalar(title, f1, epoch)
                   #  writer.add_scalar('Eval/mAP', ap, epoch)
                  #   viz_pr_curve(writer, prec, rec, epoch)
                  #   viz_archor_strategy(writer, size, gt_label, epoch)

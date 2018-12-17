@@ -24,6 +24,7 @@ class MultiClassLoss(nn.Module):
         self.threshold = 0.5
         self.unmatched_threshold = 0.5
         self.variance = [0.1, 0.2]
+        self.cri = nn.CrossEntroyLoss()
     
     def forward(self, predictions, targets):
         conf_data = predictions
@@ -37,13 +38,13 @@ class MultiClassLoss(nn.Module):
 
         
         # Compute max conf across batch for hard negative mining
-        batch_conf = conf_data.view(-1, 1)
-        conf_t_v = conf_t.view(-1,1)
+       # batch_conf = conf_data.view(-1, 1)
+       # conf_t_v = conf_t.view(-1,1)
 
      #   print('batch_conf ',batch_conf.shape, ' ', batch_conf)
      #   print('conf_t_v', conf_t_v.shape)
-        loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
-     #   loss_c =F.cross_entropy(batch_conf, conf_t_v, size_average=False)
+     #   loss_c = F.mse_loss(conf_t_v,batch_conf,  size_average=False)
+        loss_c =self.cri(conf_data, conf_t, size_average=False)
      #   print('loss_c ', loss_c)
         return loss_c
         
