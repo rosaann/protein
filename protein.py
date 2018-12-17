@@ -46,7 +46,7 @@ class Protein(object):
       #  self.xgb_test_result = xgb_test_result
         self.train_data_id_class_list = get_train_group()
        # train_data = xgboost_train(False)
-        self.train_class = '20'
+        self.train_class = 20
         if self.ifTrain:
             train_set, val_set = self.get_train_val_data_set(self.train_class )
             self.train_loader = data.DataLoader(train_set, self.config.v('batch_size'), num_workers= 8,
