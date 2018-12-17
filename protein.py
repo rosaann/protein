@@ -110,7 +110,7 @@ class Protein(object):
                         down_num += 1
                         continue
                 tar_list.append(trans_t)
-                tar_src.append(targets)
+                tar_src.append(targets_t)
                 
              #   img_path = base_path + img_id + '_' + 'green' + '.png'
             #    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
