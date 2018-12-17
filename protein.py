@@ -416,6 +416,7 @@ class Protein(object):
             if iteration < (val_epoch_size - 1):
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
+                print('tar_srcs ', tar_srcs)
                 targets = np.array(targets)
                 if self.use_gpu:
                     images = Variable(images.cuda())
@@ -433,7 +434,9 @@ class Protein(object):
                     continue
               #  if loss_c.data[0] > 100000000:
               #      continue
+                
                 for i_ys,  ys in enumerate( out ):
+                    print('out ', out)
                     tail = ''
                     mid = ''
                     t_val = 0
