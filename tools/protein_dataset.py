@@ -16,7 +16,7 @@ from class_pair import get_train_group
 import numpy as np
 
 class ProteinDataSet(data.Dataset):
-    def __init__(self, preproc, img_id_list, tar_list, tar_src_list = None):
+    def __init__(self, preproc, img_id_list, tar_list, tar_src_list = []):
         self.train_data_id_class = get_train_group()
         self.preproc = preproc
         self.id_list = img_id_list
@@ -172,7 +172,10 @@ class ProteinDataSet(data.Dataset):
         if self.preproc is not None:
             img_merg = self.preproc(img_merg)
       #  print('gd ', self.current_train_group_idx, ' tar ', target)
-        return img_merg, target
+        if len(self.tar_src_list) == 0:
+            return img_merg, target
+        else:
+            return img_merg, target, self.tar_src_list[index]
         
     def __getitem__old(self, index):
         img_id = self.df.get_value(index, 'Id')

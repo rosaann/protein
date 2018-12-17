@@ -271,9 +271,6 @@ class Protein(object):
                  self.idx_df += 1;
         
         
-        
-        
-
          #   check_i += 1  
         df.to_csv('pred.csv', index=None)
         df.head(10)    
@@ -337,7 +334,7 @@ class Protein(object):
       
         epoch_size = int( len(self.train_loader) )
         
-        train_end = int( epoch_size * 0.8);
+        train_end = int( epoch_size);
         batch_iterator = iter(self.train_loader)
         print('epoch_size ', epoch_size, " train_end ", train_end)
         
@@ -408,8 +405,12 @@ class Protein(object):
                     self.writer.add_scalar('Train/lr', lr, epoch)
                     
                     conf_loss = 0
-        
-            if iteration > train_end:
+       
+        val_epoch_size = int( len(self.val_loader) )     
+        val_batch_iterator = iter(self.val_loader) 
+        for iteration  in range(val_epoch_size):
+            images, targets, tar_srcs = next(val_batch_iterator)
+            if iteration < (val_epoch_size - 1):
              #   self.visualize_epoch(model, images[0], targets[0], self.priorbox, writer, epoch, use_gpu)
                 #eval:
                 if self.use_gpu:
@@ -441,7 +442,7 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
            #     self.writer.add_scalar('Eval/conf_loss', conf_loss_v/epoch_size, epoch)
-                if iteration == (epoch_size - 1):
+                if iteration == (val_epoch_size - 1):
                     # eval mAP
              #       prec, rec, ap = cal_pr(label, score, npos)
 
