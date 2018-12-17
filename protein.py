@@ -404,7 +404,7 @@ class Protein(object):
                     sys.stdout.flush()
                  #   print(log)
                     # log for tensorboard
-                    title = 'Train'+ '/conf_loss'
+                    title = str(self.train_class) + '/conf_loss'
                   #  title = str(self.train_class)+'/conf_loss'
 
                     self.writer.add_scalar(title, conf_loss/epoch_size, epoch)
@@ -483,12 +483,12 @@ class Protein(object):
                     sys.stdout.write(log)
                     sys.stdout.flush()
                     # log for tensorboard
-                    title =  'Eval' +'/conf_loss' 
+                    title =  str(self.train_class) +'/e_conf_loss' 
                     self.writer.add_scalar(title, conf_loss_v/epoch_size, epoch)
                     
                     f1 = f1_score(t_for_f1, pre_for_f1, average = "macro")
                     print('c--- ',self.train_class, '---------f1 ',f1)
-                    title = 'Eval/' + 'f'
+                    title = str(self.train_class) + '/f'
                   #  title = str(self.train_class) + '/f'
                     self.writer.add_scalar(title, f1, epoch)
                   #  writer.add_scalar('Eval/mAP', ap, epoch)
