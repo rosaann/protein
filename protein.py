@@ -564,7 +564,7 @@ def train_model():
   #      s.train_model()
     
     for c_i, c_class in enumerate( major_type_class):
-        s = Protein(iifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
+        s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
         s.train_model()
     return True
 
