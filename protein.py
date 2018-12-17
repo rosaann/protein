@@ -26,7 +26,7 @@ import os
 import pandas as pd
 import cv2
 import visdom
-from xgboost_model import xgboost_train, test_xg_model
+#from xgboost_model import xgboost_train, test_xg_model
 from torchvision import transforms
 from tools.protein_test_dataset import ProteinTestDataSet
 from class_pair import minor_type_class, get_train_group
