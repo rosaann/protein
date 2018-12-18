@@ -121,7 +121,7 @@ class VGG_SIM_Z(nn.Module):
         for k in range(len(self.base)):
            # print('k ', k)
             x = self.base[k](x)
-            
+        x = x.view(x.size(0), -1)    
         x = self.sequential(x)
     #    x = x.view(x.size(0), -1)
     #    x = self.line(x)
