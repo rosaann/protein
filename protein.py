@@ -350,7 +350,7 @@ class Protein(object):
          #   print('imgs from data_load shape ', images.shape)
             targets = np.array(targets)
            # print('iteration ', iteration)
-            if iteration == (train_end - 1):
+            if iteration == (train_end - 2):
                 if self.use_gpu:
                     images = Variable(images.cuda())
                 self.visualize_epoch(images, epoch)
@@ -376,7 +376,7 @@ class Protein(object):
                     continue
                 if math.isnan(loss_c.data[0]):
                     continue
-             #   if loss_c.data[0] > 100000000:
+             #   if loss_c.data[0] > 10000:
              #       continue
 
                 loss_c.backward()
@@ -557,15 +557,17 @@ class Protein(object):
         return scheduler
         
 def train_model():
+    for c_i, c_class in enumerate( major_type_class):
+        s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
+        s.train_model()
+        
     data_arg_times_list = [30, 30, 40, 20,  35, 10, 50, 2, 2]
     for c_i, c_class in enumerate( minor_type_class):
         s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
         s.train_model()
     
     
-    for c_i, c_class in enumerate( major_type_class):
-        s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
-        s.train_model()
+    
         
     
     return True
