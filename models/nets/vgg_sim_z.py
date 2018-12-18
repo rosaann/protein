@@ -122,13 +122,13 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         self.base = nn.ModuleList(layers)
-        self.sequential = torch.nn.Sequential(torch.nn.Linear(184832, 512),
+        self.sequential = torch.nn.Sequential(torch.nn.Linear(184832, 1024),
                                        torch.nn.ReLU(),
                                        torch.nn.Dropout(p=0.5),
-                                       torch.nn.Linear(512, 512),
+                                       torch.nn.Linear(1024, 1024),
                                        torch.nn.ReLU(),
                                        torch.nn.Dropout(p=0.5),
-                                       torch.nn.Linear(512, 2))
+                                       torch.nn.Linear(1024, 2))
 
       #  self.line = nn.Linear(184832 , 1)
       #  self.batch = nn.BatchNorm1d(1)
