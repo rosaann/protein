@@ -124,10 +124,10 @@ class VGG_SIM_Z(nn.Module):
         self.base = nn.ModuleList(layers)
         self.sequential = torch.nn.Sequential(torch.nn.Linear(184832, 1024),
                                        torch.nn.ReLU(),
-                                       torch.nn.Dropout(p=0.5),
+                                       torch.nn.Dropout(p=0.8),
                                        torch.nn.Linear(1024, 1024),
                                        torch.nn.ReLU(),
-                                       torch.nn.Dropout(p=0.5),
+                                       torch.nn.Dropout(p=0.8),
                                        torch.nn.Linear(1024, 2))
         
         self.softmax = nn.Softmax(dim=-1)
