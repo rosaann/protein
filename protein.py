@@ -451,7 +451,7 @@ class Protein(object):
                         tail = '-----------'
                         t_val = 1
                     t_for_f1.append(t_val)
-                    if ys[0] >= 0.5:
+                    if ys[1] >= 0.5:
                         mid = '||||||||'
                         pre_for_f1.append(1)
                         print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[0], mid,  ' t ', tar_srcs[i_ys], tail)
