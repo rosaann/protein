@@ -38,12 +38,12 @@ class VGG_SIM_Z(nn.Module):
             
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         
-        conv2d = nn.Conv2d(in_channels, 64, kernel_size=3, padding=1)
+        conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
         if batch_norm:
-            layers += [conv2d, nn.BatchNorm2d(64)]
+            layers += [conv2d, nn.BatchNorm2d(128)]
         else:
             layers += [conv2d, nn.ReLU(inplace=True)]
-        in_channels = 64
+        in_channels = 128
           
         
         conv2d = nn.Conv2d(in_channels, 128, kernel_size=3, padding=1)
@@ -100,11 +100,19 @@ class VGG_SIM_Z(nn.Module):
         in_channels = 512
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
-
-        self.line = nn.Linear(184832 , 1)
-        self.batch = nn.BatchNorm1d(1)
-        self.sigmoid = nn.Sigmoid()
         self.base = nn.ModuleList(layers)
+        self.sequential = torch.nn.Sequential(torch.nn.Linear(184832, 4096),
+                                       torch.nn.ReLU(),
+                                       torch.nn.Dropout(p=0.5),
+                                       torch.nn.Linear(4096, 4096),
+                                       torch.nn.ReLU(),
+                                       torch.nn.Dropout(p=0.5),
+                                       torch.nn.Linear(4096, 2))
+
+      #  self.line = nn.Linear(184832 , 1)
+      #  self.batch = nn.BatchNorm1d(1)
+      #  self.sigmoid = nn.Sigmoid()
+        
        # self.out_layers = nn.ModuleList(out_layers)
         
     def forward(self, imgs, phase='eval'):
@@ -113,10 +121,12 @@ class VGG_SIM_Z(nn.Module):
         for k in range(len(self.base)):
            # print('k ', k)
             x = self.base[k](x)
-        x = x.view(x.size(0), -1)
-        x = self.line(x)
-        x = self.batch(x)
+            
+        x = self.sequential(x)
+    #    x = x.view(x.size(0), -1)
+    #    x = self.line(x)
+    #    x = self.batch(x)
       #  print('x ', x)
-        x = self.sigmoid(x)
+   #     x = self.sigmoid(x)
       #  print('si ', x)
         return x
