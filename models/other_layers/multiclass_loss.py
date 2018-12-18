@@ -30,7 +30,7 @@ class MultiClassLoss(nn.Module):
         conf_data = predictions
 
         
-        conf_t = torch.from_numpy( targets).type(torch.cuda.FloatTensor)
+        conf_t = torch.from_numpy( targets).type(torch.cuda.LongTensor)
         #conf_t = torch.from_numpy( targets)
         if self.use_gpu:
             conf_t = conf_t.cuda()
