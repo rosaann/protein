@@ -367,7 +367,7 @@ class Protein(object):
                 out = self.model(images, phase='train')
 
                 self.optimizer.zero_grad()
-             #   print('out ', out)
+             #   print('tr_out ', out)
              #   print('targets ', targets.shape)
                 loss_c = self.criterion(out, targets)
 
@@ -440,9 +440,9 @@ class Protein(object):
                     continue
               #  if loss_c.data[0] > 100000000:
               #      continue
-                
+                print('out ', out)
                 for i_ys,  ys in enumerate( out ):
-                   # print('out ', out)
+                    
                     tail = ''
                     mid = ''
                     t_val = 0
@@ -557,17 +557,17 @@ class Protein(object):
         return scheduler
         
 def train_model():
- 
+    data_arg_times_list = [30, 30, 40, 20,  35, 10, 50, 2, 2]
+    for c_i, c_class in enumerate( minor_type_class):
+        s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
+        s.train_model()
     
     
     for c_i, c_class in enumerate( major_type_class):
         s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
         s.train_model()
         
-    data_arg_times_list = [30, 30, 40, 20,  35, 10, 50, 2, 2]
-    for c_i, c_class in enumerate( minor_type_class):
-        s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
-        s.train_model()
+    
     return True
 
 def test_model():
