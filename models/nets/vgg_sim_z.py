@@ -129,6 +129,8 @@ class VGG_SIM_Z(nn.Module):
                                        torch.nn.ReLU(),
                                        torch.nn.Dropout(p=0.5),
                                        torch.nn.Linear(1024, 2))
+        
+        self.softmax = nn.Softmax(dim=-1)
 
       #  self.line = nn.Linear(184832 , 1)
       #  self.batch = nn.BatchNorm1d(1)
@@ -150,4 +152,6 @@ class VGG_SIM_Z(nn.Module):
       #  print('x ', x)
    #     x = self.sigmoid(x)
       #  print('si ', x)
+        if phase == 'eval':
+            return self.softmax(x.view(-1, 2))
         return x
