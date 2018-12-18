@@ -101,7 +101,7 @@ class VGG_SIM_Z(nn.Module):
         
         layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
         self.base = nn.ModuleList(layers)
-        self.sequential = torch.nn.Sequential(torch.nn.Linear(77824, 4096),
+        self.sequential = torch.nn.Sequential(torch.nn.Linear(184832, 4096),
                                        torch.nn.ReLU(),
                                        torch.nn.Dropout(p=0.5),
                                        torch.nn.Linear(4096, 4096),
