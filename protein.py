@@ -558,6 +558,8 @@ class Protein(object):
         
 def train_model():
     for c_i, c_class in enumerate( major_type_class):
+        if c_i == 0:
+            continue
         s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = 0)
         s.train_model()
         
