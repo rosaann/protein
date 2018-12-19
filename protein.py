@@ -454,10 +454,10 @@ class Protein(object):
                     if ys[1] >= 0.5:
                         mid = '||||||||'
                         pre_for_f1.append(1)
-                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[0], mid,  ' t ', tar_srcs[i_ys], tail)
+                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[1], mid,  ' t ', tar_srcs[i_ys], tail)
                     else:
                         pre_for_f1.append(0)
-                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[0], ' t ', tar_srcs[i_ys], tail)
+                        print('ci ', self.train_class, ' i_ys ', i_ys, ' pre ' , ys[1], ' t ', tar_srcs[i_ys], tail)
                 time = _t.toc()
 
                 conf_loss_v += loss_c.data[0]
