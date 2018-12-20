@@ -344,7 +344,7 @@ class Protein(object):
         
         
         for iteration  in range(epoch_size):
-            images, targets = next(batch_iterator)
+            images, targets,targets_src = next(batch_iterator)
        #     print('images ', images.shape)
             if len (images) == 1:
                 continue
