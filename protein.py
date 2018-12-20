@@ -125,6 +125,7 @@ class Protein(object):
         
         train_img_list = train_out[0]
         train_tar_list = train_out[1]
+        train_tar_src_list = train_out[2]
         val_img_list = val_out[0]
         val_tar_list = val_out[1]
         val_tar_src_list = val_out[2]
@@ -144,7 +145,7 @@ class Protein(object):
         print('start fit ', c)
         print('tar ', train_tar_list)
         print('var tar', val_tar_list)    
-        train_dataset = ProteinDataSet(self.preproc,train_img_list, train_tar_list )
+        train_dataset = ProteinDataSet(self.preproc,train_img_list, train_tar_list , train_tar_src_list)
         val_dataset = ProteinDataSet(self.preproc,val_img_list, val_tar_list, val_tar_src_list )
         
         return train_dataset, val_dataset
