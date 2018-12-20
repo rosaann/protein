@@ -62,16 +62,16 @@ class ProteinDataSet(data.Dataset):
             
         aug_type = 0
         for time in range(times):
-            self.id_list += id_list_sub
-            self.tar_list += tar_list_sub
-            self.tar_src_list += tar_src_list_sub
+            self.id_list = self.id_list + id_list_sub
+            self.tar_list = self.tar_list + tar_list_sub
+            self.tar_src_list = self.tar_src_list + tar_src_list_sub
             
             aug_type_sub = [aug_type for i in range(len(self.id_list))]
             aug_type += 1
             if aug_type >= times:
                 aug_type = 0
             self.aug_type_list += aug_type_sub
-            print('aft aug_', len(self.id_list), 'time ', time)
+            print('aft aug_', len(self.id_list), 'time ', time, 'aug_type ', aug_type)
         print('aft aug_', len(self.id_list))
             
     def __init__old(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
