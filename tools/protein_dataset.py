@@ -71,7 +71,7 @@ class ProteinDataSet(data.Dataset):
             if aug_type >= times:
                 aug_type = 0
             self.aug_type_list += aug_type_sub
-            
+            print('aft aug_', len(self.id_list), 'time ', time)
         print('aft aug_', len(self.id_list))
             
     def __init__old(self,preproc=None, base_path='../train/', csv_path='../train.csv',src_data_list = [], start_idx=0):
