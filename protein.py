@@ -394,7 +394,7 @@ class Protein(object):
                 sys.stdout.write(log)
                 sys.stdout.flush()
                 
-                if iteration == (train_end-1):
+                if iteration == (train_end-2):
                     # log per epoch
                     sys.stdout.write('\r')
                     sys.stdout.flush()
