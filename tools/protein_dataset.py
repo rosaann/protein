@@ -35,9 +35,9 @@ class ProteinDataSet(data.Dataset):
         self.aug_type_list = []
         self.base_path='../train/'
         
-    def add_minor_class_sample(self, c_class, times = 12):
+    def add_minor_class_sample(self, c_class, times = 0):
         
-        print('pre_', len(self.id_list))
+        print('pre_ ', len(self.id_list), ' times ', times)
         if times == 0:
             return
         
