@@ -36,7 +36,7 @@ from sklearn.metrics import f1_score
 #from torchsample.regularizers import L1Regularizer
 
 class Protein(object):
-    def __init__(self, ifTrain = True,c_type='minor', train_class = 20, data_arg_times = 10):
+    def __init__(self, ifTrain = True,c_type='minor', train_class = 20, data_arg_times = 10, down_sample = 0):
         seed = 10
         torch.manual_seed(seed)#为CPU设置随机种子
     
@@ -49,7 +49,7 @@ class Protein(object):
        # train_data = xgboost_train(False)
         self.train_class = train_class
         if self.ifTrain:
-            train_set, val_set = self.get_train_val_data_set(self.train_class ,c_type)
+            train_set, val_set = self.get_train_val_data_set(self.train_class ,c_type, down_sample_num = down_sample)
             train_set.add_minor_class_sample(self.train_class, times = data_arg_times)
             self.train_loader = data.DataLoader(train_set, self.config.v('batch_size'), num_workers= 8,
                                                shuffle=True, pin_memory=True)
@@ -557,11 +557,12 @@ class Protein(object):
         return scheduler
         
 def train_model():
-    data_arg_times_list =[0, 7, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
+    down_sample_list = [0, 5000, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
+    data_arg_times_list =[0, 0, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
     for c_i, c_class in enumerate( major_type_class):
         if c_i == 0:
             continue
-        s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
+        s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = data_arg_times_list[c_i], down_sample = down_sample_list[c_i])
         s.train_model()
         
     data_arg_times_list = [30, 30, 40, 20,  35, 10, 50, 2, 2]
