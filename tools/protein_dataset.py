@@ -14,7 +14,17 @@ import random
 from config import Config
 from class_pair import get_train_group
 import numpy as np
-
+def rotate(image, angle, center=None, scale=1.0): 
+    # 获取图像尺寸 
+    (h, w) = image.shape[:2] 
+    # 若未指定旋转中心，则将图像中心设为旋转中心 
+    if center is None: 
+        center = (w / 2, h / 2)
+    # 执行旋转 
+    M = cv2.getRotationMatrix2D(center, angle, scale) 
+    rotated = cv2.warpAffine(image, M, (w, h)) 
+    # 返回旋转后的图像 
+    return rotated
 class ProteinDataSet(data.Dataset):
     def __init__(self, preproc, img_id_list, tar_list, tar_src_list = []):
         self.train_data_id_class = get_train_group()
@@ -22,11 +32,17 @@ class ProteinDataSet(data.Dataset):
         self.id_list = img_id_list
         self.tar_list = tar_list
         self.tar_src_list = tar_src_list
+        self.aug_type_list = []
         self.base_path='../train/'
-    def add_minor_class_sample(self, c_class, times = 10):
+        
+    def add_minor_class_sample(self, c_class, times = 12):
+        
         print('pre_', len(self.id_list))
         if times == 0:
             return
+        
+        self.aug_type_list = [-1 for i in range(len(self.tar_src_list))]
+        self.aug_angle_times = int( times / 4)
         idx_list = []
         for i, tar_src in enumerate( self.tar_src_list ):
             tar_src_ints = tar_src.split(' ')
@@ -36,15 +52,25 @@ class ProteinDataSet(data.Dataset):
         id_list_sub = []
         tar_list_sub = []
         tar_src_list_sub = []
+        aug_type_sub = []
+        
         for idx in idx_list:
             id_list_sub.append(self.id_list[idx])
             tar_list_sub.append(self.tar_list[idx])
             tar_src_list_sub.append(self.tar_src_list[idx])
             
+            
+        aug_type = 0
         for time in range(times):
             self.id_list += id_list_sub
             self.tar_list += tar_list_sub
             self.tar_src_list += tar_src_list_sub
+            
+            aug_type_sub = [aug_type for i in range(len(self.id_list))]
+            aug_type += 1
+            if aug_type >= times:
+                aug_type = 0
+            self.aug_type_list += aug_type_sub
             
         print('aft aug_', len(self.id_list))
             
@@ -192,7 +218,19 @@ class ProteinDataSet(data.Dataset):
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE )
             imgs.append(img)
         img_merg = cv2.merge(imgs)
-        
+        if len(self.aug_type_list) > 0:
+            if self.aug_type_list[index] != -1:
+                ang = int(self.aug_type_list[index] / self.aug_angle_times) * (90 / self.aug_angle_times)
+                base_ang_type = self.aug_type_list[index] % self.aug_angle_times
+                
+                if base_ang_type == 1:
+                    img_merg = cv2.flip(img_merg, 1)
+                if base_ang_type == 2:
+                    img_merg = cv2.flip(img_merg, 0)
+                if base_ang_type == 2:
+                    img_merg = cv2.flip(img_merg, -1)                   
+                img_merg = rotate(img_merg, ang)
+                
         if self.preproc is not None:
             img_merg = self.preproc(img_merg)
       #  print('gd ', self.current_train_group_idx, ' tar ', target)

@@ -558,7 +558,7 @@ class Protein(object):
         
 def train_model():
     down_sample_list = [0, 5000, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
-    data_arg_times_list =[0, 0, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
+    data_arg_times_list =[0, 12, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
     for c_i, c_class in enumerate( major_type_class):
         if c_i == 0:
             continue
