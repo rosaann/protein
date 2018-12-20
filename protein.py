@@ -558,15 +558,20 @@ class Protein(object):
         return scheduler
         
 def train_model():
-    down_sample_list = [0, 5000, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
-    data_arg_times_list =[0, 12, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
+ #   [(27, 11), (15, 21), (10, 28), (9, 45),(8, 53), (20, 172), (17, 210), (24, 322), (26, 328), (16, 530), (13, 537), (12, 688), 
+#(22, 802), (18, 902), (6, 1008), (14, 1066), (11, 1093), (1, 1254), (19, 1482), (3, 1561), (4, 1858), (5, 2513), (7, 2822), (23, 2965), 
+#(2, 3621), (21, 3777), (25, 8228), (0, 12885)]
+ # major_type_class = [0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
+  
+    down_sample_list = [0, 50, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
+    data_arg_times_list =[0, 12, 4, 12, 8, 4, 12, 8, 12, 16, 16, 8, 16, 12, 12, 4, 12, 4, 0]
     for c_i, c_class in enumerate( major_type_class):
         if c_i == 0:
             continue
         s = Protein(ifTrain = True,c_type='major', train_class = c_class, data_arg_times = data_arg_times_list[c_i], down_sample = down_sample_list[c_i])
         s.train_model()
         
-    data_arg_times_list = [30, 30, 40, 20,  35, 10, 50, 2, 2]
+    data_arg_times_list = [32, 32, 40, 20,  36, 12, 48, 4, 4]
     for c_i, c_class in enumerate( minor_type_class):
         s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
         s.train_model()
