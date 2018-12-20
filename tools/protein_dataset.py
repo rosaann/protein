@@ -61,6 +61,7 @@ class ProteinDataSet(data.Dataset):
             
             
         aug_type = 0
+        print('id_list_sub ', len(id_list_sub))
         for time in range(times):
             self.id_list = self.id_list + id_list_sub
             self.tar_list = self.tar_list + tar_list_sub
