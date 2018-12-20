@@ -46,6 +46,7 @@ class ProteinDataSet(data.Dataset):
         idx_list = []
         for i, tar_src in enumerate( self.tar_src_list ):
             tar_src_ints = tar_src.split(' ')
+            tar_src_ints = [int (tthis) for tthis in tar_src_ints]  
             if c_class in tar_src_ints:
                idx_list.append(i) 
                
