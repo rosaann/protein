@@ -465,8 +465,10 @@ class Protein(object):
 
                 # log per iter
                 log = '\r==>Eval_class{}: || {iters:d}/{epoch_size:d} in {time:.3f}s [{prograss}] ||  cls_loss: {cls_loss:.4f}\r'.format(self.train_class,
-                    prograss='#'*int(round(10*val_batch_iterator/val_epoch_size)) + '-'*int(round(10*(1-val_batch_iterator/val_epoch_size))), iters=val_batch_iterator, epoch_size=val_epoch_size,
+                    prograss='#'*int(round(10*iteration/val_epoch_size)) + '-'*int(round(10*(1-iteration/val_epoch_size))), iters=iteration, epoch_size=val_epoch_size,
                     time=time,  cls_loss=loss_c.data[0])
+                
+           
                 #print(log)
                 sys.stdout.write(log)
                 sys.stdout.flush()
