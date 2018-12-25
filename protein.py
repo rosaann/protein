@@ -230,13 +230,14 @@ class Protein(object):
                     images = Variable(images.cuda())
         
              out = self.model(images, phase='eval')
-         #   print('out ', out) 
-             for i_im, imname in enumerate(name_list):
+             print('out ', out) 
+         #    for i_im, imname in enumerate(name_list):
                #  df.set_value(self.idx_df,'Id', imname )
-                 data = out[i_im]
-                 result_all = []
-                 print(' pre ', data)
-                 for t_i, tar_rat in enumerate( data):
+             
+             for t_i, tar_rat in enumerate( out):
+                     data = out[t_i]
+                     
+                     print(' pre ', data)
                      print('idx ',self.idx_df, ' tar ', tar_rat[1] )
                      this_result =  result_all[self.idx_df]
                      if tar_rat[1] >=0.5 :
