@@ -255,7 +255,7 @@ class Protein(object):
                      self.idx_df += 1        
                      result_all[self.idx_df] = this_result
                  
-        for i_im in range(range( 11703)):         
+        for i_im in range( 11703):         
                     
                  this_result = result_all[i_im]
                  this_list = this_result['list']
