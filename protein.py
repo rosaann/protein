@@ -240,7 +240,7 @@ class Protein(object):
                      data = out[t_i]
                      
                  #    print(' pre ', data)
-                     print('idx ',self.idx_df, ' tar ', tar_rat[1].data.cpu(), 'gpu ', tar_rat[1])
+                     print('idx ',self.idx_df, ' tar ', tar_rat[1].data.cpu().numpy(), 'gpu ', tar_rat[1])
                      this_result =  result_all[self.idx_df]
                      if tar_rat[1] >=0.5 :
                          
@@ -250,8 +250,8 @@ class Protein(object):
                          
                      else:
                          this_max = this_result['max']
-                         if tar_rat[1] > this_max :
-                             this_result['max'] = tar_rat[1].data.cpu()
+                         if tar_rat[1].data.cpu().numpy() > this_max :
+                             this_result['max'] = tar_rat[1].data.cpu().numpy()
                              this_result['maxIdx'] = class_type
                      
                      print('this_result ', this_result)                    
