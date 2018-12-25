@@ -216,7 +216,7 @@ class Protein(object):
         base_path = 'results/'
         print('test len ', len(self.test_loader))
         result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in range( 11703) ]
-        for class_type in range(28):
+        for class_type in range(2):
             class_path = base_path + 'class_' + str(class_type) + '.pth'
             self.resume_checkpoint(class_path)
             
@@ -259,6 +259,7 @@ class Protein(object):
                     
                  this_result = result_all[i_im]
                  this_list = this_result['list']
+                 result = ''
                  if len(this_list) > 0:
                      result = str(result_all[0])
                      if len(this_list) > 1:
@@ -268,7 +269,7 @@ class Protein(object):
                  else:
                      result = str( this_result['maxIdx'])
                      print('idx ', i_im, 'print none  ------', result)
-               #  print('idx ', i_im, 'result ', result)
+                 print('idx ', i_im, 'result ', result)
                  df.set_value(i_im, 'Predicted', result)
                  #self.idx_df += 1;
                  
