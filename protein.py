@@ -214,6 +214,7 @@ class Protein(object):
         df = pd.read_csv('../sample_submission.csv')   
         df = df.astype({"Predicted": str})         
         base_path = 'results/'
+        print('test len ', len(self.test_loader))
         result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in range( len(self.test_loader)) ]
         for class_type in range(28):
             class_path = base_path + 'class_' + str(class_type) + '.pth'
@@ -228,7 +229,7 @@ class Protein(object):
              if self.use_gpu:
                     images = Variable(images.cuda())
         
-             out = self.model(images, phase='train')
+             out = self.model(images, phase='eval')
          #   print('out ', out) 
              for i_im, imname in enumerate(name_list):
                #  df.set_value(self.idx_df,'Id', imname )
