@@ -254,7 +254,7 @@ class Protein(object):
                              this_result['max'] = tar_rat[1].data.cpu().numpy()
                              this_result['maxIdx'] = class_type
                      
-                     print('this_result ', this_result)                    
+             #        print('this_result ', this_result)                    
                      result_all[self.idx_df] = this_result
                      self.idx_df += 1   
                      
@@ -266,7 +266,7 @@ class Protein(object):
                  result = ''
                  print('im ', i_im, 'list len ', len(this_list))
                  if len(this_list) > 0:
-                     result = str(result_all[0])
+                     result = str(this_list[0])
                      if len(this_list) > 1:
                          for r in this_list[1: ]:
                              result += ' '
