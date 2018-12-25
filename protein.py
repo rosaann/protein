@@ -254,10 +254,9 @@ class Protein(object):
                              this_result['max'] = tar_rat[1]
                              this_result['maxIdx'] = class_type
                      
-                     
-                     self.idx_df += 1   
+                     print('this_result ', this_result)                    
                      result_all[self.idx_df] = this_result
-                    
+                     self.idx_df += 1   
                      
                  
         for i_im in range( 11703):         
