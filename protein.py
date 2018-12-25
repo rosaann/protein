@@ -215,7 +215,7 @@ class Protein(object):
         df = df.astype({"Predicted": str})         
         base_path = 'results/'
         print('test len ', len(self.test_loader))
-        result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in range( len(self.test_loader)) ]
+        result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in range( 11703) ]
         for class_type in range(28):
             class_path = base_path + 'class_' + str(class_type) + '.pth'
             self.resume_checkpoint(class_path)
