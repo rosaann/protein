@@ -252,7 +252,7 @@ class Protein(object):
                              this_result['max'] = tar_rat[1]
                              this_result['maxIdx'] = class_type
                      
-                     result_all[self.idx_df] = this_result
+                #     result_all[self.idx_df] = this_result
                      self.idx_df += 1        
                      
                  
