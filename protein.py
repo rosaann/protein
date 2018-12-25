@@ -218,7 +218,7 @@ class Protein(object):
         result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in range( 11703) ]
         
         ttt=[]
-        for class_type in range(2):
+        for class_type in range(28):
             class_path = base_path + 'class_' + str(class_type) + '.pth'
             self.resume_checkpoint(class_path)
             
@@ -240,7 +240,7 @@ class Protein(object):
                      data = out[t_i]
                      
                  #    print(' pre ', data)
-                     print('idx ',self.idx_df, ' tar ', tar_rat[1].data.cpu().numpy(), 'gpu ', tar_rat[1])
+                #     print('idx ',self.idx_df, ' tar ', tar_rat[1].data.cpu().numpy(), 'gpu ', tar_rat[1])
                      this_result =  result_all[self.idx_df]
                      if tar_rat[1] >=0.5 :
                          
