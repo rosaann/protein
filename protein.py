@@ -216,6 +216,8 @@ class Protein(object):
         base_path = 'results/'
         print('test len ', len(self.test_loader))
         result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in range( 11703) ]
+        
+        ttt=[]
         for class_type in range(2):
             class_path = base_path + 'class_' + str(class_type) + '.pth'
             self.resume_checkpoint(class_path)
@@ -226,15 +228,15 @@ class Protein(object):
           #  print('images ', images.shape)
            # if len (images) == 1:
            #     continue
-             if self.use_gpu:
+               if self.use_gpu:
                     images = Variable(images.cuda())
         
-             out = self.model(images, phase='eval')
+               out = self.model(images, phase='eval')
          #    print('out ', out) 
          #    for i_im, imname in enumerate(name_list):
                #  df.set_value(self.idx_df,'Id', imname )
              
-             for t_i, tar_rat in enumerate( out):
+               for t_i, tar_rat in enumerate( out):
                      data = out[t_i]
                      
                  #    print(' pre ', data)
@@ -252,8 +254,10 @@ class Protein(object):
                              this_result['max'] = tar_rat[1]
                              this_result['maxIdx'] = class_type
                      
-                #     result_all[self.idx_df] = this_result
-                     self.idx_df += 1        
+                     result_all[self.idx_df] = this_result
+                     self.idx_df += 1   
+                     
+                     ttt.append(this_result)
                      
                  
         for i_im in range( 11703):         
