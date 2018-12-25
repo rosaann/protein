@@ -155,7 +155,7 @@ class Protein(object):
             self.train_per_epoch(epoch)
           #  if epoch % int( self.config.v('save_per')) == 0:
             self.save_checkpoints(epoch)
-    def test_model(self):
+    def test_model__old(self):
         previous = self.find_previous()
         if previous:
             for epoch, resume_checkpoint in zip(previous[0], previous[1]):
@@ -210,6 +210,69 @@ class Protein(object):
             
         
         return img
+    def test_model(self):
+        df = pd.read_csv('../sample_submission.csv')   
+        df = df.astype({"Predicted": str})         
+        base_path = 'results/'
+        result_all = [{'max':0,'maxIdx':0, 'list':[]} for i in len(self.test_loader) ]
+        for class_type in range(28):
+            class_path = base_path + 'class_' + str(class_type) + '.pth'
+            self.resume_checkpoint(class_path)
+            
+            self.idx_df = 0
+            for images , name_list in self.test_loader:
+            
+          #  print('images ', images.shape)
+           # if len (images) == 1:
+           #     continue
+             if self.use_gpu:
+                    images = Variable(images.cuda())
+        
+             out = self.model(images, phase='train')
+         #   print('out ', out) 
+             for i_im, imname in enumerate(name_list):
+               #  df.set_value(self.idx_df,'Id', imname )
+                 data = out[i_im]
+                 result_all = []
+                 print(' pre ', data)
+                 for t_i, tar_rat in enumerate( data):
+                     this_result =  result_all[self.idx_df]
+                     if tar_rat[1] >=0.5 :
+                         
+                         this_list = this_result['list']
+                         this_list.append(class_type)
+                         this_result['list'] = this_list
+                         
+                     else:
+                         this_max = this_result['max']
+                         if tar_rat[1] > this_max :
+                             this_result['max'] = tar_rat[1]
+                             this_result['maxIdx'] = class_type
+                     
+                     self.idx_df += 1        
+                     result_all[self.idx_df] = this_result
+                 
+        for i_im in range(len(self.test_loader)):         
+                    
+                 this_result = result_all[i_im]
+                 this_list = this_result['list']
+                 if len(this_list) > 0:
+                     result = str(result_all[0])
+                     if len(this_list) > 1:
+                         for r in this_list[1: ]:
+                             result += ' '
+                             result += str(r)
+                 else:
+                     result = str( this_result['maxIdx'])
+                     print('idx ', i_im, 'print none  ------', result)
+                 print('idx ', i_im, 'result ', result)
+                 df.set_value(i_im, 'Predicted', result)
+                 #self.idx_df += 1;
+                 
+        df.to_csv('pred.csv', index=None)
+        df.head(10)    
+        print('Evaluating detections')
+            
     def test_epoch(self):
         
         self.model.train()
@@ -280,7 +343,7 @@ class Protein(object):
         df.head(10)    
         print('Evaluating detections')
         
-        
+    
     def find_previous(self):
         if not os.path.exists(os.path.join(self.config.v('out_dir'), 'checkpoint_list.txt')):
             return False
@@ -585,7 +648,7 @@ def train_model():
     return True
 
 def test_model():
-    xgb_test = test_xg_model()
-    s = Protein(ifTrain = False, xgb_test_result = xgb_test)
+ #   xgb_test = test_xg_model()
+    s = Protein(ifTrain = False)
     s.test_model()
     return True       
