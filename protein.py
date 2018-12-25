@@ -230,15 +230,15 @@ class Protein(object):
                     images = Variable(images.cuda())
         
              out = self.model(images, phase='eval')
-             print('out ', out) 
+         #    print('out ', out) 
          #    for i_im, imname in enumerate(name_list):
                #  df.set_value(self.idx_df,'Id', imname )
              
              for t_i, tar_rat in enumerate( out):
                      data = out[t_i]
                      
-                     print(' pre ', data)
-                     print('idx ',self.idx_df, ' tar ', tar_rat[1] )
+                 #    print(' pre ', data)
+                #     print('idx ',self.idx_df, ' tar ', tar_rat[1] )
                      this_result =  result_all[self.idx_df]
                      if tar_rat[1] >=0.5 :
                          
@@ -255,7 +255,7 @@ class Protein(object):
                      self.idx_df += 1        
                      result_all[self.idx_df] = this_result
                  
-        for i_im in range(len(self.test_loader)):         
+        for i_im in range(range( 11703)):         
                     
                  this_result = result_all[i_im]
                  this_list = this_result['list']
@@ -268,7 +268,7 @@ class Protein(object):
                  else:
                      result = str( this_result['maxIdx'])
                      print('idx ', i_im, 'print none  ------', result)
-                 print('idx ', i_im, 'result ', result)
+               #  print('idx ', i_im, 'result ', result)
                  df.set_value(i_im, 'Predicted', result)
                  #self.idx_df += 1;
                  
