@@ -237,6 +237,7 @@ class Protein(object):
                  result_all = []
                  print(' pre ', data)
                  for t_i, tar_rat in enumerate( data):
+                     print('idx ',self.idx_df, ' tar ', tar_rat[1] )
                      this_result =  result_all[self.idx_df]
                      if tar_rat[1] >=0.5 :
                          
