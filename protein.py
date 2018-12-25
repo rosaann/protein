@@ -238,7 +238,7 @@ class Protein(object):
                      data = out[t_i]
                      
                  #    print(' pre ', data)
-                #     print('idx ',self.idx_df, ' tar ', tar_rat[1] )
+                     print('idx ',self.idx_df, ' tar ', tar_rat[1] )
                      this_result =  result_all[self.idx_df]
                      if tar_rat[1] >=0.5 :
                          
