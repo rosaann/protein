@@ -260,6 +260,7 @@ class Protein(object):
                  this_result = result_all[i_im]
                  this_list = this_result['list']
                  result = ''
+                 print('im ', i_im, 'list len ', len(this_list))
                  if len(this_list) > 0:
                      result = str(result_all[0])
                      if len(this_list) > 1:
