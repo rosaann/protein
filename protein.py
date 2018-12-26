@@ -649,7 +649,7 @@ def train_model():
 #minor_type_class = [20, 8, 10,9,  15, 17, 27, 24, 26]   
     data_arg_times_list = [32, 32, 40, 32,  36, 12, 80, 4, 4]
     for c_i, c_class in enumerate( minor_type_class):
-        if c_class != 9 and c_class != 27:
+        if  c_class != 27:
             continue
         s = Protein(ifTrain = True,c_type='minor', train_class = c_class, data_arg_times = data_arg_times_list[c_i])
         s.train_model()
