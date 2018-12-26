@@ -259,7 +259,7 @@ class Protein(object):
                      self.idx_df += 1   
                      
                  
-        for i_im in range( 11703):         
+        for i_im in range( 11702):         
                     
                  this_result = result_all[i_im]
                  this_list = this_result['list']
@@ -638,7 +638,7 @@ def train_model():
  # major_type_class = [0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
   
     down_sample_list = [0, 50, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
-    data_arg_times_list =[0, 12, 8, 12, 8, 4, 8, 8, 12, 16, 16, 8, 16, 12, 12, 4, 12, 4, 0]
+    data_arg_times_list =[0, 12, 4, 12, 8, 4, 8, 8, 12, 16, 16, 8, 16, 12, 12, 4, 12, 4, 0]
     for c_i, c_class in enumerate( major_type_class):
         if c_class != 2:
             continue
