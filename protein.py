@@ -88,7 +88,7 @@ class Protein(object):
     
     def get_train_val_data_set(self, c, c_type='minor', down_sample_num = 0, train_to = 29):
         if c_type == 'minor':
-            train_data_id_class_list = self.train_data_id_class_list[:train_to]
+            train_data_id_class_list = self.train_data_id_class_list[:100]
         else:
             train_data_id_class_list = self.train_data_id_class_list[train_to:]
         down_num = 0
@@ -638,7 +638,7 @@ def train_model():
  # major_type_class = [0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
   
     down_sample_list = [0, 50, 6, 3, 4, 5, 6, 7, 11, 12, 13, 14, 16, 18, 19, 21, 22, 23, 25]
-    data_arg_times_list =[0, 12, 4, 12, 8, 4, 8, 8, 12, 16, 16, 8, 16, 12, 12, 4, 12, 4, 0]
+    data_arg_times_list =[0, 12, 6, 12, 8, 4, 8, 8, 12, 16, 16, 8, 16, 12, 12, 4, 12, 4, 0]
     for c_i, c_class in enumerate( major_type_class):
         if c_class != 2:
             continue
@@ -647,7 +647,7 @@ def train_model():
     
     
 #minor_type_class = [20, 8, 10,9,  15, 17, 27, 24, 26]   
-    data_arg_times_list = [32, 32, 40, 32,  36, 12, 80, 4, 4]
+    data_arg_times_list = [32, 32, 40, 32,  36, 12, 240, 4, 4]
     for c_i, c_class in enumerate( minor_type_class):
         if  c_class != 27:
             continue
